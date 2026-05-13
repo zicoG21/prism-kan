@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable, Dict, List, Tuple, Optional
+from typing import Dict, Tuple
 
 import numpy as np
 import pandas as pd
@@ -21,7 +21,10 @@ def _rng(seed: int) -> np.random.Generator:
     return np.random.default_rng(seed)
 
 
-def _standardize_y(y_train: np.ndarray, y_test: np.ndarray) -> Tuple[np.ndarray, np.ndarray, float, float]:
+def _standardize_y(
+    y_train: np.ndarray,
+    y_test: np.ndarray,
+) -> Tuple[np.ndarray, np.ndarray, float, float]:
     mean = float(y_train.mean())
     std = float(y_train.std())
     if std < 1e-12:
@@ -55,7 +58,18 @@ def make_synthetic(
     n_total = n_train + n_test
     X = gen.uniform(input_low, input_high, size=(n_total, d)).astype(np.float32)
 
+    # For correlated_proxy, keep x0--x3 as the true causal variables,
+    # but add proxy variables x4 and x5 that are strongly correlated with
+    # x0 and x1. This tests whether explanations confuse true variables
+    # with correlated but non-causal features.
+    if function_name == "correlated_proxy":
+        proxy_noise = 0.05
+        X[:, 4] = X[:, 0] + gen.normal(0.0, proxy_noise, size=n_total).astype(np.float32)
+        if d > 5:
+            X[:, 5] = X[:, 1] + gen.normal(0.0, proxy_noise, size=n_total).astype(np.float32)
+
     y_clean, gt = evaluate_synthetic_function(function_name, X)
+
     if noise > 0:
         y = y_clean + gen.normal(0.0, noise, size=y_clean.shape).astype(np.float32)
     else:
@@ -88,20 +102,74 @@ def make_synthetic(
     }
 
 
-def evaluate_synthetic_function(function_name: str, X: np.ndarray) -> Tuple[np.ndarray, GroundTruth]:
+def _core_interaction_with_coeff(
+    function_name: str,
+    X: np.ndarray,
+    coeff: float,
+) -> Tuple[np.ndarray, GroundTruth]:
+    x = X
+    y = np.sin(2 * np.pi * x[:, 0]) + x[:, 1] ** 2 + coeff * x[:, 2] * x[:, 3]
+
+    if coeff == 1.0:
+        coeff_text = ""
+        formula = "sin(2*pi*x0) + x1^2 + x2*x3"
+    else:
+        coeff_text = f"{coeff}*"
+        formula = f"sin(2*pi*x0) + x1^2 + {coeff}*x2*x3"
+
+    gt = GroundTruth(
+        name=function_name,
+        active_variables=(0, 1, 2, 3),
+        interactions=((2, 3),),
+        formula=formula,
+    )
+    return y.astype(np.float32), gt
+
+
+def evaluate_synthetic_function(
+    function_name: str,
+    X: np.ndarray,
+) -> Tuple[np.ndarray, GroundTruth]:
     x = X
     pi = np.pi
 
     if function_name == "core_interaction":
-        # Main first experiment:
-        # f = sin(2 pi x0) + x1^2 + x2*x3
+        y, gt = _core_interaction_with_coeff(function_name, X, coeff=1.0)
+
+    elif function_name == "highdim_sparse":
+        # Alias for core_interaction, useful when running the same sparse
+        # ground-truth function in d=50 or d=100 dimensions.
+        y, gt = _core_interaction_with_coeff(function_name, X, coeff=1.0)
+
+    elif function_name in {
+        "core_interaction_c05",
+        "core_interaction_c1",
+        "core_interaction_c2",
+        "core_interaction_c5",
+    }:
+        coeff_map = {
+            "core_interaction_c05": 0.5,
+            "core_interaction_c1": 1.0,
+            "core_interaction_c2": 2.0,
+            "core_interaction_c5": 5.0,
+        }
+        y, gt = _core_interaction_with_coeff(
+            function_name,
+            X,
+            coeff=coeff_map[function_name],
+        )
+
+    elif function_name == "correlated_proxy":
+        # True variables are still x0, x1, x2, x3. x4 and x5 are correlated
+        # proxies added in make_synthetic but are not part of the true formula.
         y = np.sin(2 * pi * x[:, 0]) + x[:, 1] ** 2 + x[:, 2] * x[:, 3]
         gt = GroundTruth(
             name=function_name,
             active_variables=(0, 1, 2, 3),
             interactions=((2, 3),),
-            formula="sin(2*pi*x0) + x1^2 + x2*x3",
+            formula="sin(2*pi*x0) + x1^2 + x2*x3 with x4~x0 and x5~x1 proxies",
         )
+
     elif function_name == "additive_sparse":
         y = np.sin(2 * pi * x[:, 0]) + x[:, 1] ** 2 + np.exp(x[:, 2])
         gt = GroundTruth(
@@ -110,6 +178,7 @@ def evaluate_synthetic_function(function_name: str, X: np.ndarray) -> Tuple[np.n
             interactions=(),
             formula="sin(2*pi*x0) + x1^2 + exp(x2)",
         )
+
     elif function_name == "pairwise_interaction":
         y = x[:, 0] * x[:, 1] + np.sin(2 * pi * x[:, 2])
         gt = GroundTruth(
@@ -118,6 +187,7 @@ def evaluate_synthetic_function(function_name: str, X: np.ndarray) -> Tuple[np.n
             interactions=((0, 1),),
             formula="x0*x1 + sin(2*pi*x2)",
         )
+
     elif function_name == "compositional":
         y = np.sin(x[:, 0] * x[:, 1] + x[:, 2] ** 2)
         gt = GroundTruth(
@@ -126,6 +196,7 @@ def evaluate_synthetic_function(function_name: str, X: np.ndarray) -> Tuple[np.n
             interactions=((0, 1),),
             formula="sin(x0*x1 + x2^2)",
         )
+
     elif function_name == "rational":
         y = (x[:, 0] * x[:, 1]) / (1.0 + x[:, 2] ** 2)
         gt = GroundTruth(
@@ -134,6 +205,7 @@ def evaluate_synthetic_function(function_name: str, X: np.ndarray) -> Tuple[np.n
             interactions=((0, 1), (0, 2), (1, 2)),
             formula="x0*x1/(1+x2^2)",
         )
+
     elif function_name == "discontinuous":
         y = (x[:, 0] > 0).astype(np.float32) + 0.5 * x[:, 1]
         gt = GroundTruth(
@@ -142,6 +214,7 @@ def evaluate_synthetic_function(function_name: str, X: np.ndarray) -> Tuple[np.n
             interactions=(),
             formula="1[x0>0] + 0.5*x1",
         )
+
     elif function_name == "dense_quadratic":
         y = np.zeros(x.shape[0], dtype=np.float32)
         pairs = []
@@ -156,17 +229,24 @@ def evaluate_synthetic_function(function_name: str, X: np.ndarray) -> Tuple[np.n
             interactions=tuple(pairs),
             formula="dense pairwise quadratic over x0,...,x4",
         )
+
     else:
         raise ValueError(
             f"Unknown function_name={function_name!r}. "
-            "Use one of: core_interaction, additive_sparse, pairwise_interaction, "
-            "compositional, rational, discontinuous, dense_quadratic."
+            "Use one of: core_interaction, highdim_sparse, correlated_proxy, "
+            "core_interaction_c05, core_interaction_c1, core_interaction_c2, core_interaction_c5, "
+            "additive_sparse, pairwise_interaction, compositional, rational, "
+            "discontinuous, dense_quadratic."
         )
 
     return y.astype(np.float32), gt
 
 
-def load_uci_energy(test_size: float = 0.2, seed: int = 0, target: str = "heating") -> Dict:
+def load_uci_energy(
+    test_size: float = 0.2,
+    seed: int = 0,
+    target: str = "heating",
+) -> Dict:
     """
     Load UCI Energy Efficiency dataset.
 
@@ -179,10 +259,9 @@ def load_uci_energy(test_size: float = 0.2, seed: int = 0, target: str = "heatin
     url = "https://archive.ics.uci.edu/ml/machine-learning-databases/00242/ENB2012_data.xlsx"
     df = pd.read_excel(url)
 
-    # Common column names in this file:
-    # X1 relative compactness, X2 surface area, ..., X8 glazing area distribution, Y1, Y2.
     df = df.dropna()
     feature_cols = [c for c in df.columns if str(c).startswith("X")]
+
     if target == "heating":
         target_col = "Y1"
     elif target == "cooling":
@@ -194,11 +273,15 @@ def load_uci_energy(test_size: float = 0.2, seed: int = 0, target: str = "heatin
     y = df[target_col].to_numpy(dtype=np.float32).reshape(-1, 1)
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size, random_state=seed
+        X,
+        y,
+        test_size=test_size,
+        random_state=seed,
     )
 
     x_scaler = StandardScaler()
     y_scaler = StandardScaler()
+
     X_train = x_scaler.fit_transform(X_train).astype(np.float32)
     X_test = x_scaler.transform(X_test).astype(np.float32)
     y_train = y_scaler.fit_transform(y_train).astype(np.float32)

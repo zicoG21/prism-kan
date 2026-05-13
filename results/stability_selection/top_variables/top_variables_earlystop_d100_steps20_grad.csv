@@ -1,0 +1,16 @@
+source_file,setting,explain_method,variable,is_true_active,selection_count,num_runs,selection_frequency
+earlystop_d100_steps20.csv,earlystop_d100_steps20,grad,0,True,5,5,1.0
+earlystop_d100_steps20.csv,earlystop_d100_steps20,grad,1,True,4,5,0.8
+earlystop_d100_steps20.csv,earlystop_d100_steps20,grad,5,False,1,5,0.2
+earlystop_d100_steps20.csv,earlystop_d100_steps20,grad,17,False,1,5,0.2
+earlystop_d100_steps20.csv,earlystop_d100_steps20,grad,18,False,1,5,0.2
+earlystop_d100_steps20.csv,earlystop_d100_steps20,grad,20,False,1,5,0.2
+earlystop_d100_steps20.csv,earlystop_d100_steps20,grad,32,False,1,5,0.2
+earlystop_d100_steps20.csv,earlystop_d100_steps20,grad,35,False,1,5,0.2
+earlystop_d100_steps20.csv,earlystop_d100_steps20,grad,45,False,1,5,0.2
+earlystop_d100_steps20.csv,earlystop_d100_steps20,grad,54,False,1,5,0.2
+earlystop_d100_steps20.csv,earlystop_d100_steps20,grad,87,False,1,5,0.2
+earlystop_d100_steps20.csv,earlystop_d100_steps20,grad,91,False,1,5,0.2
+earlystop_d100_steps20.csv,earlystop_d100_steps20,grad,97,False,1,5,0.2
+earlystop_d100_steps20.csv,earlystop_d100_steps20,grad,2,True,0,5,0.0
+earlystop_d100_steps20.csv,earlystop_d100_steps20,grad,3,True,0,5,0.0

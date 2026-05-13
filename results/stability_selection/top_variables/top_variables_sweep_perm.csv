@@ -1,0 +1,16 @@
+source_file,setting,explain_method,variable,is_true_active,selection_count,num_runs,selection_frequency
+sweep.csv,sweep,perm,0,True,80,80,1.0
+sweep.csv,sweep,perm,1,True,80,80,1.0
+sweep.csv,sweep,perm,3,True,66,80,0.825
+sweep.csv,sweep,perm,2,True,64,80,0.8
+sweep.csv,sweep,perm,10,False,8,80,0.1
+sweep.csv,sweep,perm,15,False,4,80,0.05
+sweep.csv,sweep,perm,4,False,3,80,0.0375
+sweep.csv,sweep,perm,7,False,3,80,0.0375
+sweep.csv,sweep,perm,16,False,3,80,0.0375
+sweep.csv,sweep,perm,6,False,2,80,0.025
+sweep.csv,sweep,perm,18,False,2,80,0.025
+sweep.csv,sweep,perm,5,False,1,80,0.0125
+sweep.csv,sweep,perm,8,False,1,80,0.0125
+sweep.csv,sweep,perm,11,False,1,80,0.0125
+sweep.csv,sweep,perm,12,False,1,80,0.0125

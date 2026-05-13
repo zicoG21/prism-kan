@@ -1,0 +1,16 @@
+source_file,setting,explain_method,variable,is_true_active,selection_count,num_runs,selection_frequency
+core_d100_c2.csv,core_d100_c2,grad,0,True,5,5,1.0
+core_d100_c2.csv,core_d100_c2,grad,1,True,2,5,0.4
+core_d100_c2.csv,core_d100_c2,grad,2,True,1,5,0.2
+core_d100_c2.csv,core_d100_c2,grad,6,False,1,5,0.2
+core_d100_c2.csv,core_d100_c2,grad,7,False,1,5,0.2
+core_d100_c2.csv,core_d100_c2,grad,34,False,1,5,0.2
+core_d100_c2.csv,core_d100_c2,grad,70,False,1,5,0.2
+core_d100_c2.csv,core_d100_c2,grad,73,False,1,5,0.2
+core_d100_c2.csv,core_d100_c2,grad,74,False,1,5,0.2
+core_d100_c2.csv,core_d100_c2,grad,81,False,1,5,0.2
+core_d100_c2.csv,core_d100_c2,grad,84,False,1,5,0.2
+core_d100_c2.csv,core_d100_c2,grad,87,False,1,5,0.2
+core_d100_c2.csv,core_d100_c2,grad,89,False,1,5,0.2
+core_d100_c2.csv,core_d100_c2,grad,94,False,1,5,0.2
+core_d100_c2.csv,core_d100_c2,grad,97,False,1,5,0.2

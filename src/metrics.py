@@ -5,6 +5,7 @@ from typing import Iterable, List, Sequence, Set, Tuple
 
 import numpy as np
 import torch
+from sklearn.metrics import average_precision_score, roc_auc_score
 
 
 def topk_set(scores: np.ndarray, k: int) -> Set[int]:
@@ -33,6 +34,54 @@ def precision_recall_f1(true_set: Iterable, pred_set: Iterable) -> Tuple[float, 
         f1 = 2 * precision * recall / (precision + recall)
     return precision, recall, f1
 
+
+
+
+def variable_labels(active_variables: Iterable[int], dimension: int) -> np.ndarray:
+    """Return a binary vector with 1 for active variables and 0 otherwise."""
+    labels = np.zeros(int(dimension), dtype=np.int64)
+    for idx in active_variables:
+        idx = int(idx)
+        if 0 <= idx < dimension:
+            labels[idx] = 1
+    return labels
+
+
+def ranking_metrics(scores: np.ndarray, active_variables: Iterable[int], dimension: int) -> Tuple[float, float]:
+    """
+    Non-oracle ranking metrics for variable importance scores.
+
+    AUROC and AUPRC evaluate whether the full importance ranking separates
+    true active variables from irrelevant variables, without assuming the
+    number of active variables is known.
+    """
+    scores = np.asarray(scores, dtype=np.float64).reshape(-1)[:dimension]
+    y_true = variable_labels(active_variables, dimension)
+
+    # roc_auc_score is undefined if all labels are one class. This should not
+    # happen for our sparse synthetic functions, but return NaN defensively.
+    if len(np.unique(y_true)) < 2:
+        return float("nan"), float("nan")
+
+    auroc = float(roc_auc_score(y_true, scores))
+    auprc = float(average_precision_score(y_true, scores))
+    return auroc, auprc
+
+
+def score_distribution_summary(scores: np.ndarray, active_variables: Iterable[int], dimension: int) -> dict:
+    """Summarize active-vs-inactive score separation for quick diagnostics."""
+    scores = np.asarray(scores, dtype=np.float64).reshape(-1)[:dimension]
+    labels = variable_labels(active_variables, dimension)
+    active_scores = scores[labels == 1]
+    inactive_scores = scores[labels == 0]
+    return {
+        "active_score_mean": float(np.mean(active_scores)) if len(active_scores) else float("nan"),
+        "active_score_median": float(np.median(active_scores)) if len(active_scores) else float("nan"),
+        "inactive_score_mean": float(np.mean(inactive_scores)) if len(inactive_scores) else float("nan"),
+        "inactive_score_median": float(np.median(inactive_scores)) if len(inactive_scores) else float("nan"),
+        "active_score_min": float(np.min(active_scores)) if len(active_scores) else float("nan"),
+        "inactive_score_max": float(np.max(inactive_scores)) if len(inactive_scores) else float("nan"),
+    }
 
 def jaccard(a: Iterable, b: Iterable) -> float:
     a = set(a)

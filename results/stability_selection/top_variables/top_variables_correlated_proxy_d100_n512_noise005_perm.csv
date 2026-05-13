@@ -1,0 +1,13 @@
+source_file,setting,explain_method,variable,is_true_active,selection_count,num_runs,selection_frequency
+correlated_proxy_d100_n512_noise005.csv,correlated_proxy_d100_n512_noise005,perm,0,True,5,5,1.0
+correlated_proxy_d100_n512_noise005.csv,correlated_proxy_d100_n512_noise005,perm,4,False,4,5,0.8
+correlated_proxy_d100_n512_noise005.csv,correlated_proxy_d100_n512_noise005,perm,95,False,2,5,0.4
+correlated_proxy_d100_n512_noise005.csv,correlated_proxy_d100_n512_noise005,perm,1,True,1,5,0.2
+correlated_proxy_d100_n512_noise005.csv,correlated_proxy_d100_n512_noise005,perm,2,True,1,5,0.2
+correlated_proxy_d100_n512_noise005.csv,correlated_proxy_d100_n512_noise005,perm,3,True,1,5,0.2
+correlated_proxy_d100_n512_noise005.csv,correlated_proxy_d100_n512_noise005,perm,6,False,1,5,0.2
+correlated_proxy_d100_n512_noise005.csv,correlated_proxy_d100_n512_noise005,perm,11,False,1,5,0.2
+correlated_proxy_d100_n512_noise005.csv,correlated_proxy_d100_n512_noise005,perm,15,False,1,5,0.2
+correlated_proxy_d100_n512_noise005.csv,correlated_proxy_d100_n512_noise005,perm,33,False,1,5,0.2
+correlated_proxy_d100_n512_noise005.csv,correlated_proxy_d100_n512_noise005,perm,59,False,1,5,0.2
+correlated_proxy_d100_n512_noise005.csv,correlated_proxy_d100_n512_noise005,perm,73,False,1,5,0.2

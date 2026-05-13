@@ -1,0 +1,15 @@
+source_file,setting,explain_method,variable,is_true_active,selection_count,num_runs,selection_frequency
+core_d100_noise00_lamb0.05.csv,core_d100_noise00_lamb0.05,perm,0,True,5,5,1.0
+core_d100_noise00_lamb0.05.csv,core_d100_noise00_lamb0.05,perm,1,True,4,5,0.8
+core_d100_noise00_lamb0.05.csv,core_d100_noise00_lamb0.05,perm,37,False,2,5,0.4
+core_d100_noise00_lamb0.05.csv,core_d100_noise00_lamb0.05,perm,6,False,1,5,0.2
+core_d100_noise00_lamb0.05.csv,core_d100_noise00_lamb0.05,perm,18,False,1,5,0.2
+core_d100_noise00_lamb0.05.csv,core_d100_noise00_lamb0.05,perm,21,False,1,5,0.2
+core_d100_noise00_lamb0.05.csv,core_d100_noise00_lamb0.05,perm,23,False,1,5,0.2
+core_d100_noise00_lamb0.05.csv,core_d100_noise00_lamb0.05,perm,30,False,1,5,0.2
+core_d100_noise00_lamb0.05.csv,core_d100_noise00_lamb0.05,perm,61,False,1,5,0.2
+core_d100_noise00_lamb0.05.csv,core_d100_noise00_lamb0.05,perm,66,False,1,5,0.2
+core_d100_noise00_lamb0.05.csv,core_d100_noise00_lamb0.05,perm,71,False,1,5,0.2
+core_d100_noise00_lamb0.05.csv,core_d100_noise00_lamb0.05,perm,79,False,1,5,0.2
+core_d100_noise00_lamb0.05.csv,core_d100_noise00_lamb0.05,perm,2,True,0,5,0.0
+core_d100_noise00_lamb0.05.csv,core_d100_noise00_lamb0.05,perm,3,True,0,5,0.0

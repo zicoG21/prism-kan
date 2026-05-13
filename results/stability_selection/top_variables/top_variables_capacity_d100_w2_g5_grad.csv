@@ -1,0 +1,16 @@
+source_file,setting,explain_method,variable,is_true_active,selection_count,num_runs,selection_frequency
+capacity_d100_w2_g5.csv,capacity_d100_w2_g5,grad,0,True,5,5,1.0
+capacity_d100_w2_g5.csv,capacity_d100_w2_g5,grad,1,True,3,5,0.6
+capacity_d100_w2_g5.csv,capacity_d100_w2_g5,grad,9,False,1,5,0.2
+capacity_d100_w2_g5.csv,capacity_d100_w2_g5,grad,14,False,1,5,0.2
+capacity_d100_w2_g5.csv,capacity_d100_w2_g5,grad,17,False,1,5,0.2
+capacity_d100_w2_g5.csv,capacity_d100_w2_g5,grad,23,False,1,5,0.2
+capacity_d100_w2_g5.csv,capacity_d100_w2_g5,grad,31,False,1,5,0.2
+capacity_d100_w2_g5.csv,capacity_d100_w2_g5,grad,33,False,1,5,0.2
+capacity_d100_w2_g5.csv,capacity_d100_w2_g5,grad,37,False,1,5,0.2
+capacity_d100_w2_g5.csv,capacity_d100_w2_g5,grad,41,False,1,5,0.2
+capacity_d100_w2_g5.csv,capacity_d100_w2_g5,grad,47,False,1,5,0.2
+capacity_d100_w2_g5.csv,capacity_d100_w2_g5,grad,88,False,1,5,0.2
+capacity_d100_w2_g5.csv,capacity_d100_w2_g5,grad,95,False,1,5,0.2
+capacity_d100_w2_g5.csv,capacity_d100_w2_g5,grad,96,False,1,5,0.2
+capacity_d100_w2_g5.csv,capacity_d100_w2_g5,grad,2,True,0,5,0.0

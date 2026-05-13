@@ -1,0 +1,16 @@
+source_file,setting,explain_method,variable,is_true_active,selection_count,num_runs,selection_frequency
+core_d100_noise00_interactions.csv,core_d100_noise00_interactions,perm,0,True,5,5,1.0
+core_d100_noise00_interactions.csv,core_d100_noise00_interactions,perm,1,True,3,5,0.6
+core_d100_noise00_interactions.csv,core_d100_noise00_interactions,perm,10,False,1,5,0.2
+core_d100_noise00_interactions.csv,core_d100_noise00_interactions,perm,14,False,1,5,0.2
+core_d100_noise00_interactions.csv,core_d100_noise00_interactions,perm,18,False,1,5,0.2
+core_d100_noise00_interactions.csv,core_d100_noise00_interactions,perm,32,False,1,5,0.2
+core_d100_noise00_interactions.csv,core_d100_noise00_interactions,perm,48,False,1,5,0.2
+core_d100_noise00_interactions.csv,core_d100_noise00_interactions,perm,51,False,1,5,0.2
+core_d100_noise00_interactions.csv,core_d100_noise00_interactions,perm,56,False,1,5,0.2
+core_d100_noise00_interactions.csv,core_d100_noise00_interactions,perm,71,False,1,5,0.2
+core_d100_noise00_interactions.csv,core_d100_noise00_interactions,perm,77,False,1,5,0.2
+core_d100_noise00_interactions.csv,core_d100_noise00_interactions,perm,79,False,1,5,0.2
+core_d100_noise00_interactions.csv,core_d100_noise00_interactions,perm,88,False,1,5,0.2
+core_d100_noise00_interactions.csv,core_d100_noise00_interactions,perm,92,False,1,5,0.2
+core_d100_noise00_interactions.csv,core_d100_noise00_interactions,perm,2,True,0,5,0.0

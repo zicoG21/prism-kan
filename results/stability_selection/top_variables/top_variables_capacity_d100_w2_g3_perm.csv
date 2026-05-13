@@ -1,0 +1,16 @@
+source_file,setting,explain_method,variable,is_true_active,selection_count,num_runs,selection_frequency
+capacity_d100_w2_g3.csv,capacity_d100_w2_g3,perm,0,True,3,5,0.6
+capacity_d100_w2_g3.csv,capacity_d100_w2_g3,perm,1,True,1,5,0.2
+capacity_d100_w2_g3.csv,capacity_d100_w2_g3,perm,10,False,1,5,0.2
+capacity_d100_w2_g3.csv,capacity_d100_w2_g3,perm,15,False,1,5,0.2
+capacity_d100_w2_g3.csv,capacity_d100_w2_g3,perm,18,False,1,5,0.2
+capacity_d100_w2_g3.csv,capacity_d100_w2_g3,perm,19,False,1,5,0.2
+capacity_d100_w2_g3.csv,capacity_d100_w2_g3,perm,30,False,1,5,0.2
+capacity_d100_w2_g3.csv,capacity_d100_w2_g3,perm,44,False,1,5,0.2
+capacity_d100_w2_g3.csv,capacity_d100_w2_g3,perm,45,False,1,5,0.2
+capacity_d100_w2_g3.csv,capacity_d100_w2_g3,perm,48,False,1,5,0.2
+capacity_d100_w2_g3.csv,capacity_d100_w2_g3,perm,59,False,1,5,0.2
+capacity_d100_w2_g3.csv,capacity_d100_w2_g3,perm,61,False,1,5,0.2
+capacity_d100_w2_g3.csv,capacity_d100_w2_g3,perm,65,False,1,5,0.2
+capacity_d100_w2_g3.csv,capacity_d100_w2_g3,perm,66,False,1,5,0.2
+capacity_d100_w2_g3.csv,capacity_d100_w2_g3,perm,79,False,1,5,0.2

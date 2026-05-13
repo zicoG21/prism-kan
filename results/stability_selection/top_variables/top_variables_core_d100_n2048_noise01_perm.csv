@@ -1,0 +1,12 @@
+source_file,setting,explain_method,variable,is_true_active,selection_count,num_runs,selection_frequency
+core_d100_n2048_noise01.csv,core_d100_n2048_noise01,perm,0,True,5,5,1.0
+core_d100_n2048_noise01.csv,core_d100_n2048_noise01,perm,1,True,5,5,1.0
+core_d100_n2048_noise01.csv,core_d100_n2048_noise01,perm,3,True,2,5,0.4
+core_d100_n2048_noise01.csv,core_d100_n2048_noise01,perm,2,True,1,5,0.2
+core_d100_n2048_noise01.csv,core_d100_n2048_noise01,perm,32,False,1,5,0.2
+core_d100_n2048_noise01.csv,core_d100_n2048_noise01,perm,33,False,1,5,0.2
+core_d100_n2048_noise01.csv,core_d100_n2048_noise01,perm,51,False,1,5,0.2
+core_d100_n2048_noise01.csv,core_d100_n2048_noise01,perm,62,False,1,5,0.2
+core_d100_n2048_noise01.csv,core_d100_n2048_noise01,perm,68,False,1,5,0.2
+core_d100_n2048_noise01.csv,core_d100_n2048_noise01,perm,79,False,1,5,0.2
+core_d100_n2048_noise01.csv,core_d100_n2048_noise01,perm,93,False,1,5,0.2

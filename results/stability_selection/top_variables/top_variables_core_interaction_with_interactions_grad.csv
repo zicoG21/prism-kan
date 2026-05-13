@@ -1,0 +1,5 @@
+source_file,setting,explain_method,variable,is_true_active,selection_count,num_runs,selection_frequency
+core_interaction_with_interactions.csv,core_interaction_with_interactions,grad,0,True,5,5,1.0
+core_interaction_with_interactions.csv,core_interaction_with_interactions,grad,1,True,5,5,1.0
+core_interaction_with_interactions.csv,core_interaction_with_interactions,grad,2,True,5,5,1.0
+core_interaction_with_interactions.csv,core_interaction_with_interactions,grad,3,True,5,5,1.0

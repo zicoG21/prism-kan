@@ -1,0 +1,16 @@
+source_file,setting,explain_method,variable,is_true_active,selection_count,num_runs,selection_frequency
+earlystop_d100_steps50.csv,earlystop_d100_steps50,perm,0,True,5,5,1.0
+earlystop_d100_steps50.csv,earlystop_d100_steps50,perm,1,True,3,5,0.6
+earlystop_d100_steps50.csv,earlystop_d100_steps50,perm,20,False,1,5,0.2
+earlystop_d100_steps50.csv,earlystop_d100_steps50,perm,29,False,1,5,0.2
+earlystop_d100_steps50.csv,earlystop_d100_steps50,perm,31,False,1,5,0.2
+earlystop_d100_steps50.csv,earlystop_d100_steps50,perm,40,False,1,5,0.2
+earlystop_d100_steps50.csv,earlystop_d100_steps50,perm,48,False,1,5,0.2
+earlystop_d100_steps50.csv,earlystop_d100_steps50,perm,56,False,1,5,0.2
+earlystop_d100_steps50.csv,earlystop_d100_steps50,perm,71,False,1,5,0.2
+earlystop_d100_steps50.csv,earlystop_d100_steps50,perm,79,False,1,5,0.2
+earlystop_d100_steps50.csv,earlystop_d100_steps50,perm,83,False,1,5,0.2
+earlystop_d100_steps50.csv,earlystop_d100_steps50,perm,85,False,1,5,0.2
+earlystop_d100_steps50.csv,earlystop_d100_steps50,perm,97,False,1,5,0.2
+earlystop_d100_steps50.csv,earlystop_d100_steps50,perm,98,False,1,5,0.2
+earlystop_d100_steps50.csv,earlystop_d100_steps50,perm,2,True,0,5,0.0

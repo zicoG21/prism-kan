@@ -1,0 +1,15 @@
+setting,explain_method,true_interaction_mean_freq,true_interaction_max_freq,false_interaction_max_freq,num_false_interactions_selected_at_least_once
+compositional,grad,1.0,1.0,,0.0
+compositional,perm,1.0,1.0,,0.0
+core_d100_c05,grad,0.0,0.0,1.0,1.0
+core_d100_c05,perm,0.0,0.0,0.8,2.0
+core_d100_c1,grad,0.0,0.0,0.6,3.0
+core_d100_c1,perm,0.0,0.0,0.6,2.0
+core_d100_c2,grad,0.0,0.0,0.2,5.0
+core_d100_c2,perm,0.0,0.0,0.2,5.0
+core_d100_c5,grad,0.0,0.0,0.2,5.0
+core_d100_c5,perm,0.0,0.0,0.2,5.0
+core_d100_noise00_interactions,grad,0.0,0.0,0.4,4.0
+core_d100_noise00_interactions,perm,0.0,0.0,0.6,3.0
+core_interaction_with_interactions,grad,1.0,1.0,,0.0
+core_interaction_with_interactions,perm,1.0,1.0,,0.0

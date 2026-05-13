@@ -1,0 +1,5 @@
+source_file,setting,explain_method,variable,is_true_active,selection_count,num_runs,selection_frequency
+synthetic.csv,synthetic,perm,0,True,5,5,1.0
+synthetic.csv,synthetic,perm,1,True,5,5,1.0
+synthetic.csv,synthetic,perm,2,True,5,5,1.0
+synthetic.csv,synthetic,perm,3,True,5,5,1.0

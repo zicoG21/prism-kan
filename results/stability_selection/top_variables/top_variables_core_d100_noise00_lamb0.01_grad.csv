@@ -1,0 +1,15 @@
+source_file,setting,explain_method,variable,is_true_active,selection_count,num_runs,selection_frequency
+core_d100_noise00_lamb0.01.csv,core_d100_noise00_lamb0.01,grad,0,True,5,5,1.0
+core_d100_noise00_lamb0.01.csv,core_d100_noise00_lamb0.01,grad,1,True,5,5,1.0
+core_d100_noise00_lamb0.01.csv,core_d100_noise00_lamb0.01,grad,17,False,1,5,0.2
+core_d100_noise00_lamb0.01.csv,core_d100_noise00_lamb0.01,grad,18,False,1,5,0.2
+core_d100_noise00_lamb0.01.csv,core_d100_noise00_lamb0.01,grad,20,False,1,5,0.2
+core_d100_noise00_lamb0.01.csv,core_d100_noise00_lamb0.01,grad,27,False,1,5,0.2
+core_d100_noise00_lamb0.01.csv,core_d100_noise00_lamb0.01,grad,32,False,1,5,0.2
+core_d100_noise00_lamb0.01.csv,core_d100_noise00_lamb0.01,grad,35,False,1,5,0.2
+core_d100_noise00_lamb0.01.csv,core_d100_noise00_lamb0.01,grad,87,False,1,5,0.2
+core_d100_noise00_lamb0.01.csv,core_d100_noise00_lamb0.01,grad,91,False,1,5,0.2
+core_d100_noise00_lamb0.01.csv,core_d100_noise00_lamb0.01,grad,95,False,1,5,0.2
+core_d100_noise00_lamb0.01.csv,core_d100_noise00_lamb0.01,grad,97,False,1,5,0.2
+core_d100_noise00_lamb0.01.csv,core_d100_noise00_lamb0.01,grad,2,True,0,5,0.0
+core_d100_noise00_lamb0.01.csv,core_d100_noise00_lamb0.01,grad,3,True,0,5,0.0

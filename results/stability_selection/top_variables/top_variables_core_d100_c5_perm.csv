@@ -1,0 +1,16 @@
+source_file,setting,explain_method,variable,is_true_active,selection_count,num_runs,selection_frequency
+core_d100_c5.csv,core_d100_c5,perm,0,True,5,5,1.0
+core_d100_c5.csv,core_d100_c5,perm,1,True,1,5,0.2
+core_d100_c5.csv,core_d100_c5,perm,20,False,1,5,0.2
+core_d100_c5.csv,core_d100_c5,perm,27,False,1,5,0.2
+core_d100_c5.csv,core_d100_c5,perm,42,False,1,5,0.2
+core_d100_c5.csv,core_d100_c5,perm,44,False,1,5,0.2
+core_d100_c5.csv,core_d100_c5,perm,50,False,1,5,0.2
+core_d100_c5.csv,core_d100_c5,perm,66,False,1,5,0.2
+core_d100_c5.csv,core_d100_c5,perm,73,False,1,5,0.2
+core_d100_c5.csv,core_d100_c5,perm,76,False,1,5,0.2
+core_d100_c5.csv,core_d100_c5,perm,77,False,1,5,0.2
+core_d100_c5.csv,core_d100_c5,perm,78,False,1,5,0.2
+core_d100_c5.csv,core_d100_c5,perm,79,False,1,5,0.2
+core_d100_c5.csv,core_d100_c5,perm,81,False,1,5,0.2
+core_d100_c5.csv,core_d100_c5,perm,84,False,1,5,0.2
