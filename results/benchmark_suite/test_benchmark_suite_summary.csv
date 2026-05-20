@@ -1,0 +1,11 @@
+function,dimension,samples,test_samples,noise,screen_mode,explain_method,train_mse_mean,train_mse_std,test_mse_mean,test_mse_std,effective_dim_mean,screen_contains_all_true_vars_mean,screen_true_var_recall_mean,screen_contains_all_interaction_endpoints_mean,screen_interaction_endpoint_recall_mean,screen_contains_true_interactions_mean,num_true_variables_mean,num_true_interactions_mean,variable_f1_mean,variable_f1_std,variable_auroc_mean,variable_auroc_std,variable_auprc_mean,variable_auprc_std,interaction_f1_mean,interaction_f1_std,num_rows,num_failed
+additive_sparse,100,256,512,0.0,exclude_interaction,grad,3.58272809535265e-05,,2.0547637939453125,,20.0,0.0,0.3333333333333333,,,,3.0,0.0,0.0,,0.5910652920962199,,0.1033333333333333,,,,1,0
+additive_sparse,100,256,512,0.0,oracle_support,grad,2.739060164458351e-06,,0.1084388718008995,,20.0,1.0,1.0,,,,3.0,0.0,1.0,,1.0,,1.0,,,,1,0
+additive_sparse,100,256,512,0.0,random,grad,3.768209717236459e-05,,2.055281162261963,,20.0,0.0,0.3333333333333333,,,,3.0,0.0,0.0,,0.5910652920962199,,0.1033333333333333,,,,1,0
+additive_sparse,100,256,512,0.0,raw,grad,1.6638654187772772e-07,,0.9263280630111694,,100.0,1.0,1.0,,,,3.0,0.0,0.6666666666666666,,0.9621993127147764,,0.7380952380952381,,,,1,0
+additive_sparse,100,256,512,0.0,rf,grad,1.0825925528479274e-05,,0.0616436004638671,,20.0,1.0,1.0,,,,3.0,0.0,1.0,,1.0,,1.0,,,,1,0
+core_interaction,100,256,512,0.0,exclude_interaction,grad,1.831917143135797e-05,,2.2616159915924072,,20.0,0.0,0.25,0.0,0.0,0.0,4.0,1.0,0.0,,0.5403645833333334,,0.08,,0.0,,1,0
+core_interaction,100,256,512,0.0,oracle_support,grad,5.198871235734259e-07,,0.6116776466369629,,20.0,1.0,1.0,1.0,1.0,1.0,4.0,1.0,0.5,,0.9713541666666666,,0.69375,,0.0,,1,0
+core_interaction,100,256,512,0.0,random,grad,7.545267726527527e-05,,2.1503090858459477,,20.0,0.0,0.5,0.0,0.5,0.0,4.0,1.0,0.25,,0.6614583333333334,,0.1744117647058823,,0.0,,1,0
+core_interaction,100,256,512,0.0,raw,grad,9.096911526285112e-06,,2.0103139877319336,,100.0,1.0,1.0,1.0,1.0,1.0,4.0,1.0,0.25,,0.7265624999999999,,0.3405632411067193,,0.0,,1,0
+core_interaction,100,256,512,0.0,rf,grad,0.0002828386204782,,1.272000074386597,,20.0,1.0,1.0,1.0,1.0,1.0,4.0,1.0,0.25,,0.9375,,0.4770053475935829,,0.0,,1,0
