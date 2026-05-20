@@ -1,0 +1,71 @@
+source_file,function,explain_method,aggregation,threshold,num_runs,single_seed_mean_interaction_f1,single_seed_std_interaction_f1,stable_interaction_precision,stable_interaction_recall,stable_interaction_f1,stable_selected_interactions,stable_num_selected_interactions
+compositional.csv,compositional,grad,interaction_frequency_topk,,5,1.0,0.0,1.0,1.0,1.0,"[(0, 1)]",
+compositional.csv,compositional,grad,interaction_frequency_threshold,0.2,5,1.0,0.0,1.0,1.0,1.0,"[(0, 1)]",1.0
+compositional.csv,compositional,grad,interaction_frequency_threshold,0.4,5,1.0,0.0,1.0,1.0,1.0,"[(0, 1)]",1.0
+compositional.csv,compositional,grad,interaction_frequency_threshold,0.6,5,1.0,0.0,1.0,1.0,1.0,"[(0, 1)]",1.0
+compositional.csv,compositional,grad,interaction_frequency_threshold,0.8,5,1.0,0.0,1.0,1.0,1.0,"[(0, 1)]",1.0
+compositional.csv,compositional,perm,interaction_frequency_topk,,5,1.0,0.0,1.0,1.0,1.0,"[(0, 1)]",
+compositional.csv,compositional,perm,interaction_frequency_threshold,0.2,5,1.0,0.0,1.0,1.0,1.0,"[(0, 1)]",1.0
+compositional.csv,compositional,perm,interaction_frequency_threshold,0.4,5,1.0,0.0,1.0,1.0,1.0,"[(0, 1)]",1.0
+compositional.csv,compositional,perm,interaction_frequency_threshold,0.6,5,1.0,0.0,1.0,1.0,1.0,"[(0, 1)]",1.0
+compositional.csv,compositional,perm,interaction_frequency_threshold,0.8,5,1.0,0.0,1.0,1.0,1.0,"[(0, 1)]",1.0
+core_d100_noise00_interactions.csv,core_interaction,grad,interaction_frequency_topk,,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",
+core_d100_noise00_interactions.csv,core_interaction,grad,interaction_frequency_threshold,0.2,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1), (0, 17), (0, 20), (0, 91)]",4.0
+core_d100_noise00_interactions.csv,core_interaction,grad,interaction_frequency_threshold,0.4,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",1.0
+core_d100_noise00_interactions.csv,core_interaction,grad,interaction_frequency_threshold,0.6,5,0.0,0.0,0.0,0.0,0.0,[],0.0
+core_d100_noise00_interactions.csv,core_interaction,grad,interaction_frequency_threshold,0.8,5,0.0,0.0,0.0,0.0,0.0,[],0.0
+core_d100_noise00_interactions.csv,core_interaction,perm,interaction_frequency_topk,,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",
+core_d100_noise00_interactions.csv,core_interaction,perm,interaction_frequency_threshold,0.2,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1), (0, 48), (0, 79)]",3.0
+core_d100_noise00_interactions.csv,core_interaction,perm,interaction_frequency_threshold,0.4,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",1.0
+core_d100_noise00_interactions.csv,core_interaction,perm,interaction_frequency_threshold,0.6,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",1.0
+core_d100_noise00_interactions.csv,core_interaction,perm,interaction_frequency_threshold,0.8,5,0.0,0.0,0.0,0.0,0.0,[],0.0
+core_interaction_with_interactions.csv,core_interaction,grad,interaction_frequency_topk,,5,1.0,0.0,1.0,1.0,1.0,"[(2, 3)]",
+core_interaction_with_interactions.csv,core_interaction,grad,interaction_frequency_threshold,0.2,5,1.0,0.0,1.0,1.0,1.0,"[(2, 3)]",1.0
+core_interaction_with_interactions.csv,core_interaction,grad,interaction_frequency_threshold,0.4,5,1.0,0.0,1.0,1.0,1.0,"[(2, 3)]",1.0
+core_interaction_with_interactions.csv,core_interaction,grad,interaction_frequency_threshold,0.6,5,1.0,0.0,1.0,1.0,1.0,"[(2, 3)]",1.0
+core_interaction_with_interactions.csv,core_interaction,grad,interaction_frequency_threshold,0.8,5,1.0,0.0,1.0,1.0,1.0,"[(2, 3)]",1.0
+core_interaction_with_interactions.csv,core_interaction,perm,interaction_frequency_topk,,5,1.0,0.0,1.0,1.0,1.0,"[(2, 3)]",
+core_interaction_with_interactions.csv,core_interaction,perm,interaction_frequency_threshold,0.2,5,1.0,0.0,1.0,1.0,1.0,"[(2, 3)]",1.0
+core_interaction_with_interactions.csv,core_interaction,perm,interaction_frequency_threshold,0.4,5,1.0,0.0,1.0,1.0,1.0,"[(2, 3)]",1.0
+core_interaction_with_interactions.csv,core_interaction,perm,interaction_frequency_threshold,0.6,5,1.0,0.0,1.0,1.0,1.0,"[(2, 3)]",1.0
+core_interaction_with_interactions.csv,core_interaction,perm,interaction_frequency_threshold,0.8,5,1.0,0.0,1.0,1.0,1.0,"[(2, 3)]",1.0
+core_d100_c05.csv,core_interaction_c05,grad,interaction_frequency_topk,,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",
+core_d100_c05.csv,core_interaction_c05,grad,interaction_frequency_threshold,0.2,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",1.0
+core_d100_c05.csv,core_interaction_c05,grad,interaction_frequency_threshold,0.4,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",1.0
+core_d100_c05.csv,core_interaction_c05,grad,interaction_frequency_threshold,0.6,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",1.0
+core_d100_c05.csv,core_interaction_c05,grad,interaction_frequency_threshold,0.8,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",1.0
+core_d100_c05.csv,core_interaction_c05,perm,interaction_frequency_topk,,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",
+core_d100_c05.csv,core_interaction_c05,perm,interaction_frequency_threshold,0.2,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1), (0, 46)]",2.0
+core_d100_c05.csv,core_interaction_c05,perm,interaction_frequency_threshold,0.4,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",1.0
+core_d100_c05.csv,core_interaction_c05,perm,interaction_frequency_threshold,0.6,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",1.0
+core_d100_c05.csv,core_interaction_c05,perm,interaction_frequency_threshold,0.8,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",1.0
+core_d100_c1.csv,core_interaction_c1,grad,interaction_frequency_topk,,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",
+core_d100_c1.csv,core_interaction_c1,grad,interaction_frequency_threshold,0.2,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1), (0, 17), (0, 91)]",3.0
+core_d100_c1.csv,core_interaction_c1,grad,interaction_frequency_threshold,0.4,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",1.0
+core_d100_c1.csv,core_interaction_c1,grad,interaction_frequency_threshold,0.6,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",1.0
+core_d100_c1.csv,core_interaction_c1,grad,interaction_frequency_threshold,0.8,5,0.0,0.0,0.0,0.0,0.0,[],0.0
+core_d100_c1.csv,core_interaction_c1,perm,interaction_frequency_topk,,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",
+core_d100_c1.csv,core_interaction_c1,perm,interaction_frequency_threshold,0.2,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1), (0, 79)]",2.0
+core_d100_c1.csv,core_interaction_c1,perm,interaction_frequency_threshold,0.4,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1), (0, 79)]",2.0
+core_d100_c1.csv,core_interaction_c1,perm,interaction_frequency_threshold,0.6,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",1.0
+core_d100_c1.csv,core_interaction_c1,perm,interaction_frequency_threshold,0.8,5,0.0,0.0,0.0,0.0,0.0,[],0.0
+core_d100_c2.csv,core_interaction_c2,grad,interaction_frequency_topk,,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1)]",
+core_d100_c2.csv,core_interaction_c2,grad,interaction_frequency_threshold,0.2,5,0.0,0.0,0.0,0.0,0.0,"[(0, 1), (0, 6), (0, 70), (2, 7), (81, 97)]",5.0
+core_d100_c2.csv,core_interaction_c2,grad,interaction_frequency_threshold,0.4,5,0.0,0.0,0.0,0.0,0.0,[],0.0
+core_d100_c2.csv,core_interaction_c2,grad,interaction_frequency_threshold,0.6,5,0.0,0.0,0.0,0.0,0.0,[],0.0
+core_d100_c2.csv,core_interaction_c2,grad,interaction_frequency_threshold,0.8,5,0.0,0.0,0.0,0.0,0.0,[],0.0
+core_d100_c2.csv,core_interaction_c2,perm,interaction_frequency_topk,,5,0.0,0.0,0.0,0.0,0.0,"[(0, 23)]",
+core_d100_c2.csv,core_interaction_c2,perm,interaction_frequency_threshold,0.2,5,0.0,0.0,0.0,0.0,0.0,"[(0, 23), (0, 75), (0, 88), (0, 89), (72, 92)]",5.0
+core_d100_c2.csv,core_interaction_c2,perm,interaction_frequency_threshold,0.4,5,0.0,0.0,0.0,0.0,0.0,[],0.0
+core_d100_c2.csv,core_interaction_c2,perm,interaction_frequency_threshold,0.6,5,0.0,0.0,0.0,0.0,0.0,[],0.0
+core_d100_c2.csv,core_interaction_c2,perm,interaction_frequency_threshold,0.8,5,0.0,0.0,0.0,0.0,0.0,[],0.0
+core_d100_c5.csv,core_interaction_c5,grad,interaction_frequency_topk,,5,0.0,0.0,0.0,0.0,0.0,"[(0, 3)]",
+core_d100_c5.csv,core_interaction_c5,grad,interaction_frequency_threshold,0.2,5,0.0,0.0,0.0,0.0,0.0,"[(0, 3), (0, 5), (0, 44), (0, 82), (27, 81)]",5.0
+core_d100_c5.csv,core_interaction_c5,grad,interaction_frequency_threshold,0.4,5,0.0,0.0,0.0,0.0,0.0,[],0.0
+core_d100_c5.csv,core_interaction_c5,grad,interaction_frequency_threshold,0.6,5,0.0,0.0,0.0,0.0,0.0,[],0.0
+core_d100_c5.csv,core_interaction_c5,grad,interaction_frequency_threshold,0.8,5,0.0,0.0,0.0,0.0,0.0,[],0.0
+core_d100_c5.csv,core_interaction_c5,perm,interaction_frequency_topk,,5,0.0,0.0,0.0,0.0,0.0,"[(0, 20)]",
+core_d100_c5.csv,core_interaction_c5,perm,interaction_frequency_threshold,0.2,5,0.0,0.0,0.0,0.0,0.0,"[(0, 20), (0, 44), (0, 50), (0, 66), (27, 81)]",5.0
+core_d100_c5.csv,core_interaction_c5,perm,interaction_frequency_threshold,0.4,5,0.0,0.0,0.0,0.0,0.0,[],0.0
+core_d100_c5.csv,core_interaction_c5,perm,interaction_frequency_threshold,0.6,5,0.0,0.0,0.0,0.0,0.0,[],0.0
+core_d100_c5.csv,core_interaction_c5,perm,interaction_frequency_threshold,0.8,5,0.0,0.0,0.0,0.0,0.0,[],0.0

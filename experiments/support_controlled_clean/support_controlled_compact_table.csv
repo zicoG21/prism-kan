@@ -1,0 +1,4 @@
+Setting,Random Int F1,Oracle Support Int F1,Exclude Interaction Int F1,RF Int F1,RF Excl. Interaction Int F1,Main takeaway
+core d=100,0.0,1.0,0.0,1.0,0.0,Support retention is sufficient and necessary
+core c=5 d=100,0.0666666666666666,1.0,0.0,1.0,0.0,Support retention is sufficient and necessary
+proxy d=100,0.0,0.4,0.0,0.2,0.0,"Support retention helps, but proxy/confounding remains"
