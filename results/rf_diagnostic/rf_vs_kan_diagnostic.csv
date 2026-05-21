@@ -1,0 +1,43 @@
+function,method,test_mse_mean,variable_f1_mean,interaction_f1_mean,interaction_metric,support_contains_true_interactions_mean,note
+additive_sparse,Exclude-interaction KAN,8.09731117884318,0.1111111111111111,,KAN Hessian from benchmark suite,,KAN benchmark result.
+additive_sparse,Oracle-support KAN,7.55651429547773e-06,1.0,,KAN Hessian from benchmark suite,,KAN benchmark result.
+additive_sparse,RF predictor,0.11471836277522807,1.0,,N/A,,RF feature importance for variables; interaction F1 from synergy row if available.
+additive_sparse,RF-screened KAN,0.0006646088283256,1.0,,KAN Hessian from benchmark suite,,KAN benchmark result.
+additive_sparse,Random-screened KAN,8.345411459604898,0.1111111111111111,,KAN Hessian from benchmark suite,,KAN benchmark result.
+additive_sparse,Raw KAN,0.049618271489938,1.0,,KAN Hessian from benchmark suite,,KAN benchmark result.
+compositional,Exclude-interaction KAN,5.455225944519043,0.0,0.0,KAN Hessian from benchmark suite,0.0,KAN benchmark result.
+compositional,Oracle-support KAN,0.0021623710247998,1.0,1.0,KAN Hessian from benchmark suite,1.0,KAN benchmark result.
+compositional,RF predictor,0.41933714010018325,1.0,0.6666666666666666,pair_permutation_synergy,1.0,RF feature importance for variables; interaction F1 from synergy row if available.
+compositional,RF-screened KAN,0.0012136460087882,1.0,1.0,KAN Hessian from benchmark suite,1.0,KAN benchmark result.
+compositional,Random-screened KAN,6.65877628326416,0.0,0.0,KAN Hessian from benchmark suite,0.0,KAN benchmark result.
+compositional,Raw KAN,2.1119803190231323,0.4444444444444444,0.0,KAN Hessian from benchmark suite,1.0,KAN benchmark result.
+core_interaction,Exclude-interaction KAN,6.174807707468669,0.0833333333333333,0.0,KAN Hessian from benchmark suite,0.0,KAN benchmark result.
+core_interaction,Oracle-support KAN,7.508693549122246e-05,1.0,1.0,KAN Hessian from benchmark suite,1.0,KAN benchmark result.
+core_interaction,RF predictor,0.2235940128445181,1.0,0.0,pair_permutation_synergy,1.0,RF feature importance for variables; interaction F1 from synergy row if available.
+core_interaction,RF-screened KAN,4.81650016202669e-05,1.0,1.0,KAN Hessian from benchmark suite,1.0,KAN benchmark result.
+core_interaction,Random-screened KAN,6.147151947021484,0.1666666666666666,0.0,KAN Hessian from benchmark suite,0.0,KAN benchmark result.
+core_interaction,Raw KAN,1.4363032579421997,0.4166666666666667,0.0,KAN Hessian from benchmark suite,1.0,KAN benchmark result.
+core_interaction_c5,Exclude-interaction KAN,6.633978843688965,0.0833333333333333,0.0,KAN Hessian from benchmark suite,0.0,KAN benchmark result.
+core_interaction_c5,Oracle-support KAN,0.0008074457582551,1.0,1.0,KAN Hessian from benchmark suite,1.0,KAN benchmark result.
+core_interaction_c5,RF predictor,0.6220602845853236,0.9166666666666666,1.0,pair_permutation_synergy,1.0,RF feature importance for variables; interaction F1 from synergy row if available.
+core_interaction_c5,RF-screened KAN,0.0004553828318117,1.0,1.0,KAN Hessian from benchmark suite,1.0,KAN benchmark result.
+core_interaction_c5,Random-screened KAN,6.279831409454346,0.1666666666666666,0.0,KAN Hessian from benchmark suite,0.0,KAN benchmark result.
+core_interaction_c5,Raw KAN,3.079260508219401,0.4166666666666667,0.0,KAN Hessian from benchmark suite,1.0,KAN benchmark result.
+correlated_proxy,Exclude-interaction KAN,8.118637561798096,0.0833333333333333,0.0,KAN Hessian from benchmark suite,0.0,KAN benchmark result.
+correlated_proxy,Oracle-support KAN,6.611714222041396e-05,1.0,1.0,KAN Hessian from benchmark suite,1.0,KAN benchmark result.
+correlated_proxy,RF predictor,0.22173257393494303,0.5,0.0,pair_permutation_synergy,1.0,RF feature importance for variables; interaction F1 from synergy row if available.
+correlated_proxy,RF-screened KAN,0.0001560766395414,1.0,1.0,KAN Hessian from benchmark suite,1.0,KAN benchmark result.
+correlated_proxy,Random-screened KAN,3.582474152247111,0.0833333333333333,0.0,KAN Hessian from benchmark suite,0.0,KAN benchmark result.
+correlated_proxy,Raw KAN,1.1020302772521973,0.4166666666666667,0.0,KAN Hessian from benchmark suite,1.0,KAN benchmark result.
+dense_quadratic,Exclude-interaction KAN,7.196742216746013,0.0,0.0,KAN Hessian from benchmark suite,0.0,KAN benchmark result.
+dense_quadratic,Oracle-support KAN,0.0002323746690914,1.0,1.0,KAN Hessian from benchmark suite,1.0,KAN benchmark result.
+dense_quadratic,RF predictor,0.6950367213217076,0.8000000000000002,0.43333333333333335,pair_permutation_synergy,0.3333333333333333,RF feature importance for variables; interaction F1 from synergy row if available.
+dense_quadratic,RF-screened KAN,0.151601828203032,0.8666666666666668,0.6,KAN Hessian from benchmark suite,0.3333333333333333,KAN benchmark result.
+dense_quadratic,Random-screened KAN,4.480581283569336,0.3333333333333333,0.0666666666666666,KAN Hessian from benchmark suite,0.0,KAN benchmark result.
+dense_quadratic,Raw KAN,3.0191763242085776,0.0,0.0,KAN Hessian from benchmark suite,1.0,KAN benchmark result.
+pairwise_interaction,Exclude-interaction KAN,5.976855913798015,0.0,0.0,KAN Hessian from benchmark suite,0.0,KAN benchmark result.
+pairwise_interaction,Oracle-support KAN,5.0374186685075983e-05,1.0,1.0,KAN Hessian from benchmark suite,1.0,KAN benchmark result.
+pairwise_interaction,RF predictor,0.1998275970779174,1.0,0.0,pair_permutation_synergy,1.0,RF feature importance for variables; interaction F1 from synergy row if available.
+pairwise_interaction,RF-screened KAN,0.0001123415895562,1.0,1.0,KAN Hessian from benchmark suite,1.0,KAN benchmark result.
+pairwise_interaction,Random-screened KAN,7.06602668762207,0.0,0.0,KAN Hessian from benchmark suite,0.0,KAN benchmark result.
+pairwise_interaction,Raw KAN,1.7673091093699138,0.3333333333333333,0.0,KAN Hessian from benchmark suite,1.0,KAN benchmark result.

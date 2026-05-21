@@ -1,0 +1,4 @@
+screen_mode,finite_difference,hessian,kan_path_pair_joint,kan_path_pair_synergy,pair_permutation_joint,pair_permutation_synergy
+oracle_support,1.0,1.0,0.0,0.3333333333333333,0.0,1.0
+raw,0.0,0.0,0.0,0.0,0.0,0.0
+rf,1.0,1.0,0.3333333333333333,0.3333333333333333,0.0,1.0
