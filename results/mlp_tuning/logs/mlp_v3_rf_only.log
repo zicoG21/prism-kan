@@ -1,0 +1,217 @@
+nohup: 忽略输入
+/home/perzival/anaconda3/envs/prism/lib/python3.10/site-packages/torch/cuda/__init__.py:180: UserWarning: CUDA initialization: CUDA unknown error - this may be due to an incorrectly set up environment, e.g. changing env variable CUDA_VISIBLE_DEVICES after program start. Setting the available devices to be zero. (Triggered internally at /pytorch/c10/cuda/CUDAFunctions.cpp:119.)
+  return torch._C._cuda_getDeviceCount() > 0
+Using device=cpu
+[TUNE] function=core_interaction screen=rf seed=4 trial=0/47 params={'hidden': 256, 'depth': 4, 'activation': 'silu', 'lr': 1.7914823299257556e-05, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=1/47 params={'hidden': 512, 'depth': 3, 'activation': 'softplus', 'lr': 0.0002349946928359988, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=2/47 params={'hidden': 512, 'depth': 2, 'activation': 'tanh', 'lr': 0.00041324246804951963, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=3/47 params={'hidden': 256, 'depth': 4, 'activation': 'tanh', 'lr': 0.006515615594780321, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=4/47 params={'hidden': 128, 'depth': 2, 'activation': 'gelu', 'lr': 0.0002533452472041356, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=5/47 params={'hidden': 128, 'depth': 3, 'activation': 'tanh', 'lr': 0.0014731561285094583, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=6/47 params={'hidden': 64, 'depth': 2, 'activation': 'silu', 'lr': 0.0016913174270757525, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=7/47 params={'hidden': 512, 'depth': 3, 'activation': 'tanh', 'lr': 0.00048091451585791014, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=8/47 params={'hidden': 128, 'depth': 3, 'activation': 'gelu', 'lr': 0.005812568311600871, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=9/47 params={'hidden': 256, 'depth': 3, 'activation': 'gelu', 'lr': 6.265918157676308e-05, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=10/47 params={'hidden': 128, 'depth': 3, 'activation': 'silu', 'lr': 0.0003874098440497466, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=11/47 params={'hidden': 128, 'depth': 4, 'activation': 'softplus', 'lr': 0.0008311192088702598, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=12/47 params={'hidden': 256, 'depth': 4, 'activation': 'silu', 'lr': 0.0011583143386989596, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=13/47 params={'hidden': 256, 'depth': 2, 'activation': 'silu', 'lr': 0.0001646713906204355, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=14/47 params={'hidden': 64, 'depth': 2, 'activation': 'softplus', 'lr': 0.004957841965580642, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=15/47 params={'hidden': 128, 'depth': 3, 'activation': 'tanh', 'lr': 0.0002108886822061897, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=16/47 params={'hidden': 256, 'depth': 4, 'activation': 'gelu', 'lr': 0.007709403417572489, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=17/47 params={'hidden': 512, 'depth': 4, 'activation': 'softplus', 'lr': 0.00423619314986977, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=18/47 params={'hidden': 512, 'depth': 2, 'activation': 'softplus', 'lr': 0.0009465721866261548, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=19/47 params={'hidden': 512, 'depth': 4, 'activation': 'gelu', 'lr': 0.0006707653911035234, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=20/47 params={'hidden': 256, 'depth': 4, 'activation': 'softplus', 'lr': 0.0009413626551194698, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=21/47 params={'hidden': 64, 'depth': 4, 'activation': 'gelu', 'lr': 3.842891495846515e-05, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=22/47 params={'hidden': 512, 'depth': 4, 'activation': 'gelu', 'lr': 0.0007852744995050266, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=23/47 params={'hidden': 256, 'depth': 4, 'activation': 'gelu', 'lr': 0.0041220891245246655, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=24/47 params={'hidden': 128, 'depth': 4, 'activation': 'softplus', 'lr': 8.098322776636636e-05, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=25/47 params={'hidden': 64, 'depth': 4, 'activation': 'tanh', 'lr': 2.2806463565571747e-05, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=26/47 params={'hidden': 512, 'depth': 3, 'activation': 'gelu', 'lr': 2.428029526205958e-05, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=27/47 params={'hidden': 128, 'depth': 2, 'activation': 'gelu', 'lr': 0.0003682340497606203, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=28/47 params={'hidden': 64, 'depth': 3, 'activation': 'tanh', 'lr': 0.009827127867933976, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=29/47 params={'hidden': 64, 'depth': 3, 'activation': 'softplus', 'lr': 0.0007258087218586972, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=30/47 params={'hidden': 512, 'depth': 2, 'activation': 'silu', 'lr': 0.0005639856474473735, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=31/47 params={'hidden': 64, 'depth': 3, 'activation': 'tanh', 'lr': 0.0006563773510151774, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=32/47 params={'hidden': 256, 'depth': 2, 'activation': 'softplus', 'lr': 0.00011239888969396, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=33/47 params={'hidden': 64, 'depth': 3, 'activation': 'gelu', 'lr': 4.824181633514579e-05, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=34/47 params={'hidden': 512, 'depth': 3, 'activation': 'gelu', 'lr': 2.011170581977173e-05, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=35/47 params={'hidden': 64, 'depth': 3, 'activation': 'tanh', 'lr': 0.0002544461250802155, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=36/47 params={'hidden': 256, 'depth': 4, 'activation': 'gelu', 'lr': 0.00018045439330584924, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=37/47 params={'hidden': 64, 'depth': 3, 'activation': 'silu', 'lr': 0.0018092855055598324, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=38/47 params={'hidden': 256, 'depth': 3, 'activation': 'softplus', 'lr': 4.0458954827510885e-05, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=39/47 params={'hidden': 128, 'depth': 4, 'activation': 'tanh', 'lr': 0.000575453057259226, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=40/47 params={'hidden': 256, 'depth': 4, 'activation': 'tanh', 'lr': 0.0006752308391868611, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=41/47 params={'hidden': 64, 'depth': 2, 'activation': 'softplus', 'lr': 0.007904752286035403, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=42/47 params={'hidden': 64, 'depth': 3, 'activation': 'gelu', 'lr': 0.00020094426122154634, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=43/47 params={'hidden': 256, 'depth': 3, 'activation': 'gelu', 'lr': 1.4536389822071115e-05, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=44/47 params={'hidden': 64, 'depth': 2, 'activation': 'tanh', 'lr': 6.889574722957712e-05, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=45/47 params={'hidden': 128, 'depth': 2, 'activation': 'gelu', 'lr': 0.001044790054383982, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=46/47 params={'hidden': 128, 'depth': 4, 'activation': 'tanh', 'lr': 0.009297812213336547, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=core_interaction screen=rf seed=4 trial=47/47 params={'hidden': 128, 'depth': 3, 'activation': 'tanh', 'lr': 0.008266458345005027, 'weight_decay': 0.01, 'dropout': 0.0}
+[BEST] function=core_interaction screen=rf: {'hidden': 256, 'depth': 4, 'activation': 'gelu', 'lr': 0.0041220891245246655, 'weight_decay': 0.01, 'dropout': 0.0, 'best_val_mse': 0.7285263538360596, 'best_epoch': 18, 'screen_mode': 'rf', 'function': 'core_interaction'}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=0/47 params={'hidden': 256, 'depth': 4, 'activation': 'silu', 'lr': 1.7914823299257556e-05, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=1/47 params={'hidden': 256, 'depth': 2, 'activation': 'softplus', 'lr': 0.001787546030632301, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=2/47 params={'hidden': 512, 'depth': 2, 'activation': 'softplus', 'lr': 1.8929994108767884e-05, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=3/47 params={'hidden': 64, 'depth': 2, 'activation': 'tanh', 'lr': 0.0007305923493047296, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=4/47 params={'hidden': 128, 'depth': 4, 'activation': 'tanh', 'lr': 5.8110280793000584e-05, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=5/47 params={'hidden': 128, 'depth': 3, 'activation': 'gelu', 'lr': 2.4007419954316807e-05, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=6/47 params={'hidden': 256, 'depth': 3, 'activation': 'silu', 'lr': 0.009512147812778116, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=7/47 params={'hidden': 64, 'depth': 2, 'activation': 'softplus', 'lr': 0.004391054285623942, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=8/47 params={'hidden': 64, 'depth': 2, 'activation': 'gelu', 'lr': 0.007399284867721285, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=9/47 params={'hidden': 256, 'depth': 3, 'activation': 'silu', 'lr': 0.00011867665333965294, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=10/47 params={'hidden': 256, 'depth': 2, 'activation': 'softplus', 'lr': 0.0017372561982551438, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=11/47 params={'hidden': 512, 'depth': 2, 'activation': 'softplus', 'lr': 0.00013333884093522815, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=12/47 params={'hidden': 128, 'depth': 2, 'activation': 'tanh', 'lr': 0.00018302651967174306, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=13/47 params={'hidden': 64, 'depth': 4, 'activation': 'tanh', 'lr': 1.0028057714624552e-05, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=14/47 params={'hidden': 64, 'depth': 4, 'activation': 'softplus', 'lr': 0.0003967339957316049, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=15/47 params={'hidden': 64, 'depth': 2, 'activation': 'silu', 'lr': 0.00019471125378413777, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=16/47 params={'hidden': 512, 'depth': 3, 'activation': 'gelu', 'lr': 1.0291167405492094e-05, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=17/47 params={'hidden': 512, 'depth': 3, 'activation': 'tanh', 'lr': 0.0006502986173035738, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=18/47 params={'hidden': 64, 'depth': 3, 'activation': 'tanh', 'lr': 0.0002546344505300795, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=19/47 params={'hidden': 256, 'depth': 2, 'activation': 'gelu', 'lr': 0.0016892209084201763, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=20/47 params={'hidden': 128, 'depth': 3, 'activation': 'silu', 'lr': 0.00021695550569439067, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=21/47 params={'hidden': 128, 'depth': 3, 'activation': 'gelu', 'lr': 7.485564954353444e-05, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=22/47 params={'hidden': 512, 'depth': 3, 'activation': 'gelu', 'lr': 0.008403696956846014, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=23/47 params={'hidden': 64, 'depth': 2, 'activation': 'gelu', 'lr': 0.00022945747209788313, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=24/47 params={'hidden': 256, 'depth': 2, 'activation': 'gelu', 'lr': 0.00028134390180753314, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=25/47 params={'hidden': 128, 'depth': 4, 'activation': 'softplus', 'lr': 4.042688174926485e-05, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=26/47 params={'hidden': 64, 'depth': 3, 'activation': 'tanh', 'lr': 0.005277400572095736, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=27/47 params={'hidden': 512, 'depth': 3, 'activation': 'gelu', 'lr': 8.026001032218288e-05, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=28/47 params={'hidden': 64, 'depth': 2, 'activation': 'tanh', 'lr': 0.0010017904410486072, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=29/47 params={'hidden': 64, 'depth': 3, 'activation': 'softplus', 'lr': 0.0002568852406415542, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=30/47 params={'hidden': 128, 'depth': 2, 'activation': 'softplus', 'lr': 0.0007974504876117123, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=31/47 params={'hidden': 128, 'depth': 4, 'activation': 'tanh', 'lr': 4.390788643108206e-05, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=32/47 params={'hidden': 512, 'depth': 2, 'activation': 'silu', 'lr': 4.157616426238186e-05, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=33/47 params={'hidden': 512, 'depth': 4, 'activation': 'silu', 'lr': 2.542365754105851e-05, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=34/47 params={'hidden': 64, 'depth': 3, 'activation': 'gelu', 'lr': 0.0030979093061972458, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=35/47 params={'hidden': 512, 'depth': 3, 'activation': 'softplus', 'lr': 1.4097493658074689e-05, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=36/47 params={'hidden': 512, 'depth': 2, 'activation': 'gelu', 'lr': 3.426184752886528e-05, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=37/47 params={'hidden': 256, 'depth': 3, 'activation': 'silu', 'lr': 0.00034020866085467246, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=38/47 params={'hidden': 64, 'depth': 2, 'activation': 'softplus', 'lr': 0.00014273325534046676, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=39/47 params={'hidden': 64, 'depth': 3, 'activation': 'tanh', 'lr': 3.298109682269115e-05, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=40/47 params={'hidden': 512, 'depth': 4, 'activation': 'gelu', 'lr': 8.1180619191179e-05, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=41/47 params={'hidden': 512, 'depth': 2, 'activation': 'silu', 'lr': 0.005062036212009895, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=42/47 params={'hidden': 256, 'depth': 2, 'activation': 'silu', 'lr': 0.00042253626053776155, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=43/47 params={'hidden': 64, 'depth': 2, 'activation': 'tanh', 'lr': 0.0006135010059432599, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=44/47 params={'hidden': 128, 'depth': 2, 'activation': 'gelu', 'lr': 3.5616245556759916e-05, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=45/47 params={'hidden': 128, 'depth': 4, 'activation': 'tanh', 'lr': 2.6684502188233107e-05, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=46/47 params={'hidden': 64, 'depth': 4, 'activation': 'tanh', 'lr': 1.891861949451268e-05, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=core_interaction_c5 screen=rf seed=4 trial=47/47 params={'hidden': 64, 'depth': 2, 'activation': 'softplus', 'lr': 9.895948057620257e-05, 'weight_decay': 0.0, 'dropout': 0.0}
+[BEST] function=core_interaction_c5 screen=rf: {'hidden': 256, 'depth': 3, 'activation': 'silu', 'lr': 0.009512147812778116, 'weight_decay': 0.0, 'dropout': 0.0, 'best_val_mse': 0.1596517115831375, 'best_epoch': 45, 'screen_mode': 'rf', 'function': 'core_interaction_c5'}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=0/47 params={'hidden': 256, 'depth': 4, 'activation': 'silu', 'lr': 1.7914823299257556e-05, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=1/47 params={'hidden': 64, 'depth': 4, 'activation': 'softplus', 'lr': 1.5540752200368223e-05, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=2/47 params={'hidden': 128, 'depth': 3, 'activation': 'silu', 'lr': 3.0544560507230864e-05, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=3/47 params={'hidden': 256, 'depth': 3, 'activation': 'tanh', 'lr': 0.0002794146184773966, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=4/47 params={'hidden': 128, 'depth': 4, 'activation': 'gelu', 'lr': 0.0010504201033051015, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=5/47 params={'hidden': 64, 'depth': 3, 'activation': 'softplus', 'lr': 0.0006176135560419409, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=6/47 params={'hidden': 512, 'depth': 3, 'activation': 'tanh', 'lr': 0.0007838286442917744, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=7/47 params={'hidden': 64, 'depth': 4, 'activation': 'softplus', 'lr': 0.005355962884668678, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=8/47 params={'hidden': 128, 'depth': 4, 'activation': 'softplus', 'lr': 0.00010321750112646507, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=9/47 params={'hidden': 256, 'depth': 3, 'activation': 'silu', 'lr': 4.4951895131291617e-05, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=10/47 params={'hidden': 64, 'depth': 4, 'activation': 'silu', 'lr': 2.486257884394153e-05, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=11/47 params={'hidden': 128, 'depth': 2, 'activation': 'gelu', 'lr': 0.00030796505040053764, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=12/47 params={'hidden': 64, 'depth': 4, 'activation': 'silu', 'lr': 6.097646856272215e-05, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=13/47 params={'hidden': 128, 'depth': 2, 'activation': 'softplus', 'lr': 0.0017461211492742562, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=14/47 params={'hidden': 256, 'depth': 3, 'activation': 'gelu', 'lr': 9.730646156903585e-05, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=15/47 params={'hidden': 64, 'depth': 3, 'activation': 'silu', 'lr': 0.0076594071978269875, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=16/47 params={'hidden': 512, 'depth': 2, 'activation': 'softplus', 'lr': 1.6338529241379452e-05, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=17/47 params={'hidden': 64, 'depth': 4, 'activation': 'softplus', 'lr': 0.0007737471289925335, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=18/47 params={'hidden': 256, 'depth': 3, 'activation': 'tanh', 'lr': 3.087001337167606e-05, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=19/47 params={'hidden': 128, 'depth': 3, 'activation': 'softplus', 'lr': 0.002296980649282168, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=20/47 params={'hidden': 256, 'depth': 3, 'activation': 'softplus', 'lr': 0.00025547236643068795, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=21/47 params={'hidden': 512, 'depth': 2, 'activation': 'softplus', 'lr': 0.009356786895001306, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=22/47 params={'hidden': 512, 'depth': 3, 'activation': 'gelu', 'lr': 0.0022038555719775194, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=23/47 params={'hidden': 128, 'depth': 2, 'activation': 'silu', 'lr': 0.00046979522905081234, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=24/47 params={'hidden': 128, 'depth': 2, 'activation': 'gelu', 'lr': 0.0025148479866773984, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=25/47 params={'hidden': 128, 'depth': 3, 'activation': 'softplus', 'lr': 2.0265341413993875e-05, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=26/47 params={'hidden': 128, 'depth': 3, 'activation': 'softplus', 'lr': 0.0005088790583197486, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=27/47 params={'hidden': 128, 'depth': 3, 'activation': 'silu', 'lr': 6.317339979503016e-05, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=28/47 params={'hidden': 64, 'depth': 2, 'activation': 'gelu', 'lr': 0.003965060280588468, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=29/47 params={'hidden': 256, 'depth': 3, 'activation': 'gelu', 'lr': 0.001068155788180473, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=30/47 params={'hidden': 64, 'depth': 3, 'activation': 'softplus', 'lr': 0.0004677403146116991, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=31/47 params={'hidden': 128, 'depth': 3, 'activation': 'silu', 'lr': 0.0021659906973482477, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=32/47 params={'hidden': 64, 'depth': 4, 'activation': 'softplus', 'lr': 8.865841218968438e-05, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=33/47 params={'hidden': 256, 'depth': 4, 'activation': 'tanh', 'lr': 0.00014090969125622537, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=34/47 params={'hidden': 256, 'depth': 2, 'activation': 'softplus', 'lr': 3.4868707419312025e-05, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=35/47 params={'hidden': 256, 'depth': 4, 'activation': 'tanh', 'lr': 0.007872010773646377, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=36/47 params={'hidden': 256, 'depth': 2, 'activation': 'silu', 'lr': 1.1705435229148027e-05, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=37/47 params={'hidden': 128, 'depth': 4, 'activation': 'softplus', 'lr': 0.0021345354858917226, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=38/47 params={'hidden': 256, 'depth': 3, 'activation': 'gelu', 'lr': 0.0001396870699124591, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=39/47 params={'hidden': 256, 'depth': 4, 'activation': 'gelu', 'lr': 0.000455999430590949, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=40/47 params={'hidden': 256, 'depth': 3, 'activation': 'silu', 'lr': 0.00021254912059761298, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=41/47 params={'hidden': 64, 'depth': 2, 'activation': 'gelu', 'lr': 0.00011958137175163133, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=42/47 params={'hidden': 256, 'depth': 2, 'activation': 'softplus', 'lr': 0.003018101186455292, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=43/47 params={'hidden': 256, 'depth': 3, 'activation': 'gelu', 'lr': 0.008520268304160175, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=44/47 params={'hidden': 256, 'depth': 3, 'activation': 'tanh', 'lr': 4.187921880786166e-05, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=45/47 params={'hidden': 128, 'depth': 3, 'activation': 'tanh', 'lr': 0.0010516582585036202, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=46/47 params={'hidden': 128, 'depth': 2, 'activation': 'gelu', 'lr': 5.4788566193547306e-05, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=correlated_proxy screen=rf seed=4 trial=47/47 params={'hidden': 256, 'depth': 2, 'activation': 'gelu', 'lr': 9.197876550683238e-05, 'weight_decay': 1e-06, 'dropout': 0.0}
+[BEST] function=correlated_proxy screen=rf: {'hidden': 256, 'depth': 3, 'activation': 'gelu', 'lr': 0.008520268304160175, 'weight_decay': 0.001, 'dropout': 0.0, 'best_val_mse': 0.7016141414642334, 'best_epoch': 14, 'screen_mode': 'rf', 'function': 'correlated_proxy'}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=0/47 params={'hidden': 256, 'depth': 4, 'activation': 'silu', 'lr': 1.7914823299257556e-05, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=1/47 params={'hidden': 512, 'depth': 3, 'activation': 'gelu', 'lr': 0.0035486770972552317, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=2/47 params={'hidden': 128, 'depth': 2, 'activation': 'softplus', 'lr': 0.0004979886437764355, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=3/47 params={'hidden': 128, 'depth': 4, 'activation': 'gelu', 'lr': 0.009852091068567069, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=4/47 params={'hidden': 256, 'depth': 3, 'activation': 'tanh', 'lr': 2.2455601472578372e-05, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=5/47 params={'hidden': 256, 'depth': 3, 'activation': 'gelu', 'lr': 0.0015668469718434744, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=6/47 params={'hidden': 512, 'depth': 2, 'activation': 'gelu', 'lr': 0.001062415927482649, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=7/47 params={'hidden': 128, 'depth': 3, 'activation': 'gelu', 'lr': 0.0023173517978154496, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=8/47 params={'hidden': 64, 'depth': 2, 'activation': 'silu', 'lr': 0.0023748351318637236, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=9/47 params={'hidden': 128, 'depth': 2, 'activation': 'softplus', 'lr': 0.0009917037695444846, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=10/47 params={'hidden': 128, 'depth': 3, 'activation': 'softplus', 'lr': 0.004260177158880287, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=11/47 params={'hidden': 256, 'depth': 4, 'activation': 'softplus', 'lr': 0.0004446735195081786, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=12/47 params={'hidden': 64, 'depth': 2, 'activation': 'gelu', 'lr': 0.006097873852714279, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=13/47 params={'hidden': 64, 'depth': 2, 'activation': 'softplus', 'lr': 0.0003220700278944311, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=14/47 params={'hidden': 64, 'depth': 3, 'activation': 'softplus', 'lr': 0.0005657491581181004, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=15/47 params={'hidden': 512, 'depth': 4, 'activation': 'silu', 'lr': 3.754180330402229e-05, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=16/47 params={'hidden': 64, 'depth': 4, 'activation': 'gelu', 'lr': 0.00011897066550042513, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=17/47 params={'hidden': 64, 'depth': 2, 'activation': 'softplus', 'lr': 0.0014013405711689748, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=18/47 params={'hidden': 64, 'depth': 4, 'activation': 'softplus', 'lr': 0.0011796278207808824, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=19/47 params={'hidden': 256, 'depth': 2, 'activation': 'gelu', 'lr': 0.00011162863221384228, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=20/47 params={'hidden': 128, 'depth': 2, 'activation': 'silu', 'lr': 0.00016450739592255344, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=21/47 params={'hidden': 128, 'depth': 3, 'activation': 'silu', 'lr': 0.00015873007143412263, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=22/47 params={'hidden': 64, 'depth': 3, 'activation': 'silu', 'lr': 0.00021569833141066078, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=23/47 params={'hidden': 512, 'depth': 4, 'activation': 'silu', 'lr': 0.00029934124854432033, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=24/47 params={'hidden': 512, 'depth': 2, 'activation': 'silu', 'lr': 0.002184758916979249, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=25/47 params={'hidden': 128, 'depth': 2, 'activation': 'softplus', 'lr': 0.0011991818377980047, 'weight_decay': 1e-06, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=26/47 params={'hidden': 256, 'depth': 3, 'activation': 'silu', 'lr': 2.6034939977231124e-05, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=27/47 params={'hidden': 256, 'depth': 3, 'activation': 'gelu', 'lr': 0.0002485793903109595, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=28/47 params={'hidden': 512, 'depth': 2, 'activation': 'gelu', 'lr': 0.004554735279379276, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=29/47 params={'hidden': 128, 'depth': 2, 'activation': 'silu', 'lr': 0.00018170542145437793, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=30/47 params={'hidden': 64, 'depth': 2, 'activation': 'silu', 'lr': 7.92378870221745e-05, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=31/47 params={'hidden': 64, 'depth': 4, 'activation': 'softplus', 'lr': 0.00020214367931688338, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=32/47 params={'hidden': 256, 'depth': 2, 'activation': 'gelu', 'lr': 0.0002014482247163504, 'weight_decay': 0.001, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=33/47 params={'hidden': 128, 'depth': 4, 'activation': 'gelu', 'lr': 5.202914626469174e-05, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=34/47 params={'hidden': 128, 'depth': 3, 'activation': 'tanh', 'lr': 1.581418514870736e-05, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=35/47 params={'hidden': 256, 'depth': 3, 'activation': 'gelu', 'lr': 0.005009426173213084, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=36/47 params={'hidden': 64, 'depth': 3, 'activation': 'silu', 'lr': 2.2154951381673513e-05, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=37/47 params={'hidden': 256, 'depth': 4, 'activation': 'tanh', 'lr': 4.447835521654816e-05, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=38/47 params={'hidden': 512, 'depth': 4, 'activation': 'silu', 'lr': 0.005746897773590347, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=39/47 params={'hidden': 512, 'depth': 3, 'activation': 'gelu', 'lr': 0.0013177601813129287, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=40/47 params={'hidden': 64, 'depth': 3, 'activation': 'silu', 'lr': 0.004042305799263821, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=41/47 params={'hidden': 512, 'depth': 2, 'activation': 'softplus', 'lr': 4.2246499184190906e-05, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=42/47 params={'hidden': 256, 'depth': 2, 'activation': 'softplus', 'lr': 1.4902732487399273e-05, 'weight_decay': 0.01, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=43/47 params={'hidden': 256, 'depth': 2, 'activation': 'tanh', 'lr': 0.0016877673548840965, 'weight_decay': 0.0001, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=44/47 params={'hidden': 128, 'depth': 4, 'activation': 'softplus', 'lr': 0.0057257122493163245, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=45/47 params={'hidden': 128, 'depth': 3, 'activation': 'softplus', 'lr': 1.0789862554928366e-05, 'weight_decay': 0.0, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=46/47 params={'hidden': 512, 'depth': 3, 'activation': 'gelu', 'lr': 0.004213762685379227, 'weight_decay': 1e-05, 'dropout': 0.0}
+[TUNE] function=pairwise_interaction screen=rf seed=4 trial=47/47 params={'hidden': 256, 'depth': 3, 'activation': 'softplus', 'lr': 0.009246272420224102, 'weight_decay': 1e-05, 'dropout': 0.0}
+[BEST] function=pairwise_interaction screen=rf: {'hidden': 512, 'depth': 4, 'activation': 'silu', 'lr': 0.005746897773590347, 'weight_decay': 0.01, 'dropout': 0.0, 'best_val_mse': 0.877457320690155, 'best_epoch': 44, 'screen_mode': 'rf', 'function': 'pairwise_interaction'}
+Wrote tuning trials to results/mlp_tuning/mlp_v3_rf_only_tuning_trials.csv
+Wrote best params to results/mlp_tuning/mlp_v3_rf_only_best_params.json
+[EVAL] function=core_interaction screen=rf seed=0 params={'hidden': 256, 'depth': 4, 'activation': 'gelu', 'lr': 0.0041220891245246655, 'weight_decay': 0.01, 'dropout': 0.0, 'best_val_mse': 0.7285263538360596, 'best_epoch': 18, 'screen_mode': 'rf', 'function': 'core_interaction'}
+[EVAL] function=core_interaction screen=rf seed=1 params={'hidden': 256, 'depth': 4, 'activation': 'gelu', 'lr': 0.0041220891245246655, 'weight_decay': 0.01, 'dropout': 0.0, 'best_val_mse': 0.7285263538360596, 'best_epoch': 18, 'screen_mode': 'rf', 'function': 'core_interaction'}
+[EVAL] function=core_interaction screen=rf seed=2 params={'hidden': 256, 'depth': 4, 'activation': 'gelu', 'lr': 0.0041220891245246655, 'weight_decay': 0.01, 'dropout': 0.0, 'best_val_mse': 0.7285263538360596, 'best_epoch': 18, 'screen_mode': 'rf', 'function': 'core_interaction'}
+[EVAL] function=core_interaction_c5 screen=rf seed=0 params={'hidden': 256, 'depth': 3, 'activation': 'silu', 'lr': 0.009512147812778116, 'weight_decay': 0.0, 'dropout': 0.0, 'best_val_mse': 0.1596517115831375, 'best_epoch': 45, 'screen_mode': 'rf', 'function': 'core_interaction_c5'}
+[EVAL] function=core_interaction_c5 screen=rf seed=1 params={'hidden': 256, 'depth': 3, 'activation': 'silu', 'lr': 0.009512147812778116, 'weight_decay': 0.0, 'dropout': 0.0, 'best_val_mse': 0.1596517115831375, 'best_epoch': 45, 'screen_mode': 'rf', 'function': 'core_interaction_c5'}
+[EVAL] function=core_interaction_c5 screen=rf seed=2 params={'hidden': 256, 'depth': 3, 'activation': 'silu', 'lr': 0.009512147812778116, 'weight_decay': 0.0, 'dropout': 0.0, 'best_val_mse': 0.1596517115831375, 'best_epoch': 45, 'screen_mode': 'rf', 'function': 'core_interaction_c5'}
+[EVAL] function=correlated_proxy screen=rf seed=0 params={'hidden': 256, 'depth': 3, 'activation': 'gelu', 'lr': 0.008520268304160175, 'weight_decay': 0.001, 'dropout': 0.0, 'best_val_mse': 0.7016141414642334, 'best_epoch': 14, 'screen_mode': 'rf', 'function': 'correlated_proxy'}
+[EVAL] function=correlated_proxy screen=rf seed=1 params={'hidden': 256, 'depth': 3, 'activation': 'gelu', 'lr': 0.008520268304160175, 'weight_decay': 0.001, 'dropout': 0.0, 'best_val_mse': 0.7016141414642334, 'best_epoch': 14, 'screen_mode': 'rf', 'function': 'correlated_proxy'}
+[EVAL] function=correlated_proxy screen=rf seed=2 params={'hidden': 256, 'depth': 3, 'activation': 'gelu', 'lr': 0.008520268304160175, 'weight_decay': 0.001, 'dropout': 0.0, 'best_val_mse': 0.7016141414642334, 'best_epoch': 14, 'screen_mode': 'rf', 'function': 'correlated_proxy'}
+[EVAL] function=pairwise_interaction screen=rf seed=0 params={'hidden': 512, 'depth': 4, 'activation': 'silu', 'lr': 0.005746897773590347, 'weight_decay': 0.01, 'dropout': 0.0, 'best_val_mse': 0.877457320690155, 'best_epoch': 44, 'screen_mode': 'rf', 'function': 'pairwise_interaction'}
+[EVAL] function=pairwise_interaction screen=rf seed=1 params={'hidden': 512, 'depth': 4, 'activation': 'silu', 'lr': 0.005746897773590347, 'weight_decay': 0.01, 'dropout': 0.0, 'best_val_mse': 0.877457320690155, 'best_epoch': 44, 'screen_mode': 'rf', 'function': 'pairwise_interaction'}
+[EVAL] function=pairwise_interaction screen=rf seed=2 params={'hidden': 512, 'depth': 4, 'activation': 'silu', 'lr': 0.005746897773590347, 'weight_decay': 0.01, 'dropout': 0.0, 'best_val_mse': 0.877457320690155, 'best_epoch': 44, 'screen_mode': 'rf', 'function': 'pairwise_interaction'}
+Wrote eval rows to results/mlp_tuning/mlp_v3_rf_only_eval.csv
+Wrote summary to results/mlp_tuning/mlp_v3_rf_only_summary.csv
+Wrote figures to results/mlp_tuning/mlp_v3_rf_only_figures

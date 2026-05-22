@@ -1,0 +1,98 @@
+{
+  "core_interaction::rf": {
+    "hidden": 512,
+    "depth": 3,
+    "activation": "silu",
+    "lr": 1.7600401965768428e-05,
+    "weight_decay": 1e-06,
+    "dropout": 0.0,
+    "best_val_mse": 0.7403488755226135,
+    "best_epoch": 694,
+    "screen_mode": "rf",
+    "function": "core_interaction"
+  },
+  "core_interaction::oracle_support": {
+    "hidden": 128,
+    "depth": 4,
+    "activation": "silu",
+    "lr": 0.007402791193801778,
+    "weight_decay": 1e-06,
+    "dropout": 0.0,
+    "best_val_mse": 0.7526164650917053,
+    "best_epoch": 21,
+    "screen_mode": "oracle_support",
+    "function": "core_interaction"
+  },
+  "core_interaction_c5::rf": {
+    "hidden": 512,
+    "depth": 5,
+    "activation": "silu",
+    "lr": 0.0007202024404952864,
+    "weight_decay": 0.0,
+    "dropout": 0.0,
+    "best_val_mse": 0.16876846551895142,
+    "best_epoch": 80,
+    "screen_mode": "rf",
+    "function": "core_interaction_c5"
+  },
+  "core_interaction_c5::oracle_support": {
+    "hidden": 128,
+    "depth": 5,
+    "activation": "silu",
+    "lr": 0.0025417360430462677,
+    "weight_decay": 0.0001,
+    "dropout": 0.0,
+    "best_val_mse": 0.16616275906562805,
+    "best_epoch": 48,
+    "screen_mode": "oracle_support",
+    "function": "core_interaction_c5"
+  },
+  "correlated_proxy::rf": {
+    "hidden": 64,
+    "depth": 3,
+    "activation": "tanh",
+    "lr": 0.0009225168584578832,
+    "weight_decay": 1e-05,
+    "dropout": 0.0,
+    "best_val_mse": 0.63804692029953,
+    "best_epoch": 222,
+    "screen_mode": "rf",
+    "function": "correlated_proxy"
+  },
+  "correlated_proxy::oracle_support": {
+    "hidden": 128,
+    "depth": 5,
+    "activation": "silu",
+    "lr": 0.009286806865110032,
+    "weight_decay": 0.0001,
+    "dropout": 0.0,
+    "best_val_mse": 0.7578516602516174,
+    "best_epoch": 18,
+    "screen_mode": "oracle_support",
+    "function": "correlated_proxy"
+  },
+  "pairwise_interaction::rf": {
+    "hidden": 512,
+    "depth": 2,
+    "activation": "silu",
+    "lr": 5.0428650713874276e-05,
+    "weight_decay": 0.0001,
+    "dropout": 0.0,
+    "best_val_mse": 0.808647871017456,
+    "best_epoch": 572,
+    "screen_mode": "rf",
+    "function": "pairwise_interaction"
+  },
+  "pairwise_interaction::oracle_support": {
+    "hidden": 512,
+    "depth": 4,
+    "activation": "silu",
+    "lr": 0.00013730157158841326,
+    "weight_decay": 1e-06,
+    "dropout": 0.0,
+    "best_val_mse": 0.7932907342910767,
+    "best_epoch": 102,
+    "screen_mode": "oracle_support",
+    "function": "pairwise_interaction"
+  }
+}

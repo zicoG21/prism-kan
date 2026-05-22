@@ -1,0 +1,50 @@
+{
+  "core_interaction::raw": {
+    "hidden": 64,
+    "depth": 3,
+    "activation": "silu",
+    "lr": 0.002066553240872167,
+    "weight_decay": 1e-05,
+    "dropout": 0.0,
+    "best_val_mse": 0.9405571818351746,
+    "best_epoch": 7,
+    "screen_mode": "raw",
+    "function": "core_interaction"
+  },
+  "core_interaction_c5::raw": {
+    "hidden": 64,
+    "depth": 3,
+    "activation": "silu",
+    "lr": 0.0005961202478526138,
+    "weight_decay": 0.0001,
+    "dropout": 0.0,
+    "best_val_mse": 0.9760463833808899,
+    "best_epoch": 4,
+    "screen_mode": "raw",
+    "function": "core_interaction_c5"
+  },
+  "correlated_proxy::raw": {
+    "hidden": 256,
+    "depth": 2,
+    "activation": "silu",
+    "lr": 0.0004980526006541371,
+    "weight_decay": 0.0001,
+    "dropout": 0.0,
+    "best_val_mse": 0.9188109040260315,
+    "best_epoch": 10,
+    "screen_mode": "raw",
+    "function": "correlated_proxy"
+  },
+  "pairwise_interaction::raw": {
+    "hidden": 128,
+    "depth": 4,
+    "activation": "silu",
+    "lr": 3.275270906752485e-05,
+    "weight_decay": 1e-06,
+    "dropout": 0.0,
+    "best_val_mse": 0.9434848427772522,
+    "best_epoch": 160,
+    "screen_mode": "raw",
+    "function": "pairwise_interaction"
+  }
+}

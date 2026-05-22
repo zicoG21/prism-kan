@@ -1,0 +1,98 @@
+{
+  "core_interaction::rf": {
+    "hidden": 1024,
+    "depth": 4,
+    "activation": "silu",
+    "lr": 0.0008105984825833901,
+    "weight_decay": 1e-07,
+    "dropout": 0.0,
+    "best_val_mse": 0.662026584148407,
+    "best_epoch": 48,
+    "screen_mode": "rf",
+    "function": "core_interaction"
+  },
+  "core_interaction::oracle_support": {
+    "hidden": 1024,
+    "depth": 3,
+    "activation": "gelu",
+    "lr": 0.0016346508087804166,
+    "weight_decay": 1e-05,
+    "dropout": 0.0,
+    "best_val_mse": 0.7274601459503174,
+    "best_epoch": 29,
+    "screen_mode": "oracle_support",
+    "function": "core_interaction"
+  },
+  "core_interaction_c5::rf": {
+    "hidden": 512,
+    "depth": 3,
+    "activation": "silu",
+    "lr": 0.0062593047016446446,
+    "weight_decay": 0.0001,
+    "dropout": 0.0,
+    "best_val_mse": 0.13826984167099,
+    "best_epoch": 106,
+    "screen_mode": "rf",
+    "function": "core_interaction_c5"
+  },
+  "core_interaction_c5::oracle_support": {
+    "hidden": 512,
+    "depth": 4,
+    "activation": "silu",
+    "lr": 0.004137140713074565,
+    "weight_decay": 1e-08,
+    "dropout": 0.0,
+    "best_val_mse": 0.14589044451713562,
+    "best_epoch": 53,
+    "screen_mode": "oracle_support",
+    "function": "core_interaction_c5"
+  },
+  "correlated_proxy::rf": {
+    "hidden": 512,
+    "depth": 3,
+    "activation": "silu",
+    "lr": 0.015540990399648161,
+    "weight_decay": 0.0,
+    "dropout": 0.0,
+    "best_val_mse": 0.48348405957221985,
+    "best_epoch": 160,
+    "screen_mode": "rf",
+    "function": "correlated_proxy"
+  },
+  "correlated_proxy::oracle_support": {
+    "hidden": 1024,
+    "depth": 2,
+    "activation": "softplus",
+    "lr": 0.0019872676833191886,
+    "weight_decay": 1e-08,
+    "dropout": 0.0,
+    "best_val_mse": 0.7149367928504944,
+    "best_epoch": 1236,
+    "screen_mode": "oracle_support",
+    "function": "correlated_proxy"
+  },
+  "pairwise_interaction::rf": {
+    "hidden": 1024,
+    "depth": 3,
+    "activation": "softplus",
+    "lr": 0.0018314917297575202,
+    "weight_decay": 0.0001,
+    "dropout": 0.0,
+    "best_val_mse": 0.7464827299118042,
+    "best_epoch": 680,
+    "screen_mode": "rf",
+    "function": "pairwise_interaction"
+  },
+  "pairwise_interaction::oracle_support": {
+    "hidden": 512,
+    "depth": 2,
+    "activation": "softplus",
+    "lr": 0.013950667814853851,
+    "weight_decay": 0.0,
+    "dropout": 0.0,
+    "best_val_mse": 0.15235963463783264,
+    "best_epoch": 814,
+    "screen_mode": "oracle_support",
+    "function": "pairwise_interaction"
+  }
+}
