@@ -215,16 +215,20 @@ def evaluate_synthetic_function(
         y, gt = _core_interaction_with_coeff(function_name, X, coeff=1.0)
 
     elif function_name in {
-        "core_interaction_c05",
-        "core_interaction_c1",
-        "core_interaction_c2",
-        "core_interaction_c5",
+    "core_interaction_c01",
+    "core_interaction_c025",
+    "core_interaction_c05",
+    "core_interaction_c1",
+    "core_interaction_c2",
+    "core_interaction_c5",
     }:
         coeff_map = {
-            "core_interaction_c05": 0.5,
-            "core_interaction_c1": 1.0,
-            "core_interaction_c2": 2.0,
-            "core_interaction_c5": 5.0,
+        "core_interaction_c01": 0.1,
+        "core_interaction_c025": 0.25,
+        "core_interaction_c05": 0.5,
+        "core_interaction_c1": 1.0,
+        "core_interaction_c2": 2.0,
+        "core_interaction_c5": 5.0,
         }
         y, gt = _core_interaction_with_coeff(
             function_name,

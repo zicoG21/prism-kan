@@ -53,6 +53,21 @@ def interaction_endpoints(pairs: Sequence[Pair]) -> Tuple[int, ...]:
     return tuple(sorted(s))
 
 
+def endpoint_recovery(selected_variables: Sequence[int], true_interactions: Sequence[Pair], prefix: str) -> Dict:
+    endpoints = set(interaction_endpoints(true_interactions))
+    selected = set(int(v) for v in selected_variables)
+    if not endpoints:
+        return {
+            f"{prefix}_contains_all_interaction_endpoints": np.nan,
+            f"{prefix}_interaction_endpoint_recall": np.nan,
+        }
+
+    return {
+        f"{prefix}_contains_all_interaction_endpoints": int(endpoints.issubset(selected)),
+        f"{prefix}_interaction_endpoint_recall": len(endpoints & selected) / len(endpoints),
+    }
+
+
 def f1_from_sets(pred: set, true: set):
     if len(true) == 0:
         return np.nan, np.nan, np.nan
@@ -373,26 +388,53 @@ def evaluate_interaction_recovery(pair_scores: Dict[Pair, float], true_interacti
             "interaction_precision": np.nan,
             "interaction_recall": np.nan,
             "interaction_f1": np.nan,
+            "selected_interaction_endpoint_recall": np.nan,
+            "selected_interaction_contains_all_endpoints": np.nan,
+            "true_interaction_best_rank": np.nan,
+            "true_interaction_worst_rank": np.nan,
+            "true_interaction_rank_mean": np.nan,
             "true_interaction_score_mean": np.nan,
             "max_nontrue_interaction_score": np.nan,
+            "true_interaction_mean_score_margin": np.nan,
+            "true_interaction_beats_all_false": np.nan,
         }
 
     k = len(true_set)
     ranked = sorted(pair_scores.items(), key=lambda kv: kv[1], reverse=True)
     selected = {pair for pair, _ in ranked[:k]}
+    rank_lookup = {pair: idx + 1 for idx, (pair, _) in enumerate(ranked)}
 
     p, r, f1 = f1_from_sets(selected, true_set)
 
     true_scores = [float(pair_scores.get(pair, 0.0)) for pair in true_set]
     nontrue_scores = [float(v) for pair, v in pair_scores.items() if pair not in true_set]
+    true_ranks = [float(rank_lookup.get(pair, len(ranked) + 1)) for pair in true_set]
+    max_nontrue = float(np.max(nontrue_scores)) if nontrue_scores else np.nan
+    true_mean = float(np.mean(true_scores)) if true_scores else np.nan
+
+    true_endpoints = set(interaction_endpoints(true_set))
+    selected_endpoints = set(interaction_endpoints(selected))
 
     return {
         "selected_interactions": sorted(selected),
         "interaction_precision": p,
         "interaction_recall": r,
         "interaction_f1": f1,
-        "true_interaction_score_mean": float(np.mean(true_scores)) if true_scores else np.nan,
-        "max_nontrue_interaction_score": float(np.max(nontrue_scores)) if nontrue_scores else np.nan,
+        "selected_interaction_endpoint_recall": (
+            len(true_endpoints & selected_endpoints) / len(true_endpoints) if true_endpoints else np.nan
+        ),
+        "selected_interaction_contains_all_endpoints": (
+            int(true_endpoints.issubset(selected_endpoints)) if true_endpoints else np.nan
+        ),
+        "true_interaction_best_rank": float(np.min(true_ranks)) if true_ranks else np.nan,
+        "true_interaction_worst_rank": float(np.max(true_ranks)) if true_ranks else np.nan,
+        "true_interaction_rank_mean": float(np.mean(true_ranks)) if true_ranks else np.nan,
+        "true_interaction_score_mean": true_mean,
+        "max_nontrue_interaction_score": max_nontrue,
+        "true_interaction_mean_score_margin": true_mean - max_nontrue if np.isfinite(max_nontrue) else np.nan,
+        "true_interaction_beats_all_false": (
+            int(min(true_scores) > max_nontrue) if true_scores and np.isfinite(max_nontrue) else np.nan
+        ),
     }
 
 
@@ -503,7 +545,9 @@ def run_one(args, function_name: str, screen_mode: str, seed: int, device: str) 
             "interaction_method": args.interaction_method,
             "importance_scores": full_var_scores.tolist(),
         })
-        row.update(evaluate_variable_recovery(full_var_scores, true_vars))
+        var_eval = evaluate_variable_recovery(full_var_scores, true_vars)
+        row.update(var_eval)
+        row.update(endpoint_recovery(var_eval["selected_variables"], true_interactions, "explain"))
         row.update(evaluate_interaction_recovery(full_pair_scores, true_interactions))
         return row
 
@@ -519,6 +563,15 @@ def run_one(args, function_name: str, screen_mode: str, seed: int, device: str) 
             "interaction_f1": np.nan,
             "selected_variables": [],
             "selected_interactions": [],
+            "explain_contains_all_interaction_endpoints": np.nan,
+            "explain_interaction_endpoint_recall": np.nan,
+            "selected_interaction_endpoint_recall": np.nan,
+            "selected_interaction_contains_all_endpoints": np.nan,
+            "true_interaction_best_rank": np.nan,
+            "true_interaction_worst_rank": np.nan,
+            "true_interaction_rank_mean": np.nan,
+            "true_interaction_mean_score_margin": np.nan,
+            "true_interaction_beats_all_false": np.nan,
         })
         print(f"[WARN] failed function={function_name}, screen={screen_mode}, seed={seed}: {exc}")
         return row
@@ -540,8 +593,13 @@ def summarize(df: pd.DataFrame) -> pd.DataFrame:
         "screen_contains_all_true_vars", "screen_true_var_recall",
         "screen_contains_all_interaction_endpoints", "screen_interaction_endpoint_recall",
         "screen_contains_true_interactions",
+        "explain_contains_all_interaction_endpoints", "explain_interaction_endpoint_recall",
+        "selected_interaction_endpoint_recall", "selected_interaction_contains_all_endpoints",
         "variable_f1", "variable_auroc", "variable_auprc",
-        "interaction_f1", "true_interaction_score_mean", "max_nontrue_interaction_score",
+        "interaction_f1", "true_interaction_best_rank", "true_interaction_worst_rank",
+        "true_interaction_rank_mean", "true_interaction_score_mean",
+        "max_nontrue_interaction_score", "true_interaction_mean_score_margin",
+        "true_interaction_beats_all_false",
     ]
 
     for col in numeric_cols:
@@ -552,7 +610,9 @@ def summarize(df: pd.DataFrame) -> pd.DataFrame:
     for col in numeric_cols:
         if col in ok.columns:
             if col in {"train_mse", "test_mse", "variable_f1", "variable_auroc", "variable_auprc",
-                       "interaction_f1", "true_interaction_score_mean", "max_nontrue_interaction_score"}:
+                       "interaction_f1", "true_interaction_best_rank", "true_interaction_worst_rank",
+                       "true_interaction_rank_mean", "true_interaction_score_mean",
+                       "max_nontrue_interaction_score", "true_interaction_mean_score_margin"}:
                 agg[col] = ["mean", "std"]
             else:
                 agg[col] = ["mean"]

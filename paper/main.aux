@@ -1,0 +1,45 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{liu2024kan,liu2024kan2}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Problem Setup}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Core Benchmark}{2}{subsection.2.1}\protected@file@percent }
+\newlabel{eq:core}{{1}{2}{Core Benchmark}{equation.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Diagnostic Variants}{2}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}KAN-Native Support Stabilization}{3}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Formula-Fidelity Metrics}{3}{section.3}\protected@file@percent }
+\newlabel{eq:margin}{{3}{3}{Formula-Fidelity Metrics}{equation.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {Prediction is not formula fidelity.} For raw KAN at $d=100$, prediction error can become small even when the true interaction is not recovered. The weak-interaction setting $c=0.10$ is the clearest example: test MSE improves with sample size, but interaction F1 remains zero.}}{4}{figure.1}\protected@file@percent }
+\newlabel{fig:prediction-vs-formula}{{1}{4}{\textbf {Prediction is not formula fidelity.} For raw KAN at $d=100$, prediction error can become small even when the true interaction is not recovered. The weak-interaction setting $c=0.10$ is the clearest example: test MSE improves with sample size, but interaction F1 remains zero}{figure.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Results}{4}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Prediction is Not Formula Fidelity}{4}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}A Formula-Fidelity Recovery Boundary}{4}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}KAN-Native Stabilization Improves Moderate-Regime Recovery}{4}{subsection.4.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {Formula-fidelity recovery boundary.} Interaction F1 over sample size $n$ and interaction strength $c$ for $d=100$. Raw KAN recovers the true pair only in sufficiently strong, sufficiently sampled regimes. Oracle-support KAN separates low-dimensional representability from full-space discovery. RF-screened KAN succeeds only when the screening step preserves formula-relevant endpoints.}}{5}{figure.2}\protected@file@percent }
+\newlabel{fig:recovery-boundary}{{2}{5}{\textbf {Formula-fidelity recovery boundary.} Interaction F1 over sample size $n$ and interaction strength $c$ for $d=100$. Raw KAN recovers the true pair only in sufficiently strong, sufficiently sampled regimes. Oracle-support KAN separates low-dimensional representability from full-space discovery. RF-screened KAN succeeds only when the screening step preserves formula-relevant endpoints}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Variable Recovery is Not Enough}{5}{subsection.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Negative Controls}{5}{subsection.4.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {KAN-native stability selection.} SS-KAN-V aggregates KAN-derived variable stability across full-dimensional runs, refits on the stable support, and improves interaction recovery in moderate-to-strong regimes. The strongest positive case is $c=0.50,n=512$, where raw KAN fails but SS-KAN-V recovers the interaction. The $n=256$ results show that stabilization does not remove the sample-size boundary.}}{6}{figure.3}\protected@file@percent }
+\newlabel{fig:ss-kan-boundary}{{3}{6}{\textbf {KAN-native stability selection.} SS-KAN-V aggregates KAN-derived variable stability across full-dimensional runs, refits on the stable support, and improves interaction recovery in moderate-to-strong regimes. The strongest positive case is $c=0.50,n=512$, where raw KAN fails but SS-KAN-V recovers the interaction. The $n=256$ results show that stabilization does not remove the sample-size boundary}{figure.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces \textbf  {The formula-fidelity ladder.} Variable recovery, endpoint retention, and interaction recovery are distinct diagnostic levels. High variable F1 does not guarantee that the true interaction endpoints or the true pair are recovered.}}{6}{figure.4}\protected@file@percent }
+\newlabel{fig:ladder}{{4}{6}{\textbf {The formula-fidelity ladder.} Variable recovery, endpoint retention, and interaction recovery are distinct diagnostic levels. High variable F1 does not guarantee that the true interaction endpoints or the true pair are recovered}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}MLP Baseline}{6}{subsection.4.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Mechanistic Intuition}{6}{section.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces \textbf  {Negative controls.} Random-support and endpoint-exclusion controls remain near zero interaction F1, confirming that arbitrary dimension reduction is not sufficient.}}{7}{figure.5}\protected@file@percent }
+\newlabel{fig:controls}{{5}{7}{\textbf {Negative controls.} Random-support and endpoint-exclusion controls remain near zero interaction F1, confirming that arbitrary dimension reduction is not sufficient}{figure.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Limitations}{7}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{7}{section.7}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces \textbf  {Core baseline comparison.} Results for the core $d=100$, $n=1024$ setting. KAN rows use $c=1.00$ from the hard-regime sweep. MLP rows use the early-stopped MLP baseline on the standard core interaction. RF and oracle support recover the interaction for both model families, but screened/oracle KAN fits the low-dimensional formula much more accurately.}}{8}{table.1}\protected@file@percent }
+\newlabel{tab:baseline}{{1}{8}{\textbf {Core baseline comparison.} Results for the core $d=100$, $n=1024$ setting. KAN rows use $c=1.00$ from the hard-regime sweep. MLP rows use the early-stopped MLP baseline on the standard core interaction. RF and oracle support recover the interaction for both model families, but screened/oracle KAN fits the low-dimensional formula much more accurately}{table.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Additional Dimension Results}{8}{section.A}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {B}Metric Robustness}{8}{section.B}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {C}Feynman-Style External Validation}{8}{section.C}\protected@file@percent }
+\bibstyle{plainnat}
+\bibdata{references}
+\bibcite{liu2024kan}{{1}{2024{}}{{Liu et~al.}}{{Liu, Wang, Vaidya, et~al.}}}
+\@writefile{toc}{\contentsline {section}{\numberline {D}Heuristic SNR Intuition}{9}{section.D}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {E}Reproducibility}{9}{section.E}\protected@file@percent }
+\bibcite{liu2024kan2}{{2}{2024{}}{{Liu et~al.}}{{}}}
+\gdef \@abspage@last{10}
