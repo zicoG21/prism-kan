@@ -24,6 +24,7 @@ __pycache__/
 # Local KAN checkpoints and generated experiment outputs.
 /model/0.*
 /results/innovation_loop/
+/results/formula_aware_pair_scoring/
 /results/paper_figures/
 /results/**/logs/
 /results/**/*.log
