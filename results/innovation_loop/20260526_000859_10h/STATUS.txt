@@ -1,1 +1,0 @@
-RUNNING cursor=0 wave=broad method=grad_stability_var function=core_interaction_c025 n=512 d=100

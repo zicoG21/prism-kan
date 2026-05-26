@@ -1,5 +1,0 @@
-pair_score_method,function,samples,dimension,top_m,test_mse_mean,test_mse_std,interaction_f1_mean,interaction_f1_std,true_interaction_rank_mean_mean,true_interaction_rank_mean_std,true_interaction_mean_score_margin_mean,true_interaction_mean_score_margin_std,true_interaction_beats_all_false_mean,true_interaction_beats_all_false_std,num_runs
-anova_abs,core_interaction_c025,64,20,4,0.04912716895341873,,1.0,,1.0,,0.00843057781457901,,1.0,,1
-anova_var,core_interaction_c025,64,20,4,0.04912716895341873,,1.0,,1.0,,0.001689854091386056,,1.0,,1
-fd,core_interaction_c025,64,20,4,0.04912716895341873,,0.0,,6.0,,-1.4387629628181458,,0.0,,1
-fd_anova_hybrid,core_interaction_c025,64,20,4,0.04912716895341873,,0.0,,3.0,,-0.34794214809130997,,0.0,,1

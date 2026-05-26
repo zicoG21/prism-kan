@@ -1,1 +1,0 @@
-DONE elapsed_sec=0.0 detail=results/innovation_loop/foreground_test/innovation_detail.csv

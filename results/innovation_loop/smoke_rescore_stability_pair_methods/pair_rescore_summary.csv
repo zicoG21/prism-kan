@@ -1,5 +1,0 @@
-source_method,pair_score_method,function,samples,dimension,top_m,source_interaction_f1_mean,source_interaction_f1_std,test_mse_mean,test_mse_std,screen_contains_true_interactions_mean,screen_contains_true_interactions_std,screen_interaction_endpoint_recall_mean,screen_interaction_endpoint_recall_std,interaction_f1_mean,interaction_f1_std,true_interaction_rank_mean_mean,true_interaction_rank_mean_std,true_interaction_mean_score_margin_mean,true_interaction_mean_score_margin_std,true_interaction_beats_all_false_mean,true_interaction_beats_all_false_std,num_runs
-feature_stability_var,anova_abs,core_interaction_c025,512,100,4,0.0,,0.015815895050764084,,1.0,,1.0,,0.0,,6.0,,-0.004096470773220062,,0.0,,1
-feature_stability_var,anova_var,core_interaction_c025,512,100,4,0.0,,0.015815895050764084,,1.0,,1.0,,0.0,,6.0,,-2.7897814654342934e-05,,0.0,,1
-feature_stability_var,fd,core_interaction_c025,512,100,4,0.0,,0.015815895050764084,,1.0,,1.0,,0.0,,6.0,,-0.08676201105117798,,0.0,,1
-feature_stability_var,fd_anova_hybrid,core_interaction_c025,512,100,4,0.0,,0.015815895050764084,,1.0,,1.0,,0.0,,6.0,,-0.978578629007428,,0.0,,1

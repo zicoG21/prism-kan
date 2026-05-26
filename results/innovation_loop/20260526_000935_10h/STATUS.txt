@@ -1,1 +1,0 @@
-DONE elapsed_sec=2656.0 detail=results/innovation_loop/20260526_000935_10h/innovation_detail.csv

@@ -21,3 +21,18 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 
+# Local KAN checkpoints and generated experiment outputs.
+/model/0.*
+/results/innovation_loop/
+/results/paper_figures/
+/results/**/logs/
+/results/**/*.log
+/results/**/PID
+/results/**/STATUS.txt
+/results/hard_regime/details/
+/results/hard_regime/phase_figures/
+/results/stability_kan/boundary*/
+/results/stability_kan/long_topm*/
+/results/stability_kan/metric_check*/
+/results/stability_kan/raw_variable_pool*/
+/results/stability_kan/*/figures/

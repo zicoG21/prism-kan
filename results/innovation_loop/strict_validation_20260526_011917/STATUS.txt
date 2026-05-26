@@ -1,1 +1,0 @@
-DONE elapsed_sec=19227.0 detail=results/innovation_loop/strict_validation_20260526_011917/innovation_detail.csv

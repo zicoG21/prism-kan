@@ -1,1 +1,0 @@
-DONE elapsed_sec=47.9 detail=results/innovation_loop/smoke/innovation_detail.csv
