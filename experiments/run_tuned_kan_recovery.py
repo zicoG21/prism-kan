@@ -331,6 +331,66 @@ def finite_difference_pair_scores(model, X_np: np.ndarray, device: str, points: 
     return scores
 
 
+def normalize_pair_scores(pair_scores: Dict[Pair, float]) -> Dict[Pair, float]:
+    if not pair_scores:
+        return {}
+    vals = np.array([max(float(v), 0.0) for v in pair_scores.values()], dtype=float)
+    vals = np.nan_to_num(vals, nan=0.0, posinf=0.0, neginf=0.0)
+    mx = float(np.max(vals)) if vals.size else 0.0
+    if mx <= 0:
+        return {pair: 0.0 for pair in pair_scores}
+    return {pair: max(float(v), 0.0) / mx for pair, v in pair_scores.items()}
+
+
+def anova_pair_scores(
+    model,
+    X_np: np.ndarray,
+    device: str,
+    *,
+    points: int,
+    background: int,
+    batch_size: int,
+    score: str,
+) -> Dict[Pair, float]:
+    """Functional-ANOVA pair score on the provided local feature space."""
+    d = X_np.shape[1]
+    n_points = min(points, len(X_np))
+    n_bg = min(background, len(X_np))
+    base = X_np[:n_points].copy()
+    bg = X_np[:n_bg].copy()
+    f_mean = float(np.mean(batch_predict(model, bg, device=device, batch_size=batch_size).reshape(-1)))
+
+    out: Dict[Pair, float] = {}
+    for i, j in itertools.combinations(range(d), 2):
+        comps = []
+        for row in base:
+            Xij = bg.copy()
+            Xi = bg.copy()
+            Xj = bg.copy()
+            Xij[:, i] = row[i]
+            Xij[:, j] = row[j]
+            Xi[:, i] = row[i]
+            Xj[:, j] = row[j]
+            fij = float(np.mean(batch_predict(model, Xij, device=device, batch_size=batch_size).reshape(-1)))
+            fi = float(np.mean(batch_predict(model, Xi, device=device, batch_size=batch_size).reshape(-1)))
+            fj = float(np.mean(batch_predict(model, Xj, device=device, batch_size=batch_size).reshape(-1)))
+            comps.append(fij - fi - fj + f_mean)
+        comps_arr = np.asarray(comps, dtype=float)
+        if score == "abs":
+            out[(i, j)] = float(np.mean(np.abs(comps_arr)))
+        elif score == "var":
+            out[(i, j)] = float(np.var(comps_arr))
+        else:
+            raise ValueError(f"Unknown ANOVA score={score}")
+    return out
+
+
+def hybrid_pair_scores(*score_dicts: Dict[Pair, float]) -> Dict[Pair, float]:
+    keys = sorted(set().union(*(scores.keys() for scores in score_dicts)))
+    normalized = [normalize_pair_scores(scores) for scores in score_dicts]
+    return {pair: float(np.mean([scores.get(pair, 0.0) for scores in normalized])) for pair in keys}
+
+
 def hessian_pair_scores(model, X_np: np.ndarray, device: str, points: int):
     d = X_np.shape[1]
     n = min(points, len(X_np))
@@ -523,6 +583,40 @@ def run_one(args, function_name: str, screen_mode: str, seed: int, device: str) 
                 local_pair_scores = finite_difference_pair_scores(
                     model, Xte, device=device, points=args.fd_points, h=args.fd_h, batch_size=args.pred_batch_size
                 )
+            elif args.interaction_method == "anova_abs":
+                local_pair_scores = anova_pair_scores(
+                    model,
+                    Xte,
+                    device=device,
+                    points=args.anova_points,
+                    background=args.anova_background,
+                    batch_size=args.pred_batch_size,
+                    score="abs",
+                )
+            elif args.interaction_method == "anova_var":
+                local_pair_scores = anova_pair_scores(
+                    model,
+                    Xte,
+                    device=device,
+                    points=args.anova_points,
+                    background=args.anova_background,
+                    batch_size=args.pred_batch_size,
+                    score="var",
+                )
+            elif args.interaction_method == "fd_anova_hybrid":
+                fd_scores = finite_difference_pair_scores(
+                    model, Xte, device=device, points=args.fd_points, h=args.fd_h, batch_size=args.pred_batch_size
+                )
+                anova_scores = anova_pair_scores(
+                    model,
+                    Xte,
+                    device=device,
+                    points=args.anova_points,
+                    background=args.anova_background,
+                    batch_size=args.pred_batch_size,
+                    score="abs",
+                )
+                local_pair_scores = hybrid_pair_scores(fd_scores, anova_scores)
             elif args.interaction_method == "hessian":
                 local_pair_scores = hessian_pair_scores(
                     model, Xte, device=device, points=args.hessian_points
@@ -697,10 +791,16 @@ def main():
     parser.add_argument("--rf_trees", type=int, default=500)
 
     parser.add_argument("--variable_points", type=int, default=2048)
-    parser.add_argument("--interaction_method", choices=["fd", "hessian"], default="fd")
+    parser.add_argument(
+        "--interaction_method",
+        choices=["fd", "hessian", "anova_abs", "anova_var", "fd_anova_hybrid"],
+        default="fd",
+    )
     parser.add_argument("--fd_points", type=int, default=32)
     parser.add_argument("--fd_h", type=float, default=1e-2)
     parser.add_argument("--hessian_points", type=int, default=16)
+    parser.add_argument("--anova_points", type=int, default=64)
+    parser.add_argument("--anova_background", type=int, default=64)
     parser.add_argument("--pred_batch_size", type=int, default=4096)
 
     parser.add_argument("--device", choices=["auto", "cpu", "cuda"], default="auto")

@@ -1,0 +1,5 @@
+pair_score_method,function,samples,dimension,top_m,test_mse_mean,test_mse_std,interaction_f1_mean,interaction_f1_std,true_interaction_rank_mean_mean,true_interaction_rank_mean_std,true_interaction_mean_score_margin_mean,true_interaction_mean_score_margin_std,true_interaction_beats_all_false_mean,true_interaction_beats_all_false_std,num_runs
+anova_abs,core_interaction_c025,512,100,4,0.0002754006447503343,0.00011943920389881803,1.0,0.0,1.0,0.0,0.07257114945095963,0.009644108763676367,1.0,0.0,5
+anova_var,core_interaction_c025,512,100,4,0.0002754006447503343,0.00011943920389881803,1.0,0.0,1.0,0.0,0.010032079763594185,0.0016737813721308377,1.0,0.0,5
+fd,core_interaction_c025,512,100,4,0.0002754006447503343,0.00011943920389881803,0.6,0.5477225575051661,1.4,0.5477225575051661,-0.058186794817447665,0.32663144648546383,0.6,0.5477225575051661,5
+fd_anova_hybrid,core_interaction_c025,512,100,4,0.0002754006447503343,0.00011943920389881803,1.0,0.0,1.0,0.0,0.5475003275111691,0.35461140989279094,1.0,0.0,5

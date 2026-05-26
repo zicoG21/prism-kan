@@ -47,7 +47,7 @@ def load_summary(summary_dir: Path) -> pd.DataFrame:
     for path in sorted(summary_dir.glob("*_summary.csv")):
         meta = parse_tag(path)
         df = pd.read_csv(path)
-        df = df[df["screen_mode"].astype(str) == "ss_kan_variable"].copy()
+        df = df[df["screen_mode"].astype(str).isin(["ss_kan_variable", "ss_kan_pair"])].copy()
         if df.empty:
             continue
         for key, value in meta.items():
@@ -55,7 +55,7 @@ def load_summary(summary_dir: Path) -> pd.DataFrame:
         df["interaction_strength"] = df["function"].map(function_to_c)
         frames.append(df)
     if not frames:
-        raise RuntimeError(f"No SS-KAN-V summaries found in {summary_dir}")
+        raise RuntimeError(f"No stability-selected KAN summaries found in {summary_dir}")
     return pd.concat(frames, ignore_index=True)
 
 
@@ -64,7 +64,7 @@ def load_detail_support_rates(detail_dir: Path) -> pd.DataFrame:
     for path in sorted(detail_dir.glob("*_detail.csv")):
         meta = parse_tag(path)
         df = pd.read_csv(path)
-        df = df[df["screen_mode"].astype(str) == "ss_kan_variable"].copy()
+        df = df[df["screen_mode"].astype(str).isin(["ss_kan_variable", "ss_kan_pair"])].copy()
         if df.empty:
             continue
         selected = df["selected_support"].apply(lambda x: literal(x, []))
@@ -77,7 +77,7 @@ def load_detail_support_rates(detail_dir: Path) -> pd.DataFrame:
         return pd.DataFrame()
     detail = pd.concat(frames, ignore_index=True)
     return (
-        detail.groupby(["function", "n", "d", "top_m"], dropna=False)
+        detail.groupby(["function", "screen_mode", "n", "d", "top_m"], dropna=False)
         .agg(
             support_contains_all_true_mean=("support_contains_all_true", "mean"),
             support_contains_interaction_endpoints_mean=("support_contains_interaction_endpoints", "mean"),
@@ -86,7 +86,10 @@ def load_detail_support_rates(detail_dir: Path) -> pd.DataFrame:
     )
 
 
-def plot_metric(df: pd.DataFrame, metric: str, out_path: Path) -> None:
+def plot_metric(df: pd.DataFrame, metric: str, out_path: Path, method: str) -> None:
+    df = df[df["screen_mode"].astype(str) == method].copy()
+    if df.empty:
+        return
     strengths = sorted(df["interaction_strength"].dropna().unique())
     fig, axes = plt.subplots(1, len(strengths), figsize=(12, 3.2), sharey=True)
     if len(strengths) == 1:
@@ -94,9 +97,9 @@ def plot_metric(df: pd.DataFrame, metric: str, out_path: Path) -> None:
 
     for ax, c in zip(axes, strengths):
         sub = df[df["interaction_strength"] == c]
-        for top_m, g in sorted(sub.groupby("top_m"), key=lambda kv: kv[0]):
+        for (d, top_m), g in sorted(sub.groupby(["d", "top_m"]), key=lambda kv: (kv[0][0], kv[0][1])):
             g = g.sort_values("n")
-            ax.plot(g["n"], g[metric], marker="o", linewidth=2, label=f"m={top_m}")
+            ax.plot(g["n"], g[metric], marker="o", linewidth=2, label=f"d={int(d)}, m={int(top_m)}")
         ax.set_title(f"c={c:g}")
         ax.set_xscale("log", base=2)
         ax.set_xticks(sorted(df["n"].unique()))
@@ -106,7 +109,7 @@ def plot_metric(df: pd.DataFrame, metric: str, out_path: Path) -> None:
 
     axes[0].set_ylabel(metric.replace("_mean", "").replace("_", " "))
     handles, labels = axes[-1].get_legend_handles_labels()
-    fig.legend(handles, labels, loc="upper center", ncol=max(1, len(labels)), frameon=False)
+    fig.legend(handles, labels, loc="upper center", ncol=min(5, max(1, len(labels))), frameon=False)
     fig.tight_layout()
     out_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_path, dpi=250, bbox_inches="tight")
@@ -128,11 +131,12 @@ def main() -> None:
     summary = load_summary(summary_dir)
     support_rates = load_detail_support_rates(detail_dir)
     if not support_rates.empty:
-        summary = summary.merge(support_rates, on=["function", "n", "d", "top_m"], how="left")
+        summary = summary.merge(support_rates, on=["function", "screen_mode", "n", "d", "top_m"], how="left")
 
     keep = [
         "function",
         "interaction_strength",
+        "screen_mode",
         "n",
         "d",
         "top_m",
@@ -146,14 +150,16 @@ def main() -> None:
         "num_runs",
     ]
     keep = [col for col in keep if col in summary.columns]
-    summary = summary[keep].sort_values(["interaction_strength", "n", "top_m"])
+    summary = summary[keep].sort_values(["interaction_strength", "screen_mode", "d", "n", "top_m"])
 
     csv_path = out_dir / "topm_sweep_summary.csv"
     summary.to_csv(csv_path, index=False)
 
     fig_dir = out_dir / "figures"
-    plot_metric(summary, "interaction_f1_mean", fig_dir / "topm_sweep_interaction_f1.png")
-    plot_metric(summary, "explain_interaction_endpoint_recall_mean", fig_dir / "topm_sweep_endpoint_recall.png")
+    for method in sorted(summary["screen_mode"].dropna().astype(str).unique()):
+        label = method.replace("ss_kan_", "")
+        plot_metric(summary, "interaction_f1_mean", fig_dir / f"topm_sweep_{label}_interaction_f1.png", method)
+        plot_metric(summary, "explain_interaction_endpoint_recall_mean", fig_dir / f"topm_sweep_{label}_endpoint_recall.png", method)
 
     print(summary.to_string(index=False))
     print(f"Saved summary: {csv_path}")

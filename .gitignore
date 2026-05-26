@@ -1,0 +1,23 @@
+# Paper drafts, submission packages, and generated paper artifacts.
+/paper*/
+**/paper_figures/
+**/paper_figure_source_data.csv
+
+# LaTeX build products.
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+
+# Python caches and local model/runtime artifacts.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+

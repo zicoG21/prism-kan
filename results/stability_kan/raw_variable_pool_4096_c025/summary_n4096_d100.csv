@@ -1,0 +1,2 @@
+function,interaction_strength,screen_mode,dimension,samples,train_mse_mean,train_mse_std,test_mse_mean,test_mse_std,variable_f1_mean,variable_f1_std,variable_auroc_mean,variable_auroc_std,variable_auprc_mean,variable_auprc_std,explain_interaction_endpoint_recall_mean,explain_interaction_endpoint_recall_std,num_runs
+core_interaction_c025,0.25,raw,100,4096,0.007476344023598358,0.004095316755875893,0.010917426517698914,0.00598212133615405,0.6,0.22360679774997896,0.8630208333333333,0.0941578224552474,0.666743591801349,0.19368764074511108,0.2,0.447213595499958,5
