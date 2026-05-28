@@ -1,5 +1,8 @@
 # Paper drafts, submission packages, and generated paper artifacts.
 /paper*/
+/artifacts/
+/docs/
+/results/
 **/paper_figures/
 **/paper_figure_source_data.csv
 
