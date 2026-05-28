@@ -144,6 +144,7 @@ def evaluate_interaction_recovery(pair_scores: Dict[Pair, float], true_interacti
         "interaction_precision": precision,
         "interaction_recall": recall,
         "interaction_f1": f1,
+        "interaction_scoring_computed": 1,
         "true_interaction_score_mean": float(np.mean(true_scores)) if true_scores else np.nan,
         "max_nontrue_interaction_score": float(np.max(nontrue_scores)) if nontrue_scores else np.nan,
     }
@@ -352,7 +353,13 @@ def run_one(args, function_name: str, seed: int) -> List[Dict]:
         })
         row_var.update(evaluate_variable_recovery(var_scores, true_vars))
         row_var.update(support_stats(var_scores, args.top_m, true_vars, true_interactions))
-        row_var.update(evaluate_interaction_recovery({}, true_interactions))
+        row_var.update({
+            "selected_interactions": [],
+            "interaction_precision": np.nan,
+            "interaction_recall": np.nan,
+            "interaction_f1": np.nan,
+            "interaction_scoring_computed": 0,
+        })
         rows.append(row_var)
 
         # RF predictor interaction scores.
@@ -426,6 +433,7 @@ def run_one(args, function_name: str, seed: int) -> List[Dict]:
             "interaction_precision": np.nan,
             "interaction_recall": np.nan,
             "interaction_f1": np.nan,
+            "interaction_scoring_computed": 0,
         })
         print(f"[WARN] failed function={function_name}, seed={seed}: {exc}")
         return [row]

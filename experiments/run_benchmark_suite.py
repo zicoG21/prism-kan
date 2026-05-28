@@ -450,6 +450,8 @@ def run_one(args, function_name: str, seed: int, mode: str) -> List[Dict]:
         noise=args.noise,
         seed=seed,
         standardize_target=True,
+        nuisance_correlation=args.nuisance_correlation,
+        n_correlated_proxies=args.n_correlated_proxies,
     )
 
     X_train = data["X_train"]
@@ -483,6 +485,8 @@ def run_one(args, function_name: str, seed: int, mode: str) -> List[Dict]:
         "test_samples": args.test_samples,
         "dimension": args.dimension,
         "noise": args.noise,
+        "nuisance_correlation": args.nuisance_correlation,
+        "n_correlated_proxies": args.n_correlated_proxies,
         "screen_mode": mode,
         "screen_score_type": score_desc,
         "top_m_requested": args.top_m,
@@ -533,13 +537,19 @@ def run_one(args, function_name: str, seed: int, mode: str) -> List[Dict]:
         if "perm" in args.explain_methods:
             explain_methods.append(("perm", permutation_importance(model, X_test_s, seed)))
 
-        interaction_eval = {}
         if args.compute_interactions and len(true_interactions) > 0:
             local_pair_scores = hessian_interaction_scores(model, X_test_s, args.hessian_points)
             full_pair_scores = local_to_full_pair_scores(local_pair_scores, selected_features, args.dimension)
             interaction_eval = evaluate_interaction_recovery(full_pair_scores, true_interactions)
+            interaction_eval["interaction_scoring_computed"] = 1
         else:
-            interaction_eval = evaluate_interaction_recovery({}, true_interactions)
+            interaction_eval = {
+                "selected_interactions": [],
+                "interaction_precision": np.nan,
+                "interaction_recall": np.nan,
+                "interaction_f1": np.nan,
+                "interaction_scoring_computed": 0,
+            }
 
         rows: List[Dict] = []
         for explain_method, local_scores in explain_methods:
@@ -580,6 +590,7 @@ def run_one(args, function_name: str, seed: int, mode: str) -> List[Dict]:
             "interaction_precision": np.nan,
             "interaction_recall": np.nan,
             "interaction_f1": np.nan,
+            "interaction_scoring_computed": 0,
         })
         print(f"[WARN] failed function={function_name}, seed={seed}, mode={mode}: {exc}")
         return [row]
@@ -592,6 +603,7 @@ def summarize(df: pd.DataFrame) -> pd.DataFrame:
 
     group_cols = [
         "function", "dimension", "samples", "test_samples", "noise",
+        "nuisance_correlation", "n_correlated_proxies",
         "screen_mode", "explain_method",
     ]
 
@@ -603,7 +615,7 @@ def summarize(df: pd.DataFrame) -> pd.DataFrame:
         "screen_contains_true_interactions",
         "num_true_variables", "num_true_interactions",
         "variable_f1", "variable_auroc", "variable_auprc",
-        "interaction_f1",
+        "interaction_f1", "interaction_scoring_computed",
     ]
 
     for col in numeric_cols:
@@ -619,7 +631,7 @@ def summarize(df: pd.DataFrame) -> pd.DataFrame:
         "screen_contains_true_interactions",
         "num_true_variables", "num_true_interactions",
         "variable_f1", "variable_auroc", "variable_auprc",
-        "interaction_f1",
+        "interaction_f1", "interaction_scoring_computed",
     ]:
         if col in ok.columns:
             if col in {"train_mse", "test_mse", "variable_f1", "variable_auroc", "variable_auprc", "interaction_f1"}:
@@ -741,6 +753,8 @@ def main():
     parser.add_argument("--test_samples", type=int, default=2048)
     parser.add_argument("--dimension", type=int, default=100)
     parser.add_argument("--noise", type=float, default=0.0)
+    parser.add_argument("--nuisance_correlation", type=float, default=0.0)
+    parser.add_argument("--n_correlated_proxies", type=int, default=0)
     parser.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2])
 
     parser.add_argument(

@@ -42,6 +42,8 @@ def make_synthetic(
     input_low: float = -1.0,
     input_high: float = 1.0,
     standardize_target: bool = True,
+    nuisance_correlation: float = 0.0,
+    n_correlated_proxies: int = 0,
 ) -> Dict:
     """
     Generate synthetic regression data with known active variables and interactions.
@@ -67,6 +69,23 @@ def make_synthetic(
         X[:, 4] = X[:, 0] + gen.normal(0.0, proxy_noise, size=n_total).astype(np.float32)
         if d > 5:
             X[:, 5] = X[:, 1] + gen.normal(0.0, proxy_noise, size=n_total).astype(np.float32)
+
+    proxy_groups: Dict[int, int] = {}
+    if nuisance_correlation > 0 and n_correlated_proxies > 0:
+        if not 0 <= nuisance_correlation < 1:
+            raise ValueError("nuisance_correlation must be in [0, 1).")
+        max_proxies = max(0, d - 4)
+        n_proxy = min(int(n_correlated_proxies), max_proxies)
+        independent_scale = float(np.sqrt(max(1.0 - nuisance_correlation ** 2, 0.0)))
+        for offset in range(n_proxy):
+            proxy_idx = 4 + offset
+            active_idx = offset % 4
+            proxy_noise = gen.uniform(input_low, input_high, size=n_total).astype(np.float32)
+            X[:, proxy_idx] = (
+                nuisance_correlation * X[:, active_idx]
+                + independent_scale * proxy_noise
+            ).astype(np.float32)
+            proxy_groups[int(proxy_idx)] = int(active_idx)
 
     y_clean, gt = evaluate_synthetic_function(function_name, X)
 
@@ -99,6 +118,8 @@ def make_synthetic(
         "ground_truth": gt,
         "target_mean": target_mean,
         "target_std": target_std,
+        "nuisance_correlation": float(nuisance_correlation),
+        "proxy_groups": proxy_groups,
     }
 
 
@@ -195,6 +216,133 @@ def _feynman_physics_function(
 
     else:
         raise ValueError(f"Unknown Feynman-style function_name={function_name!r}")
+
+    return y.astype(np.float32), gt
+
+
+def _formula_suite_function(
+    function_name: str,
+    X: np.ndarray,
+) -> Tuple[np.ndarray, GroundTruth]:
+    """Small formula-fidelity benchmark suite.
+
+    The formulas are intentionally modest and ground-truth labeled. They are
+    meant to broaden the diagnostic benchmark beyond the core polynomial while
+    keeping variables, endpoints, and pairwise dependencies auditable.
+    """
+    x = X
+    pi = np.pi
+
+    if function_name == "formula_poly_additive":
+        y = np.sin(2 * pi * x[:, 0]) + x[:, 1] ** 2 + 0.5 * x[:, 2] ** 3
+        gt = GroundTruth(
+            name=function_name,
+            active_variables=(0, 1, 2),
+            interactions=(),
+            formula="sin(2*pi*x0) + x1^2 + 0.5*x2^3",
+        )
+
+    elif function_name == "formula_bilinear":
+        y = x[:, 0] * x[:, 1] + 0.5 * x[:, 2]
+        gt = GroundTruth(
+            name=function_name,
+            active_variables=(0, 1, 2),
+            interactions=((0, 1),),
+            formula="x0*x1 + 0.5*x2",
+        )
+
+    elif function_name == "formula_weak_centered":
+        y = np.sin(2 * pi * x[:, 0]) + x[:, 1] ** 2 + 0.25 * x[:, 2] * x[:, 3]
+        gt = GroundTruth(
+            name=function_name,
+            active_variables=(0, 1, 2, 3),
+            interactions=((2, 3),),
+            formula="sin(2*pi*x0) + x1^2 + 0.25*x2*x3",
+        )
+
+    elif function_name == "formula_trig_product":
+        y = np.sin(pi * x[:, 0] * x[:, 1]) + 0.5 * x[:, 2]
+        gt = GroundTruth(
+            name=function_name,
+            active_variables=(0, 1, 2),
+            interactions=((0, 1),),
+            formula="sin(pi*x0*x1) + 0.5*x2",
+        )
+
+    elif function_name == "formula_nested_trig":
+        y = np.sin(2 * pi * (x[:, 0] + 0.5 * x[:, 1] * x[:, 2]))
+        gt = GroundTruth(
+            name=function_name,
+            active_variables=(0, 1, 2),
+            interactions=((1, 2),),
+            formula="sin(2*pi*(x0 + 0.5*x1*x2))",
+        )
+
+    elif function_name == "formula_rational_product":
+        y = (x[:, 0] * x[:, 1]) / (1.0 + x[:, 2] ** 2)
+        gt = GroundTruth(
+            name=function_name,
+            active_variables=(0, 1, 2),
+            interactions=((0, 1), (0, 2), (1, 2)),
+            formula="x0*x1/(1+x2^2)",
+        )
+
+    elif function_name == "formula_division_mixed":
+        y = (x[:, 0] + 1.2) / (1.5 + x[:, 1] ** 2) + 0.3 * x[:, 2] * x[:, 3]
+        gt = GroundTruth(
+            name=function_name,
+            active_variables=(0, 1, 2, 3),
+            interactions=((0, 1), (2, 3)),
+            formula="(x0+1.2)/(1.5+x1^2) + 0.3*x2*x3",
+        )
+
+    elif function_name == "formula_exp_product":
+        y = np.exp(0.5 * x[:, 0] * x[:, 1]) + 0.2 * x[:, 2]
+        gt = GroundTruth(
+            name=function_name,
+            active_variables=(0, 1, 2),
+            interactions=((0, 1),),
+            formula="exp(0.5*x0*x1) + 0.2*x2",
+        )
+
+    elif function_name == "formula_log_product":
+        y = np.log(2.0 + x[:, 0] * x[:, 1]) + 0.25 * x[:, 2] ** 2
+        gt = GroundTruth(
+            name=function_name,
+            active_variables=(0, 1, 2),
+            interactions=((0, 1),),
+            formula="log(2+x0*x1) + 0.25*x2^2",
+        )
+
+    elif function_name == "formula_three_way_product":
+        y = x[:, 0] * x[:, 1] * x[:, 2] + 0.5 * x[:, 3]
+        gt = GroundTruth(
+            name=function_name,
+            active_variables=(0, 1, 2, 3),
+            interactions=((0, 1), (0, 2), (1, 2)),
+            formula="x0*x1*x2 + 0.5*x3",
+        )
+
+    elif function_name == "formula_mixed_sparse":
+        y = np.sin(2 * pi * x[:, 0]) + (x[:, 1] * x[:, 2]) / (1.0 + x[:, 3] ** 2)
+        gt = GroundTruth(
+            name=function_name,
+            active_variables=(0, 1, 2, 3),
+            interactions=((1, 2), (1, 3), (2, 3)),
+            formula="sin(2*pi*x0) + x1*x2/(1+x3^2)",
+        )
+
+    elif function_name == "formula_sqrt_energy":
+        y = np.sqrt(x[:, 0] + 1.2) * (x[:, 1] + 1.5) ** 2 + 0.25 * x[:, 2]
+        gt = GroundTruth(
+            name=function_name,
+            active_variables=(0, 1, 2),
+            interactions=((0, 1),),
+            formula="sqrt(x0+1.2)*(x1+1.5)^2 + 0.25*x2",
+        )
+
+    else:
+        raise ValueError(f"Unknown formula-suite function_name={function_name!r}")
 
     return y.astype(np.float32), gt
 
@@ -315,6 +463,22 @@ def evaluate_synthetic_function(
     }:
         y, gt = _feynman_physics_function(function_name, X)
 
+    elif function_name in {
+        "formula_poly_additive",
+        "formula_bilinear",
+        "formula_weak_centered",
+        "formula_trig_product",
+        "formula_nested_trig",
+        "formula_rational_product",
+        "formula_division_mixed",
+        "formula_exp_product",
+        "formula_log_product",
+        "formula_three_way_product",
+        "formula_mixed_sparse",
+        "formula_sqrt_energy",
+    }:
+        y, gt = _formula_suite_function(function_name, X)
+
     else:
         raise ValueError(
             f"Unknown function_name={function_name!r}. "
@@ -322,7 +486,8 @@ def evaluate_synthetic_function(
             "core_interaction_c05, core_interaction_c1, core_interaction_c2, core_interaction_c5, "
             "additive_sparse, pairwise_interaction, compositional, rational, "
             "discontinuous, dense_quadratic, "
-            "feynman_energy, feynman_gravity, feynman_coulomb, feynman_damped_wave."
+            "feynman_energy, feynman_gravity, feynman_coulomb, feynman_damped_wave, "
+            "or formula_* mini-suite functions."
         )
 
     return y.astype(np.float32), gt

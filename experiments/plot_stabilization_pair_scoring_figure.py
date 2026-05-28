@@ -18,7 +18,7 @@ LEFT_LABELS = {
     "feature_stability_var": "KAN-F",
     "feature_edge_hybrid": "KAN-FE",
     "rf": "RF",
-    "oracle_support": "Oracle",
+    "oracle_support": "Given-support",
 }
 LEFT_COLORS = {
     "feature_stability_var": OKABE_ITO["blue"],
@@ -68,6 +68,28 @@ def stability_value_at(df: pd.DataFrame, function: str, method: str, n: int, top
     return float(hit[col].iloc[0])
 
 
+def sem_at(df: pd.DataFrame, mask: pd.Series, std_col: str = "interaction_f1_std") -> float:
+    hit = df[mask]
+    if hit.empty or std_col not in hit or "num_runs" not in hit:
+        return 0.0
+    std = float(hit[std_col].iloc[0])
+    runs = float(hit["num_runs"].iloc[0])
+    if not np.isfinite(std) or not np.isfinite(runs) or runs <= 0:
+        return 0.0
+    return std / np.sqrt(runs)
+
+
+def stability_sem_at(df: pd.DataFrame, function: str, method: str, n: int, top_m: int) -> float:
+    mask = (
+        df["method"].astype(str).eq(method)
+        & df["function"].astype(str).eq(function)
+        & df["dimension"].eq(100)
+        & df["samples"].eq(n)
+        & df["top_m"].eq(top_m)
+    )
+    return sem_at(df, mask)
+
+
 def one_shot_value_at(df: pd.DataFrame | None, function: str, n: int, top_m: int, col: str) -> float:
     if df is None:
         return np.nan
@@ -83,6 +105,19 @@ def one_shot_value_at(df: pd.DataFrame | None, function: str, n: int, top_m: int
     return float(hit[col].iloc[0])
 
 
+def one_shot_sem_at(df: pd.DataFrame | None, function: str, n: int, top_m: int) -> float:
+    if df is None:
+        return 0.0
+    mask = (
+        df["method"].astype(str).eq(SINGLE_METHOD)
+        & df["function"].astype(str).eq(function)
+        & df["dimension"].eq(100)
+        & df["samples"].eq(n)
+        & df["top_m"].eq(top_m)
+    )
+    return sem_at(df, mask)
+
+
 def value_at(df: pd.DataFrame, method: str, n: int, top_m: int, col: str) -> float:
     hit = df[
         df["method"].astype(str).eq(method)
@@ -94,6 +129,17 @@ def value_at(df: pd.DataFrame, method: str, n: int, top_m: int, col: str) -> flo
     if hit.empty:
         return np.nan
     return float(hit[col].iloc[0])
+
+
+def value_sem_at(df: pd.DataFrame, method: str, n: int, top_m: int) -> float:
+    mask = (
+        df["method"].astype(str).eq(method)
+        & df["function"].astype(str).eq("core_interaction_c025")
+        & df["dimension"].eq(100)
+        & df["samples"].eq(n)
+        & df["top_m"].eq(top_m)
+    )
+    return sem_at(df, mask)
 
 
 def pair_value_at(df: pd.DataFrame, support_method: str, pair_method: str, col: str) -> float:
@@ -109,6 +155,19 @@ def pair_value_at(df: pd.DataFrame, support_method: str, pair_method: str, col: 
     if hit.empty:
         return np.nan
     return float(hit[col].iloc[0])
+
+
+def pair_sem_at(df: pd.DataFrame, support_method: str, pair_method: str) -> float:
+    mask = (
+        df["source_method"].astype(str).eq(support_method)
+        & df["pair_score_method"].astype(str).eq(pair_method)
+        & df["function"].astype(str).eq("core_interaction_c025")
+        & df["dimension"].eq(100)
+        & df["samples"].eq(512)
+        & df["top_m"].eq(4)
+        & (df["num_runs"] >= 10)
+    )
+    return sem_at(df, mask)
 
 
 def main() -> None:
@@ -146,19 +205,21 @@ def main() -> None:
     )
 
     single_settings = [
-        ("core_interaction_c025", 512, 4, r"$c=.25$" + "\n" + r"$n=512$"),
-        ("core_interaction_c025", 1024, 4, r"$c=.25$" + "\n" + r"$n=1024$"),
-        ("core_interaction_c05", 512, 5, r"$c=.50$" + "\n" + r"$n=512$"),
+        ("core_interaction_c025", 512, 4, r"$c=0.25$" + "\n" + r"$n=512$"),
+        ("core_interaction_c025", 1024, 4, r"$c=0.25$" + "\n" + r"$n=1024$"),
+        ("core_interaction_c05", 512, 5, r"$c=0.50$" + "\n" + r"$n=512$"),
     ]
     x0 = np.arange(len(single_settings))
     single_vals = [
         one_shot_value_at(one_shot, function, n, m, "interaction_f1_mean")
         for function, n, m, _ in single_settings
     ]
+    single_err = [one_shot_sem_at(one_shot, function, n, m) for function, n, m, _ in single_settings]
     stable_vals = [
         stability_value_at(combined, function, "feature_edge_hybrid", n, m, "interaction_f1_mean")
         for function, n, m, _ in single_settings
     ]
+    stable_err = [stability_sem_at(combined, function, "feature_edge_hybrid", n, m) for function, n, m, _ in single_settings]
     width0 = 0.34
     axes[0].bar(
         x0 - width0 / 2,
@@ -168,6 +229,8 @@ def main() -> None:
         color=OKABE_ITO["gray"],
         edgecolor="white",
         linewidth=0.45,
+        yerr=single_err,
+        error_kw={"elinewidth": 0.6, "capsize": 2.0, "capthick": 0.6},
     )
     axes[0].bar(
         x0 + width0 / 2,
@@ -177,9 +240,11 @@ def main() -> None:
         color=OKABE_ITO["green"],
         edgecolor="white",
         linewidth=0.45,
+        yerr=stable_err,
+        error_kw={"elinewidth": 0.6, "capsize": 2.0, "capthick": 0.6},
     )
     axes[0].set_ylim(0, 1.05)
-    axes[0].set_ylabel("Interaction F1")
+    axes[0].set_ylabel("Top-1 pair acc.")
     axes[0].set_xticks(x0)
     axes[0].set_xticklabels([label for *_, label in single_settings])
     axes[0].text(
@@ -199,6 +264,7 @@ def main() -> None:
     width = 0.17
     for idx, method in enumerate(LEFT_METHODS):
         vals = [value_at(combined, method, n, m, "interaction_f1_mean") for n, m in settings]
+        errs = [value_sem_at(combined, method, n, m) for n, m in settings]
         axes[1].bar(
             x + (idx - (len(LEFT_METHODS) - 1) / 2) * width,
             vals,
@@ -207,9 +273,11 @@ def main() -> None:
             color=LEFT_COLORS[method],
             edgecolor="white",
             linewidth=0.45,
+            yerr=errs,
+            error_kw={"elinewidth": 0.6, "capsize": 1.7, "capthick": 0.6},
         )
     axes[1].set_ylim(0, 1.05)
-    axes[1].set_ylabel("Interaction F1")
+    axes[1].set_ylabel("Top-1 pair acc.")
     axes[1].set_xticks(x)
     axes[1].set_xticklabels([rf"$n={n}$" + "\n" + rf"$m={m}$" for n, m in settings])
     axes[1].text(
@@ -236,6 +304,7 @@ def main() -> None:
     width2 = 0.32
     for idx, support_method in enumerate(SUPPORT_METHODS):
         vals = [pair_value_at(pair, support_method, method, "interaction_f1_mean") for method in PAIR_METHODS]
+        errs = [pair_sem_at(pair, support_method, method) for method in PAIR_METHODS]
         axes[2].bar(
             x2 + (idx - 0.5) * width2,
             vals,
@@ -245,9 +314,11 @@ def main() -> None:
             alpha=0.90 if idx == 0 else 0.72,
             edgecolor="white",
             linewidth=0.45,
+            yerr=errs,
+            error_kw={"elinewidth": 0.6, "capsize": 1.7, "capthick": 0.6},
         )
     axes[2].set_ylim(0, 1.05)
-    axes[2].set_ylabel("Interaction F1")
+    axes[2].set_ylabel("Top-1 pair acc.")
     axes[2].set_xticks(x2)
     axes[2].set_xticklabels([PAIR_LABELS[m] for m in PAIR_METHODS], rotation=18, ha="right")
     axes[2].text(
