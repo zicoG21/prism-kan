@@ -1,4 +1,8 @@
-# KAN-XAI Structure Recovery Benchmark
+# KAN-XAI Structure Recovery Diagnostic Suite
+
+For the current workshop-facing pyKAN diagnostic suite, start with
+[`README_WORKSHOP.md`](README_WORKSHOP.md).  The older commands below are kept
+as general synthetic smoke tests.
 
 Minimal code for:
 1. Synthetic ground-truth datasets.
@@ -20,7 +24,7 @@ If `pip install pykan` fails, use:
 pip install git+https://github.com/KindXiaoming/pykan.git
 ```
 
-## Run synthetic benchmark
+## Run synthetic diagnostic smoke test
 
 ```bash
 python experiments/run_synthetic.py \
