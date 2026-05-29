@@ -127,12 +127,14 @@ def all_pair_anova_pair_scores(
     points: int,
     background: int,
     batch_size: int,
+    pair_chunk_size: int,
 ) -> dict[Pair, float]:
     """Functional-ANOVA pair scores for all pairs using batched predictions.
 
     The naive estimator calls the model separately for each pair and anchor.
-    This version batches all pair interventions for one anchor at a time.  It is
-    intended for d=100-style checks where all d(d-1)/2 pairs are feasible.
+    This version batches pair interventions for one anchor at a time and
+    vectorizes the intervention construction.  It is intended for d=100-style
+    checks where all d(d-1)/2 pairs are feasible.
     """
 
     n_points = min(points, len(X_np))
@@ -145,27 +147,34 @@ def all_pair_anova_pair_scores(
 
     f_mean = float(np.mean(batch_predict(model, bg, device=device, batch_size=batch_size).reshape(-1)))
     accum = np.zeros(len(pairs), dtype=np.float64)
+    pair_chunk_size = int(pair_chunk_size)
+    if pair_chunk_size <= 0:
+        pair_chunk_size = len(pairs)
 
     for row in anchors:
         # Main effects for all variables under the same anchor row.
-        main_rows = np.repeat(bg[None, :, :], d, axis=0).reshape(d * n_bg, d)
-        for j in range(d):
-            main_rows[j * n_bg : (j + 1) * n_bg, j] = row[j]
+        main_rows_3d = np.broadcast_to(bg[None, :, :], (d, n_bg, d)).copy()
+        main_idx = np.arange(d)
+        main_rows_3d[main_idx, :, main_idx] = row[main_idx, None]
+        main_rows = main_rows_3d.reshape(d * n_bg, d)
         main_pred = batch_predict(model, main_rows, device=device, batch_size=batch_size).reshape(d, n_bg)
         main_mean = np.mean(main_pred, axis=1)
 
         # Pair effects for all pairs under this anchor row.
-        pair_rows = np.repeat(bg[None, :, :], len(pairs), axis=0).reshape(len(pairs) * n_bg, d)
-        for idx, (i, j) in enumerate(pairs):
-            start = idx * n_bg
-            stop = start + n_bg
-            pair_rows[start:stop, i] = row[i]
-            pair_rows[start:stop, j] = row[j]
-        pair_pred = batch_predict(model, pair_rows, device=device, batch_size=batch_size).reshape(len(pairs), n_bg)
-        pair_mean = np.mean(pair_pred, axis=1)
+        for start_pair in range(0, len(pairs), pair_chunk_size):
+            stop_pair = min(start_pair + pair_chunk_size, len(pairs))
+            chunk_arr = pair_arr[start_pair:stop_pair]
+            chunk_len = len(chunk_arr)
+            pair_rows_3d = np.broadcast_to(bg[None, :, :], (chunk_len, n_bg, d)).copy()
+            chunk_idx = np.arange(chunk_len)
+            pair_rows_3d[chunk_idx, :, chunk_arr[:, 0]] = row[chunk_arr[:, 0], None]
+            pair_rows_3d[chunk_idx, :, chunk_arr[:, 1]] = row[chunk_arr[:, 1], None]
+            pair_rows = pair_rows_3d.reshape(chunk_len * n_bg, d)
+            pair_pred = batch_predict(model, pair_rows, device=device, batch_size=batch_size).reshape(chunk_len, n_bg)
+            pair_mean = np.mean(pair_pred, axis=1)
 
-        comps = pair_mean - main_mean[pair_arr[:, 0]] - main_mean[pair_arr[:, 1]] + f_mean
-        accum += np.abs(comps)
+            comps = pair_mean - main_mean[chunk_arr[:, 0]] - main_mean[chunk_arr[:, 1]] + f_mean
+            accum[start_pair:stop_pair] += np.abs(comps)
 
     scores = accum / float(n_points)
     return {pair: float(score) for pair, score in zip(pairs, scores)}
@@ -236,6 +245,7 @@ def run_one(args: argparse.Namespace, seed: int) -> dict:
             points=args.anova_points,
             background=args.anova_background,
             batch_size=args.batch_size,
+            pair_chunk_size=args.pair_chunk_size,
         )
     else:
         pairs = candidate_pairs_from_scores(
@@ -344,6 +354,12 @@ def main() -> None:
     parser.add_argument("--grid-update-num", type=int, default=5)
     parser.add_argument("--batch", type=int, default=-1)
     parser.add_argument("--batch-size", type=int, default=4096)
+    parser.add_argument(
+        "--pair-chunk-size",
+        type=int,
+        default=0,
+        help="Number of pair interventions to construct per anchor for --pair-mode all; 0 means all pairs.",
+    )
     parser.add_argument("--anova-points", type=int, default=24)
     parser.add_argument("--anova-background", type=int, default=24)
     parser.add_argument("--pair-mode", choices=["candidate", "all"], default="candidate")

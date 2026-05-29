@@ -1,5 +1,10 @@
 # Paper drafts, submission packages, and generated paper artifacts.
 /paper*/
+/manuscripts/
+/Research_Updates*.docx
+/.~lock.*#
+/PAPER_FOLDERS.md
+/REVISION_TODO_GPU_PLAN.md
 /artifacts/
 /docs/
 /results/

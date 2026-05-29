@@ -45,9 +45,9 @@ def train_model(data: dict, args: argparse.Namespace, seed: int, device: str) ->
     model = MLP(data["X_train"].shape[1], args.hidden, args.depth).to(device)
     opt = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     X = torch.tensor(data["X_train"], dtype=torch.float32, device=device)
-    y = torch.tensor(data["y_train"], dtype=torch.float32, device=device)
+    y = torch.tensor(data["y_train"], dtype=torch.float32, device=device).reshape(-1, 1)
     Xte = torch.tensor(data["X_test"], dtype=torch.float32, device=device)
-    yte = torch.tensor(data["y_test"], dtype=torch.float32, device=device)
+    yte = torch.tensor(data["y_test"], dtype=torch.float32, device=device).reshape(-1, 1)
     n = X.shape[0]
     best_state = None
     best_test = float("inf")

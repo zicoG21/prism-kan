@@ -65,6 +65,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--keep_top_pairs", type=int, default=160)
     parser.add_argument("--device", choices=["auto", "cpu", "cuda"], default="auto")
     parser.add_argument("--force_probe", action="store_true")
+    parser.add_argument(
+        "--summarize_existing_only",
+        action="store_true",
+        help="Do not train missing probes; summarize the cache entries matching --seeds.",
+    )
     return parser.parse_args()
 
 
@@ -212,6 +217,8 @@ def ensure_probes(args: argparse.Namespace, probe_path: Path, device: str) -> pd
     for seed in args.seeds:
         key = probe_key(args, int(seed))
         if key in existing_keys and not args.force_probe:
+            continue
+        if getattr(args, "summarize_existing_only", False):
             continue
         print(f"[PROBE] {key}", flush=True)
         rows.append(train_probe(args, int(seed), device))
