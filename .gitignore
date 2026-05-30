@@ -45,3 +45,14 @@ __pycache__/
 /results/stability_kan/metric_check*/
 /results/stability_kan/raw_variable_pool*/
 /results/stability_kan/*/figures/
+
+# Local queue launchers and runtime wrappers.
+scripts/launch_*.sh
+scripts/run_revision_8h_gpu_stretch_after_current.sh
+scripts/run_revision_gpu_only_safe_queue.sh
+scripts/run_revision_gpu_parallel_c01_capacity.sh
+scripts/run_revision_nid_after_fullkan_queue.sh
+scripts/run_revision_gpu_4h_todo_pack.sh
+
+# pyKAN runtime history.
+model/history.txt
