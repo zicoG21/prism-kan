@@ -132,6 +132,11 @@ sbatch --account=jaabell0 \
   --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python \
   --array=0-2%3 \
   scripts/greatlakes_semisynthetic_array.sbatch
+
+sbatch --account=jaabell0 \
+  --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python \
+  --array=0-3%4 \
+  scripts/greatlakes_anova_estimator_stability_array.sbatch
 ```
 
 For queued downstream pruning/symbolic smoke checks, submit after the current
@@ -200,8 +205,9 @@ and emits a normalized CSV/Markdown summary with Wilson confidence intervals.
 
 ## Full-KAN All-Pairs ANOVA Check
 
-This is the 30-seed, all-pairs result reported in the main paper.  It ranks all
-`100 * 99 / 2 = 4950` pairs directly on the full-dimensional KAN.
+This is the 60-seed, all-pairs result reported in the main paper. It ranks all
+`100 * 99 / 2 = 4950` pairs directly on the full-dimensional KAN before support
+selection or refit.
 
 ```bash
 python scripts/run_full_kan_pair_anova_probe.py \
@@ -209,31 +215,32 @@ python scripts/run_full_kan_pair_anova_probe.py \
   --samples 1024 \
   --test-samples 2048 \
   --dimension 100 \
-  --seeds 0-29 \
-  --width-hidden 8 \
+  --seeds 0-59 \
+  --width-hidden 16 \
   --grid 5 \
   --k 3 \
-  --steps 50 \
+  --steps 75 \
   --lamb 1e-3 \
   --pair-mode all \
   --anova-points 16 \
   --anova-background 16 \
-  --batch-size 4096 \
-  --out-dir results/workshop_review_tables/full_kan_pair_anova_probe/c025_d100_n1024_allpairs_30seed
+  --batch-size 8192 \
+  --device cuda \
+  --out-dir results/revision/fullkan_anova_boundary/clean_w16_n1024_60seed
 ```
 
 Expected summary:
 
-- all fits: true pair rank-1 in `24/30` seeds;
-- fit-clean subset with test MSE `< 5e-3`: true pair rank-1 in `24/24`
-  seeds.
+- all fits: true pair rank-1 in `50/60` seeds;
+- mean test MSE near `0.0048`;
+- mean true-minus-max-false ANOVA margin near `0.062`.
 
-For a faster code-path smoke test, reduce `--seeds 0-29` to `--seeds 0-2` and
+For a faster code-path smoke test, reduce `--seeds 0-59` to `--seeds 0-2` and
 write to a temporary output directory.
 
 The current revision also runs a boundary full-KAN check for the grid-update
-failure row at `c=0.25,d=100,n=512,width=16`.  This distinguishes readout-only
-surfacing failure from a broader model-reliance/fitting failure:
+failure rows at `c=0.25,d=100,width=16`. This distinguishes readout-only
+surfacing failure from broader model-reliance/fitting failures:
 
 ```bash
 python scripts/run_full_kan_pair_anova_probe.py \
@@ -241,7 +248,7 @@ python scripts/run_full_kan_pair_anova_probe.py \
   --samples 512 \
   --test-samples 2048 \
   --dimension 100 \
-  --seeds 0-29 \
+  --seeds 0-59 \
   --width-hidden 16 \
   --grid 5 \
   --k 3 \
@@ -253,21 +260,53 @@ python scripts/run_full_kan_pair_anova_probe.py \
   --max-all-pairs 10000 \
   --anova-points 16 \
   --anova-background 16 \
-  --batch-size 4096 \
+  --batch-size 8192 \
   --device cuda \
-  --out-dir results/revision/fullkan_anova_boundary/gridupdate_w16_n512
+  --out-dir results/revision/fullkan_anova_boundary/gridupdate_w16_n512_60seed
 ```
 
 Expected summary for the completed grid-update boundary row:
 
-- all fits: true pair rank-1 in `0/30` seeds;
-- mean / median test MSE: `0.119 / 0.0687`;
-- mean / median true-pair rank among all 4950 pairs: `2546 / 2768`;
-- mean / median true-minus-max-false ANOVA margin: `-0.0615 / -0.0479`;
-- even the subset with test MSE `< 0.05` is `0/11`.
+- all fits: true pair rank-1 in `0/60` seeds at `n=512`;
+- mean test MSE near `0.179`;
+- mean true-pair rank among all 4950 pairs near `2146`;
+- mean true-minus-max-false ANOVA margin near `-0.063`.
 
 This row is therefore a fitting/reliance failure as well as a readout-surfacing
 failure under the grid-update protocol.
+
+### ANOVA Estimator Stability
+
+The all-pairs full-KAN rows use a finite anchor/background ANOVA estimator. To
+separate estimator noise from fitted-model variation, fix each trained KAN and
+repeat the pair scorer with fresh anchor/background draws:
+
+```bash
+python scripts/run_full_kan_anova_estimator_stability.py \
+  --function core_interaction_c025 \
+  --samples 1024 \
+  --test-samples 2048 \
+  --dimension 100 \
+  --seeds 0-19 \
+  --mc-repeats 10 \
+  --width-hidden 16 \
+  --grid 5 \
+  --k 3 \
+  --steps 75 \
+  --lamb 1e-3 \
+  --anova-points 16 \
+  --anova-background 16 \
+  --batch-size 8192 \
+  --pair-chunk-size 1000 \
+  --device cuda \
+  --out-dir results/revision/anova_estimator_stability/clean_w16_n1024_mc10
+```
+
+Outputs:
+
+- `anova_estimator_stability_detail.csv`: one row per seed and Monte Carlo draw;
+- `anova_estimator_stability_per_seed.csv`: within-model rank and margin spread;
+- `anova_estimator_stability_summary.csv`: aggregate rank-1 and margin stability.
 
 ## Critical-Regime pyKAN Readout Sensitivity
 
