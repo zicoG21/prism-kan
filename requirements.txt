@@ -6,3 +6,4 @@ torch
 tqdm
 openpyxl
 pykan
+PyYAML

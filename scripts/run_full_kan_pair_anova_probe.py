@@ -368,19 +368,40 @@ def main() -> None:
     parser.add_argument("--top-edge-vars", type=int, default=10)
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--out-dir", type=Path, default=Path("results/workshop_review_tables/full_kan_pair_anova_probe"))
+    parser.add_argument(
+        "--no-resume",
+        action="store_true",
+        help="Ignore an existing detail CSV in --out-dir and rerun all requested seeds.",
+    )
     args = parser.parse_args()
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
+    detail_path = args.out_dir / "full_kan_pair_anova_detail.csv"
+    summary_path = args.out_dir / "full_kan_pair_anova_summary.csv"
+
     rows = []
+    completed_seeds: set[int] = set()
+    if detail_path.exists() and not args.no_resume:
+        existing = pd.read_csv(detail_path)
+        if len(existing):
+            rows = existing.to_dict("records")
+            completed_seeds = {int(v) for v in existing["seed"].dropna().astype(int).tolist()}
+            print(f"[resume] loaded {len(existing)} existing rows from {detail_path}", flush=True)
+
     for seed in parse_seeds(args.seeds):
+        if int(seed) in completed_seeds:
+            print(f"[resume] skip completed seed={seed}", flush=True)
+            continue
         print(f"Running full-KAN pair ANOVA probe seed={seed}", flush=True)
         rows.append(run_one(args, seed))
-        pd.DataFrame(rows).to_csv(args.out_dir / "full_kan_pair_anova_detail.csv", index=False)
+        detail = pd.DataFrame(rows)
+        detail.to_csv(detail_path, index=False)
+        summarize(detail).to_csv(summary_path, index=False)
 
     detail = pd.DataFrame(rows)
     summary = summarize(detail)
-    detail.to_csv(args.out_dir / "full_kan_pair_anova_detail.csv", index=False)
-    summary.to_csv(args.out_dir / "full_kan_pair_anova_summary.csv", index=False)
+    detail.to_csv(detail_path, index=False)
+    summary.to_csv(summary_path, index=False)
     print(summary.to_string(index=False))
 
 

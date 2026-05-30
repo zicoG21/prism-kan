@@ -15,7 +15,7 @@ set -euo pipefail
 # Great Lakes full-KAN ANOVA array job.
 #
 # Submit via:
-#   sbatch --account jaabell0 --array 0-5 scripts/greatlakes_fullkan_anova_array.sbatch
+#   sbatch --account jaabell0 --array 0-11 scripts/greatlakes_fullkan_anova_array.sbatch
 #
 # Required on the cluster before submitting:
 #   git clone / update this repository
@@ -82,4 +82,3 @@ fi
 echo "[$(date -Is)] running ${label} on ${SLURM_JOB_NODELIST:-unknown-node}"
 "$PY" "${args[@]}"
 echo "[$(date -Is)] done ${label}"
-

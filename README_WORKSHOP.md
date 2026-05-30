@@ -70,6 +70,95 @@ Recorded local context:
 - CPU: Intel i7-13700HX, 24 logical threads
 - GPU available during runs: NVIDIA RTX 4050 Laptop GPU, 6 GB
 
+### Great Lakes GPU Notes
+
+On University of Michigan Great Lakes, do not test CUDA from a login node: login
+nodes do not expose GPUs.  Request a GPU job first.  V100 nodes require a PyTorch
+build that supports compute capability 7.0; the CUDA 13 wheels may detect the
+device but warn that no matching kernel image is available.  The tested setup is
+Python 3.11 with PyTorch 2.5.1 CUDA 12.1:
+
+```bash
+module purge
+module load python/3.11.5
+python -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip setuptools wheel
+pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cu121
+grep -vi '^torch' requirements.txt > /tmp/prism_requirements_no_torch.txt
+pip install -r /tmp/prism_requirements_no_torch.txt
+```
+
+GPU smoke test:
+
+```bash
+sbatch --account=jaabell0 --partition=gpu --gres=gpu:1 \
+  --cpus-per-task=4 --mem=16G --time=00:05:00 --wrap='
+cd ~/prism-kan
+module purge
+module load python/3.11.5
+source .venv/bin/activate
+hostname
+nvidia-smi
+python - <<PY
+import torch
+print(torch.__version__)
+print("cuda available:", torch.cuda.is_available())
+print(torch.cuda.get_device_name(0))
+x = torch.randn(2048, 2048, device="cuda")
+y = x @ x
+torch.cuda.synchronize()
+print(float(y.mean()))
+PY
+'
+```
+
+Great Lakes array entry points:
+
+```bash
+export PYTHON_BIN=$PWD/.venv/bin/python
+
+sbatch --account=jaabell0 \
+  --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python \
+  --array=0-11%4 \
+  scripts/greatlakes_fullkan_anova_array.sbatch
+
+sbatch --account=jaabell0 \
+  --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python \
+  --array=0-9%4 \
+  scripts/greatlakes_readout_sensitivity_array.sbatch
+
+sbatch --account=jaabell0 \
+  --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python \
+  --array=0-2%3 \
+  scripts/greatlakes_semisynthetic_array.sbatch
+```
+
+For queued downstream pruning/symbolic smoke checks, submit after the current
+arrays finish or use a dependency:
+
+```bash
+sbatch --account=jaabell0 \
+  --dependency=afterany:<FULLKAN_JOBID>:<SEMISYN_JOBID> \
+  --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python \
+  --array=0-3%2 \
+  scripts/greatlakes_prune_symbolic_array.sbatch
+```
+
+Monitor jobs:
+
+```bash
+squeue -u $USER -o "%.18i %.9P %.30j %.8u %.2t %.10M %.6D %R"
+sacct -j <JOBID> --format=JobID,JobName%24,State,ExitCode,Elapsed,MaxRSS,NodeList%20
+tail -n 80 logs/greatlakes/<log-file>.err
+```
+
+After jobs finish, pack CSV summaries and Slurm logs for transfer:
+
+```bash
+bash scripts/greatlakes_pack_revision_results.sh
+```
+
 ## Core Finite-Data Diagnostic
 
 ```bash
