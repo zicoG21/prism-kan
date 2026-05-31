@@ -1,0 +1,208 @@
+#!/usr/bin/env python3
+"""Create compact, story-first figures for the workshop manuscript.
+
+The figures are intentionally small and self-contained.  They turn the main
+stage-record evidence into visual objects so the workshop paper reads less like
+an experiment log.
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+
+ROOT = Path(__file__).resolve().parents[1]
+OUT_DIR = ROOT / "manuscripts" / "workshop_case_study" / "figures"
+HORIZONTAL = ROOT / "local_notes" / "generated" / "horizontal_evidence_table_20260531.csv"
+
+
+def savefig(name: str) -> None:
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    for ext in ("pdf", "png"):
+        path = OUT_DIR / f"{name}.{ext}"
+        plt.savefig(path, bbox_inches="tight", dpi=300)
+        print(f"wrote {path}")
+    plt.close()
+
+
+def stage_record_flow() -> None:
+    fig, ax = plt.subplots(figsize=(10.2, 3.45))
+    ax.set_axis_off()
+
+    stages = [
+        ("Prediction", "test MSE\nsignal scale"),
+        ("Full KAN", "pair reliance\nANOVA rank"),
+        ("Readout", "endpoint rank\nmargin"),
+        ("Refit", "pair scorer\non support"),
+        ("Prune / symbolic", "retained vars\nformula status"),
+        ("Claim", "support + pair\nwith provenance"),
+    ]
+    xs = np.linspace(0.07, 0.93, len(stages))
+    y = 0.62
+    box_w, box_h = 0.145, 0.34
+    colors = ["#e8edf3", "#d8eef0", "#e9e2f5", "#f3ead8", "#f4dfdd", "#ddebd8"]
+
+    for idx, ((title, body), x, c) in enumerate(zip(stages, xs, colors)):
+        ax.add_patch(
+            plt.Rectangle(
+                (x - box_w / 2, y - box_h / 2),
+                box_w,
+                box_h,
+                facecolor=c,
+                edgecolor="#333333",
+                linewidth=1.0,
+                transform=ax.transAxes,
+            )
+        )
+        ax.text(x, y + 0.065, title, ha="center", va="center", fontsize=9.5, weight="bold", transform=ax.transAxes)
+        ax.text(x, y - 0.055, body, ha="center", va="center", fontsize=8.1, transform=ax.transAxes)
+        if idx < len(stages) - 1:
+            ax.annotate(
+                "",
+                xy=(xs[idx + 1] - box_w / 2 - 0.008, y),
+                xytext=(x + box_w / 2 + 0.008, y),
+                arrowprops=dict(arrowstyle="->", lw=1.2, color="#333333"),
+                xycoords=ax.transAxes,
+                textcoords=ax.transAxes,
+            )
+
+    callouts = [
+        (0.19, 0.22, "C1: low MSE can still lose the pair", "#b94a48"),
+        (0.50, 0.08, "C2: fitted-function reliance and readout surfacing can disagree", "#4a6fb3"),
+        (0.80, 0.22, "C3: extraction can inherit or drop endpoints", "#9a6b20"),
+    ]
+    for x, yy, txt, col in callouts:
+        ax.text(
+            x,
+            yy,
+            txt,
+            ha="center",
+            va="center",
+            fontsize=8.5,
+            color=col,
+            bbox=dict(boxstyle="round,pad=0.25", facecolor="white", edgecolor=col, linewidth=0.9),
+            transform=ax.transAxes,
+        )
+
+    ax.text(
+        0.5,
+        0.94,
+        "Stage record: structural claims are tied to workflow evidence",
+        ha="center",
+        va="center",
+        fontsize=11,
+        weight="bold",
+        transform=ax.transAxes,
+    )
+    savefig("stage_record_flow")
+
+
+def stage_discordance_heatmap() -> None:
+    df = pd.read_csv(HORIZONTAL)
+    rows = [
+        ("clean w16 n512", "Clean w16 n=512"),
+        ("clean w16 n1024", "Clean w16 n=1024"),
+        ("gridupdate w16 n512", "Grid update n=512"),
+        ("gridupdate w16 n1024", "Grid update n=1024"),
+        ("noise010 w16 n512", "Noise .10 n=512"),
+        ("noise010 w16 n1024", "Noise .10 n=1024"),
+        ("clean w32 n768", "Clean w32 n=768"),
+    ]
+    df = df.set_index("condition").loc[[r[0] for r in rows]].reset_index()
+
+    values = df[["full_rate", "readout_rate"]].copy()
+    values["prune_rate"] = df["prune_endpoints"].str.split("/").apply(lambda x: int(x[0]) / int(x[1]))
+    mat = values.to_numpy(float)
+
+    counts = np.column_stack(
+        [
+            df["full_rank1"].to_numpy(str),
+            df["readout_endpoints"].to_numpy(str),
+            df["prune_endpoints"].to_numpy(str),
+        ]
+    )
+
+    fig, ax = plt.subplots(figsize=(8.9, 3.8))
+    im = ax.imshow(mat, cmap="RdYlGn", vmin=0, vmax=1, aspect="auto")
+    ax.set_xticks(range(3))
+    ax.set_xticklabels(["Full KAN\npair rank-1", "Exposed readout\nendpoints@4", "Prune-input\nendpoints"], fontsize=9)
+    ax.set_yticks(range(len(rows)))
+    ax.set_yticklabels([r[1] for r in rows], fontsize=9)
+
+    for i in range(mat.shape[0]):
+        for j in range(mat.shape[1]):
+            color = "white" if mat[i, j] < 0.35 else "#202020"
+            ax.text(j, i, counts[i, j], ha="center", va="center", fontsize=9, weight="bold", color=color)
+
+    ax.set_title("Same task, different evidence objects", fontsize=12, weight="bold", pad=10)
+    ax.tick_params(length=0)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+    cbar = fig.colorbar(im, ax=ax, fraction=0.035, pad=0.03)
+    cbar.set_label("success rate", fontsize=9)
+    cbar.ax.tick_params(labelsize=8)
+    savefig("stage_discordance_heatmap")
+
+
+def breadth_summary() -> None:
+    fig, axes = plt.subplots(1, 3, figsize=(10.2, 3.15), gridspec_kw={"width_ratios": [1.25, 0.9, 1.15]})
+
+    # Semi-synthetic real-covariate geometry at noise 0.05.
+    ax = axes[0]
+    datasets = ["breast\ncancer", "diabetes", "wine"]
+    kan = np.array([90 / 90, 83 / 90, 64 / 90])
+    residual = np.array([0 / 90, 85 / 90, 61 / 90])
+    x = np.arange(len(datasets))
+    w = 0.34
+    ax.bar(x - w / 2, kan, width=w, color="#4a88c2", label="KAN-FE endpoints")
+    ax.bar(x + w / 2, residual, width=w, color="#d88c3a", label="Residual top-1")
+    ax.set_title("Real covariates", fontsize=10, weight="bold")
+    ax.set_ylim(0, 1.05)
+    ax.set_xticks(x)
+    ax.set_xticklabels(datasets, fontsize=8)
+    ax.set_ylabel("recovery rate", fontsize=9)
+    ax.legend(fontsize=7.5, frameon=False, loc="lower left")
+    ax.grid(axis="y", alpha=0.25)
+
+    # Mini-suite summary.
+    ax = axes[1]
+    labels = ["True\nsupport", "RF\nsupport"]
+    vals = [0.84, 0.67]
+    ax.bar(labels, vals, color=["#4b9f73", "#b985c4"], width=0.55)
+    ax.set_title("11-formula suite", fontsize=10, weight="bold")
+    ax.set_ylim(0, 1.05)
+    ax.set_ylabel("mean pair recovery", fontsize=9)
+    for idx, v in enumerate(vals):
+        ax.text(idx, v + 0.035, f"{v:.2f}", ha="center", fontsize=9)
+    ax.grid(axis="y", alpha=0.25)
+
+    # NID-style neural pair-score controls.
+    ax = axes[2]
+    labels = ["Weak\ncentered", "Strong\ncentered", "Bilinear", "Log\nproduct", "Exp\nproduct"]
+    vals = [0.00, 0.995, 0.99, 0.97, 1.00]
+    colors = ["#b94a48", "#4b9f73", "#4b9f73", "#4b9f73", "#4b9f73"]
+    ax.bar(np.arange(len(labels)), vals, color=colors, width=0.62)
+    ax.set_title("NID-style controls", fontsize=10, weight="bold")
+    ax.set_ylim(0, 1.05)
+    ax.set_xticks(np.arange(len(labels)))
+    ax.set_xticklabels(labels, fontsize=8)
+    ax.set_ylabel("pair F1", fontsize=9)
+    ax.grid(axis="y", alpha=0.25)
+
+    fig.suptitle("Breadth checks: the audit is not only one core table", fontsize=12, weight="bold", y=1.03)
+    fig.tight_layout()
+    savefig("breadth_summary")
+
+
+def main() -> None:
+    stage_record_flow()
+    stage_discordance_heatmap()
+    breadth_summary()
+
+
+if __name__ == "__main__":
+    main()
