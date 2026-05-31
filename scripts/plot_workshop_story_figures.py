@@ -18,6 +18,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIR = ROOT / "manuscripts" / "workshop_case_study" / "figures"
 HORIZONTAL = ROOT / "local_notes" / "generated" / "horizontal_evidence_table_20260531.csv"
+STAGE_DISCORDANCE = ROOT / "results" / "revision" / "stage_discordance_summary.csv"
 
 
 def savefig(name: str) -> None:
@@ -91,7 +92,7 @@ def stage_record_flow() -> None:
     ax.text(
         0.5,
         0.94,
-        "Stage record: structural claims are tied to workflow evidence",
+        "Stage-discordance record: structural claims are tied to workflow evidence",
         ha="center",
         va="center",
         fontsize=11,
@@ -148,6 +149,83 @@ def stage_discordance_heatmap() -> None:
     savefig("stage_discordance_heatmap")
 
 
+def stage_discordance_phase_diagram() -> None:
+    """Plot the joined stage record as an evidence-object phase diagram."""
+
+    df = pd.read_csv(STAGE_DISCORDANCE)
+    df["full_rank1_rate"] = pd.to_numeric(df["full_rank1_rate"], errors="coerce")
+    df["readout_endpoints_at4"] = pd.to_numeric(df["readout_endpoints_at4"], errors="coerce")
+    df["full_margin"] = pd.to_numeric(df["full_margin"], errors="coerce")
+    df["readout_margin"] = pd.to_numeric(df["readout_margin"], errors="coerce")
+    df = df.dropna(subset=["full_rank1_rate", "readout_endpoints_at4"]).copy()
+
+    # Deterministic jitter keeps repeated readout-family rows visible without
+    # implying extra uncertainty.
+    rng = np.random.default_rng(20260531)
+    x = np.clip(df["full_rank1_rate"].to_numpy() + rng.normal(0, 0.012, size=len(df)), -0.03, 1.03)
+    y = np.clip(df["readout_endpoints_at4"].to_numpy() + rng.normal(0, 0.012, size=len(df)), -0.03, 1.03)
+
+    colors = {
+        "clean": "#2c7fb8",
+        "gridupdate": "#d95f0e",
+        "noise005": "#31a354",
+        "noise010": "#756bb1",
+    }
+    labels = {
+        "clean": "clean",
+        "gridupdate": "grid update",
+        "noise005": "noise .05",
+        "noise010": "noise .10",
+    }
+
+    fig, ax = plt.subplots(figsize=(6.9, 4.7))
+
+    # Regions follow the classification used in make_stage_discordance_summary.
+    ax.axvspan(-0.03, 0.5, ymin=0.8 / 1.06, ymax=1, color="#f8dfdf", alpha=0.55, zorder=0)
+    ax.axvspan(0.8, 1.03, ymin=0, ymax=0.5 / 1.06, color="#e3e7fb", alpha=0.55, zorder=0)
+    ax.axvspan(0.8, 1.03, ymin=0.8 / 1.06, ymax=1, color="#def2df", alpha=0.65, zorder=0)
+    ax.axvspan(-0.03, 0.5, ymin=0, ymax=0.5 / 1.06, color="#eeeeee", alpha=0.85, zorder=0)
+
+    for cond, group in df.groupby("condition"):
+        idx = group.index.to_numpy()
+        ax.scatter(
+            x[df.index.get_indexer(idx)],
+            y[df.index.get_indexer(idx)],
+            s=42,
+            color=colors.get(cond, "#666666"),
+            alpha=0.78,
+            edgecolor="white",
+            linewidth=0.45,
+            label=labels.get(cond, cond),
+        )
+
+    ax.axvline(0.5, color="#555555", lw=0.9, ls="--")
+    ax.axhline(0.5, color="#555555", lw=0.9, ls="--")
+    ax.axvline(0.8, color="#777777", lw=0.8, ls=":")
+    ax.axhline(0.8, color="#777777", lw=0.8, ls=":")
+
+    counts = df["discordance_label"].value_counts()
+    ax.text(0.15, 0.94, f"surfacing without reliance\n{counts.get('surfacing without reliance', 0)} records",
+            ha="center", va="center", fontsize=8.5, color="#8a1f1f")
+    ax.text(0.90, 0.94, f"aligned high\n{counts.get('aligned high', 0)}",
+            ha="center", va="center", fontsize=8.5, color="#216b2b")
+    ax.text(0.18, 0.14, f"aligned low\n{counts.get('aligned low', 0)}",
+            ha="center", va="center", fontsize=8.5, color="#444444")
+    ax.text(0.55, 0.55, f"mixed boundary\n{counts.get('mixed boundary', 0)}",
+            ha="center", va="center", fontsize=8.5, color="#5a4b8a",
+            bbox=dict(facecolor="white", edgecolor="#b8b8b8", boxstyle="round,pad=0.25", alpha=0.85))
+
+    ax.set_xlim(-0.03, 1.03)
+    ax.set_ylim(-0.03, 1.03)
+    ax.set_xlabel("Full-KAN pair reliance: true pair rank-1 rate", fontsize=10)
+    ax.set_ylabel("Exposed-readout endpoint surfacing: endpoints@4", fontsize=10)
+    ax.set_title("Stage-discordance record: same claim, different evidence objects", fontsize=11.5, weight="bold")
+    ax.grid(alpha=0.18)
+    ax.legend(frameon=False, loc="lower right", fontsize=8.2)
+    fig.tight_layout()
+    savefig("stage_discordance_phase_diagram")
+
+
 def breadth_summary() -> None:
     fig, axes = plt.subplots(1, 3, figsize=(10.2, 3.15), gridspec_kw={"width_ratios": [1.25, 0.9, 1.15]})
 
@@ -201,6 +279,7 @@ def breadth_summary() -> None:
 def main() -> None:
     stage_record_flow()
     stage_discordance_heatmap()
+    stage_discordance_phase_diagram()
     breadth_summary()
 
 
