@@ -297,6 +297,12 @@ def main() -> None:
     parser.add_argument("--lamb", type=float, default=1e-3)
     parser.add_argument("--probe_steps", type=int, default=35)
     parser.add_argument("--refit_steps", type=int, default=50)
+    parser.add_argument(
+        "--probe_variable_points",
+        type=int,
+        default=None,
+        help="Accepted for compatibility with older launch scripts; this probe uses the observed training rows.",
+    )
     parser.add_argument("--opt", default="LBFGS")
     parser.add_argument("--update_grid", action="store_true")
     parser.add_argument("--grid_update_num", type=int, default=5)

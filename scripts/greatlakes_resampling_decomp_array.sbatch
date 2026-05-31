@@ -80,7 +80,6 @@ args=(
   --lamb 0.001
   --probe_steps 75
   --refit_steps 75
-  --probe_variable_points 512
   --pred_batch_size 4096
   --device cuda
   --out_dir "$out_dir"
