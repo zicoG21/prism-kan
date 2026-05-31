@@ -1,0 +1,52 @@
+{
+  "R": 20,
+  "batch": -1,
+  "coefficients": [
+    "0.10",
+    "0.25",
+    "0.50"
+  ],
+  "datasets": [
+    "wine"
+  ],
+  "device": "cuda",
+  "grid": 5,
+  "grid_update_num": 5,
+  "k": 3,
+  "keep_top_pairs": 300,
+  "lamb": 0.001,
+  "methods": [
+    "feature_stability_var",
+    "feature_edge_hybrid"
+  ],
+  "no_resume": false,
+  "noise": 0.0,
+  "opt": "LBFGS",
+  "out_dir": "results/revision/greatlakes_semisynthetic/wine",
+  "outer_seeds": [
+    2000,
+    2001,
+    2002,
+    2003,
+    2004,
+    2005,
+    2006,
+    2007,
+    2008,
+    2009
+  ],
+  "pred_batch_size": 4096,
+  "probe_seed_offset": 71000,
+  "probe_steps": 75,
+  "resample": "bootstrap",
+  "samples": [
+    128,
+    256,
+    384
+  ],
+  "subsample_frac": 0.8,
+  "test_samples": 512,
+  "top_m": 4,
+  "update_grid": false,
+  "width_hidden": 16
+}

@@ -1,0 +1,2 @@
+function,samples,dimension,noise,update_grid,width_hidden,seeds,mean_test_mse,mean_rank1_over_mc,seeds_always_rank1,seeds_never_rank1,mean_rank,mean_rank_std_within_model,mean_margin,mean_margin_std_within_model
+core_interaction_c025,1024,100,0.1,0,16,20,0.05299549885094166,0.55,11,9,626.135,163.9203869256565,0.020641005353536458,0.008463757689182293
