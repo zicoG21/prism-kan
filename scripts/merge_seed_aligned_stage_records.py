@@ -42,6 +42,28 @@ def safe_list(text: object) -> list[int]:
         return []
 
 
+def dataframe_to_markdown(df: pd.DataFrame, index: bool = False) -> str:
+    """Render markdown tables without pandas' optional tabulate dependency."""
+
+    if df.empty:
+        return ""
+    table = df.reset_index() if index else df.copy()
+    table = table.astype(str)
+    headers = list(table.columns)
+    rows = table.values.tolist()
+    widths = [
+        max(len(str(header)), *(len(str(row[i])) for row in rows))
+        for i, header in enumerate(headers)
+    ]
+
+    def fmt_row(values: list[object]) -> str:
+        cells = [str(value).ljust(widths[i]) for i, value in enumerate(values)]
+        return "| " + " | ".join(cells) + " |"
+
+    separator = "| " + " | ".join("-" * width for width in widths) + " |"
+    return "\n".join([fmt_row(headers), separator, *(fmt_row(row) for row in rows)])
+
+
 def fmt_float(value: object, digits: int = 3) -> str:
     try:
         x = float(value)
@@ -54,15 +76,17 @@ def fmt_float(value: object, digits: int = 3) -> str:
     return f"{x:.{digits}f}"
 
 
-def read_all(root: Path) -> pd.DataFrame:
+def read_all(roots: list[Path]) -> pd.DataFrame:
     frames = []
-    for path in sorted(root.glob("*/seed_aligned_stage_records_detail.csv")):
-        try:
-            df = pd.read_csv(path)
-        except Exception:
-            continue
-        df["source_file"] = str(path)
-        frames.append(df)
+    for root in roots:
+        for path in sorted(root.glob("*/seed_aligned_stage_records_detail.csv")):
+            try:
+                df = pd.read_csv(path)
+            except Exception:
+                continue
+            df["source_root"] = str(root)
+            df["source_file"] = str(path)
+            frames.append(df)
     if not frames:
         return pd.DataFrame()
     return pd.concat(frames, ignore_index=True)
@@ -133,7 +157,7 @@ def write_markdown(df: pd.DataFrame, out: Path) -> None:
         "Columns `full_pair`, `readout`, and `refit_pair` are formatted as",
         "`rank / margin`. `prune` reports support size and endpoint containment.",
         "",
-        df.to_markdown(index=False) if not df.empty else "No rows found.",
+        dataframe_to_markdown(df, index=False) if not df.empty else "No rows found.",
         "",
     ]
     out.write_text("\n".join(lines), encoding="utf-8")
@@ -166,7 +190,12 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--root",
-        default="results/revision/seed_aligned_stage_records",
+        nargs="+",
+        default=[
+            "results/revision/seed_aligned_stage_records",
+            "results/revision/seed_aligned_stage_records_more",
+        ],
+        help="One or more seed-aligned result roots to merge.",
     )
     parser.add_argument(
         "--out_dir",
@@ -175,11 +204,11 @@ def main() -> None:
     parser.add_argument("--max_rows", type=int, default=8)
     args = parser.parse_args()
 
-    root = Path(args.root)
+    roots = [Path(p) for p in args.root]
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    detail = read_all(root)
+    detail = read_all(roots)
     detail_path = out_dir / "merged_seed_aligned_stage_records_detail.csv"
     compact_path = out_dir / "merged_seed_aligned_stage_records_compact.csv"
     md_path = out_dir / "merged_seed_aligned_stage_records.md"
@@ -192,7 +221,7 @@ def main() -> None:
     write_markdown(compact, md_path)
     write_latex(compact, tex_path)
 
-    print(f"Read {len(detail)} rows from {root}")
+    print(f"Read {len(detail)} rows from {', '.join(str(p) for p in roots)}")
     print(f"Wrote {detail_path}")
     print(f"Wrote {compact_path}")
     print(f"Wrote {md_path}")

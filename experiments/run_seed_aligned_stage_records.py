@@ -468,6 +468,28 @@ def compact_table(detail: pd.DataFrame, max_rows: int) -> pd.DataFrame:
     return out
 
 
+def dataframe_to_markdown(df: pd.DataFrame, index: bool = False) -> str:
+    """Render a small dataframe as GitHub-style markdown without tabulate."""
+
+    if df.empty:
+        return ""
+    table = df.reset_index() if index else df.copy()
+    table = table.astype(str)
+    headers = list(table.columns)
+    rows = table.values.tolist()
+    widths = [
+        max(len(str(header)), *(len(str(row[i])) for row in rows))
+        for i, header in enumerate(headers)
+    ]
+
+    def fmt_row(values: list[object]) -> str:
+        cells = [str(value).ljust(widths[i]) for i, value in enumerate(values)]
+        return "| " + " | ".join(cells) + " |"
+
+    separator = "| " + " | ".join("-" * width for width in widths) + " |"
+    return "\n".join([fmt_row(headers), separator, *(fmt_row(row) for row in rows)])
+
+
 def write_markdown(detail: pd.DataFrame, path: Path, max_rows: int) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     table = compact_table(detail, max_rows=max_rows)
@@ -500,14 +522,17 @@ def write_markdown(detail: pd.DataFrame, path: Path, max_rows: int) -> None:
         show = table[cols].copy()
         for col in ["test_mse", "full_pair_margin", "readout_endpoint_margin"]:
             show[col] = pd.to_numeric(show[col], errors="coerce").map(lambda x: f"{x:.4g}")
-        lines.append(show.to_markdown(index=False))
+        lines.append(dataframe_to_markdown(show, index=False))
         lines.extend(
             [
                 "",
                 "First-broken-stage counts:",
                 "",
                 (
-                    detail["first_broken_stage"].value_counts().to_markdown()
+                    dataframe_to_markdown(
+                        detail["first_broken_stage"].value_counts().rename_axis("stage").reset_index(name="count"),
+                        index=False,
+                    )
                     if "first_broken_stage" in detail.columns
                     else "No completed first-broken-stage rows yet."
                 ),

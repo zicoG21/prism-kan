@@ -148,6 +148,28 @@ def summarize_one(path: Path, method: str) -> dict[str, object] | None:
     }
 
 
+def dataframe_to_markdown(df: pd.DataFrame, index: bool = False) -> str:
+    """Render markdown tables without pandas' optional tabulate dependency."""
+
+    if df.empty:
+        return ""
+    table = df.reset_index() if index else df.copy()
+    table = table.astype(str)
+    headers = list(table.columns)
+    rows = table.values.tolist()
+    widths = [
+        max(len(str(header)), *(len(str(row[i])) for row in rows))
+        for i, header in enumerate(headers)
+    ]
+
+    def fmt_row(values: list[object]) -> str:
+        cells = [str(value).ljust(widths[i]) for i, value in enumerate(values)]
+        return "| " + " | ".join(cells) + " |"
+
+    separator = "| " + " | ".join("-" * width for width in widths) + " |"
+    return "\n".join([fmt_row(headers), separator, *(fmt_row(row) for row in rows)])
+
+
 def write_markdown(df: pd.DataFrame, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     lines = [
@@ -169,13 +191,19 @@ def write_markdown(df: pd.DataFrame, path: Path) -> None:
             "discordance_label",
             "first_broken_stage",
         ]
-        lines.append(df[show_cols].to_markdown(index=False, floatfmt=".3f"))
+        show = df[show_cols].copy()
+        for col in ["full_rank1_rate", "readout_endpoints_at_m", "full_margin", "readout_margin"]:
+            show[col] = pd.to_numeric(show[col], errors="coerce").map(lambda x: f"{x:.3f}")
+        lines.append(dataframe_to_markdown(show, index=False))
         lines.extend(
             [
                 "",
                 "Label counts:",
                 "",
-                df["discordance_label"].value_counts().to_markdown(),
+                dataframe_to_markdown(
+                    df["discordance_label"].value_counts().rename_axis("label").reset_index(name="count"),
+                    index=False,
+                ),
             ]
         )
     path.write_text("\n".join(lines) + "\n")

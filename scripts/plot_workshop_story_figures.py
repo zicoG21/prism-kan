@@ -22,6 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT_DIR = ROOT / "manuscripts" / "workshop_case_study" / "figures"
 HORIZONTAL = ROOT / "local_notes" / "generated" / "horizontal_evidence_table_20260531.csv"
 STAGE_DISCORDANCE = ROOT / "results" / "revision" / "stage_discordance_summary.csv"
+MINISUITE = ROOT / "results" / "workshop_review_tables" / "formal_minisuite" / "formal_minisuite_baseline_table.csv"
 
 COLORS = {
     "ink": "#222222",
@@ -228,7 +229,17 @@ def stage_discordance_heatmap() -> None:
             ax.text(j, i - 0.08, counts[i, j], ha="center", va="center", fontsize=8.4, weight="bold", color=color)
             ax.text(j, i + 0.17, f"{mat[i,j]:.2f}", ha="center", va="center", fontsize=6.9, color=color)
 
-    ax.set_title("Same structural claim, different evidence objects", fontsize=9.8, weight="bold", pad=7)
+    ax.set_title("Same structural claim, different evidence objects", fontsize=9.8, weight="bold", pad=14)
+    ax.text(
+        0.5,
+        1.025,
+        "Columns answer different audit questions; colors show within-column success rates.",
+        ha="center",
+        va="bottom",
+        transform=ax.transAxes,
+        fontsize=7.2,
+        color=COLORS["muted"],
+    )
     ax.tick_params(length=0)
     for spine in ax.spines.values():
         spine.set_visible(False)
@@ -237,12 +248,12 @@ def stage_discordance_heatmap() -> None:
     ax.grid(which="minor", color="white", linewidth=1.6)
     ax.tick_params(which="minor", bottom=False, left=False)
     cbar = fig.colorbar(im, ax=ax, fraction=0.035, pad=0.03)
-    cbar.set_label("success rate", fontsize=9)
+    cbar.set_label("within-column\nsuccess rate", fontsize=8.6)
     cbar.ax.tick_params(labelsize=8)
     ax.text(
         0.5,
         -0.20,
-        "Cells show count and rate; rows share the same target pair but query different workflow objects.",
+        "Counts are comparable within an evidence object; discordance across columns is the object of study.",
         ha="center",
         va="top",
         transform=ax.transAxes,
@@ -336,7 +347,7 @@ def stage_discordance_phase_diagram() -> None:
 
 
 def breadth_summary() -> None:
-    fig, axes = plt.subplots(1, 3, figsize=(10.0, 3.35), gridspec_kw={"width_ratios": [1.45, 0.82, 1.40]})
+    fig, axes = plt.subplots(1, 3, figsize=(10.2, 3.68), gridspec_kw={"width_ratios": [1.00, 1.86, 1.00]})
 
     # Semi-synthetic real-covariate geometry at noise 0.05.
     ax = axes[0]
@@ -373,21 +384,42 @@ def breadth_summary() -> None:
     )
     ax.grid(axis="x", alpha=0.35)
 
-    # Mini-suite summary.
+    # Mini-suite formula-level summary.
     ax = axes[1]
-    labels = ["True\nsupport", "RF\nsupport"]
-    vals = [0.84, 0.67]
-    ax.bar(labels, vals, color=[COLORS["green"], COLORS["purple"]], width=0.54)
+    mini = pd.read_csv(MINISUITE)
+    order = [
+        "weak-centered",
+        "nested-trig",
+        "three-way-product",
+        "mixed-sparse",
+        "rational-product",
+        "division-mixed",
+        "bilinear",
+        "trig-product",
+        "log-product",
+        "exp-product",
+        "sqrt-energy",
+    ]
+    mini = mini.set_index("family").loc[order].reset_index()
+    yy = np.arange(len(mini))
+    true_vals = mini["true_support_kan"].to_numpy(float)
+    rf_vals = mini["rf_support_kan"].to_numpy(float)
+    for y0, tv, rv in zip(yy, true_vals, rf_vals):
+        ax.plot([rv, tv], [y0, y0], color="#CBD5E1", lw=1.4, zorder=1)
+    ax.scatter(true_vals, yy, s=30, color=COLORS["green"], label="True support", zorder=3, edgecolor="white", linewidth=0.50)
+    ax.scatter(rf_vals, yy, s=30, color=COLORS["purple"], label="RF support", zorder=3, edgecolor="white", linewidth=0.50)
     ax.set_title("(b) Formula suite", loc="left", fontsize=9.2, weight="bold")
-    ax.set_ylim(0, 1.05)
-    ax.set_ylabel("mean pair recovery")
-    for idx, v in enumerate(vals):
-        ax.text(idx, v + 0.035, f"{v:.2f}", ha="center", fontsize=9)
-    ax.grid(axis="y", alpha=0.25)
+    ax.set_xlim(-0.04, 1.04)
+    ax.set_yticks(yy)
+    ax.set_yticklabels(mini["family"], fontsize=7.2)
+    ax.invert_yaxis()
+    ax.set_xlabel("pair recovery", labelpad=1.5)
+    ax.legend(fontsize=6.9, frameon=False, loc="lower right", handletextpad=0.25)
+    ax.grid(axis="x", alpha=0.30)
 
     # NID-style neural pair-score controls.
     ax = axes[2]
-    labels = ["Weak\ncentered", "Strong\ncentered", "Bilinear", "Log\nproduct", "Exp\nproduct"]
+    labels = ["Weak\ncent.", "Strong\ncent.", "Bilin.", "Log\nprod.", "Exp\nprod."]
     vals = [0.00, 0.995, 0.99, 0.97, 1.00]
     colors = [COLORS["red"], COLORS["green"], COLORS["green"], COLORS["green"], COLORS["green"]]
     xx = np.arange(len(labels))
@@ -398,7 +430,7 @@ def breadth_summary() -> None:
     ax.set_title("(c) NID-style controls", loc="left", fontsize=9.2, weight="bold")
     ax.set_ylim(0, 1.05)
     ax.set_xticks(np.arange(len(labels)))
-    ax.set_xticklabels(labels, fontsize=8)
+    ax.set_xticklabels(labels, fontsize=7.6)
     ax.set_ylabel("pair F1")
     ax.grid(axis="y", alpha=0.30)
 

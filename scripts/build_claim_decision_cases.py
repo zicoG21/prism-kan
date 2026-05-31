@@ -132,6 +132,28 @@ def build_cases(horizontal: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def dataframe_to_markdown(df: pd.DataFrame, index: bool = False) -> str:
+    """Render markdown tables without pandas' optional tabulate dependency."""
+
+    if df.empty:
+        return ""
+    table = df.reset_index() if index else df.copy()
+    table = table.astype(str)
+    headers = list(table.columns)
+    rows = table.values.tolist()
+    widths = [
+        max(len(str(header)), *(len(str(row[i])) for row in rows))
+        for i, header in enumerate(headers)
+    ]
+
+    def fmt_row(values: list[object]) -> str:
+        cells = [str(value).ljust(widths[i]) for i, value in enumerate(values)]
+        return "| " + " | ".join(cells) + " |"
+
+    separator = "| " + " | ".join("-" * width for width in widths) + " |"
+    return "\n".join([fmt_row(headers), separator, *(fmt_row(row) for row in rows)])
+
+
 def write_markdown(df: pd.DataFrame, out: Path) -> None:
     cols = [
         "condition",
@@ -150,7 +172,7 @@ def write_markdown(df: pd.DataFrame, out: Path) -> None:
         "It is not a new experiment; it converts the same evidence into reviewer-facing",
         "claim decisions.",
         "",
-        df[cols].to_markdown(index=False),
+        dataframe_to_markdown(df[cols], index=False),
         "",
         "Reading: an apparent formula-recovery claim is accepted only when fitted-function",
         "pair reliance, exposed endpoint surfacing, and sparse downstream extraction agree.",
