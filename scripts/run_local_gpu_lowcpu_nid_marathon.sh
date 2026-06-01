@@ -75,19 +75,20 @@ run_case() {
   echo "[$(date -Is)] done ${label}" | tee -a "$BASE/progress.log"
 }
 
-# Based on the local 30-seed queue timing, 800 seeds over these ten cases should
-# comfortably exceed 12 hours on the laptop GPU while keeping CPU pressure low.
-SEEDS="$(seq -s ' ' 1000 1799)"
+# Based on the local 30-seed queue timing and the first live marathon rate,
+# 2000 seeds over these ten cases should exceed 12 hours on the laptop GPU while
+# keeping CPU pressure low.
+SEEDS="$(seq -s ' ' 1000 2999)"
 
-run_case "weak_c025_n512_h384d3_nidonly_s1000_1799" "core_interaction_c025" 512 0.00 384 3 "$SEEDS"
-run_case "weak_c025_n1024_h384d3_nidonly_s1000_1799" "core_interaction_c025" 1024 0.00 384 3 "$SEEDS"
-run_case "noise010_c025_n1024_h384d3_nidonly_s1000_1799" "core_interaction_c025" 1024 0.10 384 3 "$SEEDS"
-run_case "strong_c1_n1024_h384d3_nidonly_s1000_1799" "core_interaction_c1" 1024 0.00 384 3 "$SEEDS"
-run_case "nested_trig_h384d3_nidonly_s1000_1799" "formula_nested_trig" 1024 0.00 384 3 "$SEEDS"
-run_case "rational_product_h384d3_nidonly_s1000_1799" "formula_rational_product" 1024 0.00 384 3 "$SEEDS"
-run_case "three_way_product_h384d3_nidonly_s1000_1799" "formula_three_way_product" 1024 0.00 384 3 "$SEEDS"
-run_case "exp_product_h384d3_nidonly_s1000_1799" "formula_exp_product" 1024 0.00 384 3 "$SEEDS"
-run_case "trig_product_h384d3_nidonly_s1000_1799" "formula_trig_product" 1024 0.00 384 3 "$SEEDS"
-run_case "mixed_sparse_h384d3_nidonly_s1000_1799" "formula_mixed_sparse" 1024 0.00 384 3 "$SEEDS"
+run_case "weak_c025_n512_h384d3_nidonly_s1000_2999" "core_interaction_c025" 512 0.00 384 3 "$SEEDS"
+run_case "weak_c025_n1024_h384d3_nidonly_s1000_2999" "core_interaction_c025" 1024 0.00 384 3 "$SEEDS"
+run_case "noise010_c025_n1024_h384d3_nidonly_s1000_2999" "core_interaction_c025" 1024 0.10 384 3 "$SEEDS"
+run_case "strong_c1_n1024_h384d3_nidonly_s1000_2999" "core_interaction_c1" 1024 0.00 384 3 "$SEEDS"
+run_case "nested_trig_h384d3_nidonly_s1000_2999" "formula_nested_trig" 1024 0.00 384 3 "$SEEDS"
+run_case "rational_product_h384d3_nidonly_s1000_2999" "formula_rational_product" 1024 0.00 384 3 "$SEEDS"
+run_case "three_way_product_h384d3_nidonly_s1000_2999" "formula_three_way_product" 1024 0.00 384 3 "$SEEDS"
+run_case "exp_product_h384d3_nidonly_s1000_2999" "formula_exp_product" 1024 0.00 384 3 "$SEEDS"
+run_case "trig_product_h384d3_nidonly_s1000_2999" "formula_trig_product" 1024 0.00 384 3 "$SEEDS"
+run_case "mixed_sparse_h384d3_nidonly_s1000_2999" "formula_mixed_sparse" 1024 0.00 384 3 "$SEEDS"
 
 echo "[$(date -Is)] all local NID marathon jobs complete: $BASE" | tee -a "$BASE/progress.log"
