@@ -57,6 +57,13 @@ ROWS=(
 row="${ROWS[$SLURM_ARRAY_TASK_ID]}"
 IFS='|' read -r label function samples dimension noise update_grid width steps proposal_qs random_controls endpoint_top_m seeds <<< "$row"
 
+if [[ -n "${SEEDS:-}" ]]; then
+  seeds="${SEEDS}"
+fi
+if [[ -n "${LABEL_SUFFIX:-}" ]]; then
+  label="${label}_${LABEL_SUFFIX}"
+fi
+
 out_dir="results/revision/epim_pairverify_breadth_a40/${label}"
 args=(
   scripts/run_kan_epim_pairverify.py
