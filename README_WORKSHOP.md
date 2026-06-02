@@ -25,7 +25,7 @@ Provenance Record.
 ClaimTransfer-Bench is organized around four release objects:
 
 - `task_card`: formula id, covariate generator, dimensions/sample size, noise,
-  train/test seed, true support, claim grammar, official scorer, and declared
+  train/test seed, true support, claim specification, official scorer, and declared
   pair/symbolic labels.
 - `workflow_adapter`: method id, hyperparameters, exposed evidence objects, and
   extraction rules for support/endpoint/pair/symbolic claims.
@@ -37,9 +37,9 @@ ClaimTransfer-Bench is organized around four release objects:
 The checked-in scripts below rebuild reference `claim_record` summaries for the
 paper rows; long retraining jobs regenerate the raw records.
 
-### Claim Grammar Authoring Rule
+### Claim Specification Authoring Rule
 
-The claim grammar is part of the task card and is fixed before running a
+The claim specification is part of the task card and is fixed before running a
 workflow adapter.
 
 - Product cards declare the algebraic product pair(s) in the data-generating
@@ -48,7 +48,7 @@ workflow adapter.
   claims exposed by the formula and the official scorer for each claim.
 - Nested, three-way, and compositional cards are tagged as pairwise-stress cards
   when no unique pairwise ground truth is implied by the formula.
-- Different grammars for the same formula should be represented as separate
+- Different specifications for the same formula should be represented as separate
   task cards, not as post-hoc reinterpretations of one result.
 
 ### Minimum Score Report
@@ -74,7 +74,7 @@ forcing all methods into a single importance score.  For example, a sparse
 library adapter writes selected variables and pair-term coefficients; a GA2M
 adapter writes selected univariate/bivariate components; a symbolic-library
 adapter writes variables/operators present in the expression.  The benchmark
-then scores those native objects against the task-card grammar.
+then scores those native objects against the task-card specification.
 
 ## Reviewer Quickstart
 
@@ -185,26 +185,26 @@ export PYTHON_BIN=$PWD/.venv/bin/python
 
 sbatch --account=jaabell0 \
   --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python \
-  --array=0-11%4 \
+  --array=0-11 \
   scripts/greatlakes_fullkan_anova_array.sbatch
 
 sbatch --account=jaabell0 \
   --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python \
-  --array=0-9%4 \
+  --array=0-9 \
   scripts/greatlakes_readout_sensitivity_array.sbatch
 
 sbatch --account=jaabell0 \
   --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python \
-  --array=0-2%3 \
+  --array=0-2 \
   scripts/greatlakes_semisynthetic_array.sbatch
 
 sbatch --account=jaabell0 \
   --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python \
-  --array=0-3%4 \
+  --array=0-3 \
   scripts/greatlakes_anova_estimator_stability_array.sbatch
 ```
 
-Scorer-indexed claim grammar on A40/spgpu nodes:
+Scorer-indexed pair-claim rows on A40/spgpu nodes:
 
 ```bash
 sbatch --account=jaabell0 \
@@ -220,8 +220,8 @@ sbatch --account=engin1 \
 
 These rows compare EPIM, functional ANOVA, finite-difference, and hybrid pair
 scorers on the same fitted KAN.  They are the reference run for scorer-indexed
-claim grammar: a task card can support a pair claim only relative to the
-declared scorer.
+pair claims: a task card can support a pair claim only relative to the declared
+scorer.
 
 For queued downstream pruning/symbolic smoke checks, submit after the current
 arrays finish or use a dependency:
@@ -230,7 +230,7 @@ arrays finish or use a dependency:
 sbatch --account=jaabell0 \
   --dependency=afterany:<FULLKAN_JOBID>:<SEMISYN_JOBID> \
   --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python \
-  --array=0-3%2 \
+  --array=0-3 \
   scripts/greatlakes_prune_symbolic_array.sbatch
 ```
 
