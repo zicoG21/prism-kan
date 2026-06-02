@@ -74,7 +74,7 @@ weak_centered_n1024,pyKAN,0,exposed_readout,endpoints,"(2,3)",KAN-FE,4,0.041,top
 weak_centered_n1024,pyKAN,1,exposed_readout,endpoints,"(2,3)",KAN-FE,17,-0.006,top4,false,w16_grid5_no_update
 ```
 
-### Claim Specification Authoring Rule
+### Claim Specification Authoring Rules
 
 The claim specification is part of the task card and is fixed before running a
 workflow adapter.
@@ -83,10 +83,39 @@ workflow adapter.
   formula.
 - Multi-term rational or mixed-sparse cards declare the finite set of pair
   claims exposed by the formula and the official scorer for each claim.
-- Nested, three-way, and compositional cards are tagged as pairwise-stress cards
-  when no unique pairwise ground truth is implied by the formula.
+- Three-way cards declare support claims and, when useful, separate pairwise
+  stress labels rather than a single true pair.
+- Nested and compositional cards are tagged as scorer-stress cards unless the
+  task card explicitly declares a pair claim.
+- Symbolic status is structural only when the retained support and declared
+  endpoints pass.
 - Different specifications for the same formula should be represented as separate
   task cards, not as post-hoc reinterpretations of one result.
+
+### Adapter Contract
+
+Adapters submit native evidence objects rather than converting every method into
+one importance score.
+
+| Adapter family | Native output | Claim-record fields | Missing-field rule |
+| --- | --- | --- | --- |
+| pyKAN workflow | fitted function, readout scores, pruned support, symbolic status | MSE, support ranks, endpoint ranks, pair ranks, retained support | omit unsupported objects |
+| Sparse / spline library | selected variables and interaction terms with coefficients | support, endpoint, pair-term rank, coefficient margin | no readout/pruning row unless exposed |
+| GA2M / additive | selected univariate and bivariate components | support from active components; pair claims from bivariate components | no symbolic row unless expression exported |
+| Tree / residual screen | prediction model plus H-statistic or residual pair scores | MSE and pair-score ranks/margins | support row only if native importance is submitted |
+| Symbolic library | expression variables, operators, and pair terms | support, pair terms, symbolic status, expression complexity | pair row absent if expression has no declared pair term |
+
+### Ordinary Report vs ClaimTransfer Report
+
+An ordinary formula-recovery report can say "low MSE" or "symbolic call
+returned."  A ClaimTransfer report states which object supports which structural
+claim:
+
+| Report row | Supported statement | Unsupported transfer |
+| --- | --- | --- |
+| Full-function row | the fitted function ranks the declared pair under the official scorer | exposed readout and pruning still need their own rows |
+| Readout row | declared endpoints surface under the submitted readout predicate | fitted-function pair reliance is not implied |
+| Pruning/symbolic row | a syntactic expression was returned over retained variables | sparse support recovery is not implied unless retained support/endpoints pass |
 
 ### Minimum Score Report
 
