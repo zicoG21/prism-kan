@@ -37,6 +37,34 @@ ClaimTransfer-Bench is organized around four release objects:
 The checked-in scripts below rebuild reference `claim_record` summaries for the
 paper rows; long retraining jobs regenerate the raw records.
 
+### Benchmark Contract
+
+The benchmark is a row-level structural-claim contract.
+
+- **Input:** a fixed `task_card` with formula/covariate generator, seeds, known
+  support, legal structural claims, and official scorers.
+- **Submission:** a workflow adapter that writes `claim_record.csv` rows.
+- **Required row fields:** `task_id`, `adapter`, `seed`, `evidence_object`,
+  `claim_type`, `target`, `scorer`, `rank`, `margin`, `predicate`, `pass`, and
+  `protocol`.
+- **Scoring:** continuous ranks, margins, support sizes, and MSEs are primary;
+  binary predicates are derived summaries with confidence intervals.
+- **Aggregate report:** macro summaries are grouped by task card, claim type,
+  and evidence object.  The benchmark does not collapse prediction, support,
+  pair, and symbolic claims into one scalar leaderboard.
+- **Conflict rule:** if two claim specifications for the same formula are both
+  meaningful, they are separate task cards, not post-hoc reinterpretations of a
+  single result.
+
+Example rows:
+
+```csv
+task_id,adapter,seed,evidence_object,claim_type,target,scorer,rank,margin,predicate,pass,protocol
+weak_centered_n1024,pyKAN,0,full_function,pair,"(2,3)",fANOVA,1,0.061,rank1,true,w16_grid5_no_update
+weak_centered_n1024,pyKAN,0,exposed_readout,endpoints,"(2,3)",KAN-FE,4,0.041,top4,true,w16_grid5_no_update
+weak_centered_n1024,pyKAN,1,exposed_readout,endpoints,"(2,3)",KAN-FE,17,-0.006,top4,false,w16_grid5_no_update
+```
+
 ### Claim Specification Authoring Rule
 
 The claim specification is part of the task card and is fixed before running a
