@@ -1,8 +1,8 @@
-# Evidence-Transfer Benchmark for Formula-Recovery Workflows
+# ClaimTransfer-Bench for Formula-Recovery Workflows
 
 This repository contains the paper-facing artifacts for:
 
-**Evidence-Transfer Benchmarks for Formula-Recovery Workflows**
+**ClaimTransfer-Bench: Typed Structural Claims for Formula-Recovery Workflows**
 
 The suite checks whether structural evidence transfers across workflow objects
 in controlled formula-recovery tasks.  It reports object-level evidence for:
@@ -15,8 +15,24 @@ in controlled formula-recovery tasks.  It reports object-level evidence for:
 
 The current paper uses pyKAN as the detailed neural case study, but the
 benchmark also includes sparse-library, GA2M-style, tree-interaction, and
-symbolic-library workflow families.  Unsupported-transfer rates are summary
-statistics; the primary artifact is the object-level evidence-transfer record.
+symbolic-library workflow families.  Handoff summaries are descriptive; the
+primary artifact is the row-level Claim Provenance Record.
+
+## Benchmark Interface
+
+ClaimTransfer-Bench is organized around four release objects:
+
+- `task_card`: formula id, covariate generator, dimensions/sample size, noise,
+  train/test seed, true support, and declared pair labels.
+- `workflow_adapter`: method id, hyperparameters, exposed evidence objects, and
+  extraction rules for support/endpoint/pair/symbolic claims.
+- `claim_record`: one row per seed and evidence object with task id, adapter id,
+  predicate, scorer, rank, margin, pass/fail, and protocol fields.
+- `score_report`: aggregate continuous evidence, derived predicate rates,
+  confidence intervals, and handoff summaries.
+
+The checked-in scripts below rebuild reference `claim_record` summaries for the
+paper rows; long retraining jobs regenerate the raw records.
 
 ## Reviewer Quickstart
 
@@ -146,6 +162,25 @@ sbatch --account=jaabell0 \
   scripts/greatlakes_anova_estimator_stability_array.sbatch
 ```
 
+Scorer-indexed claim grammar on A40/spgpu nodes:
+
+```bash
+sbatch --account=jaabell0 \
+  --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python,SEED_BASE=0,SEED_COUNT=12,LABEL_SUFFIX=j0 \
+  --array=0-9 \
+  scripts/greatlakes_spgpu_pair_scorer_grammar_a40.sbatch
+
+sbatch --account=engin1 \
+  --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python,SEED_BASE=200,SEED_COUNT=12,LABEL_SUFFIX=e0 \
+  --array=0-9 \
+  scripts/greatlakes_spgpu_pair_scorer_grammar_a40.sbatch
+```
+
+These rows compare EPIM, functional ANOVA, finite-difference, and hybrid pair
+scorers on the same fitted KAN.  They are the reference run for scorer-indexed
+claim grammar: a task card can support a pair claim only relative to the
+declared scorer.
+
 For queued downstream pruning/symbolic smoke checks, submit after the current
 arrays finish or use a dependency:
 
@@ -191,15 +226,20 @@ the support-budget figure.  It writes into:
 The script is intentionally explicit and can be edited to reduce seed counts for
 a smoke test.
 
-## Standardized Diagnostic Schema
+## Score Layers
 
-The paper-facing schema uses:
+The paper-facing schema separates continuous evidence from derived predicates:
 
-- `prediction_mse`: test-set MSE on standardized targets.
-- `active_variable_f1`: top-`k` active-variable F1 in controlled tasks.
-- `endpoint_retention`: success if all true interaction endpoints are retained.
-- `top1_pair`: success if the top-ranked candidate pair is a true pair.
-- `exact_support`: success if selected support equals the true active set.
+- `prediction_mse`: continuous test-set MSE on standardized targets; the
+  derived planted-control predicate is a fixed threshold when needed.
+- `active_variable_f1`: active-variable recovery under the declared support
+  budget; support size and ranks are retained when available.
+- `endpoint_retention`: endpoint ranks and endpoint-vs-nuisance margins; the
+  derived predicate is whether all true interaction endpoints are retained.
+- `top1_pair`: pair rank and pair margin under the declared scorer; the derived
+  predicate is whether the top-ranked candidate pair is a true pair.
+- `exact_support`: selected support and retained support size; the derived
+  predicate is equality with the declared active set in controlled tasks.
 
 The `run_standard_audit_protocol.py` script can also consume a user-provided CSV
 with columns:
