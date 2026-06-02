@@ -5,7 +5,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
-#SBATCH --array=0-19%8
+#SBATCH --array=0-19
 #SBATCH --output=logs/greatlakes/kan-xfer-base_%A_%a.out
 #SBATCH --error=logs/greatlakes/kan-xfer-base_%A_%a.err
 
@@ -13,7 +13,7 @@ set -euo pipefail
 
 # Submit example:
 #   mkdir -p logs/greatlakes
-#   sbatch --account=engin1 --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python \
+#   sbatch --account=jaabell0 --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python \
 #     scripts/greatlakes_cross_method_transfer_baselines.sbatch
 #
 # This is CPU-only: it does not request GPUs.  It expands the local pilot into
