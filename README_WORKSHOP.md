@@ -4,8 +4,9 @@ This repository contains the paper-facing artifacts for:
 
 **ClaimTransfer-Bench: Typed Structural Claims for Formula-Recovery Workflows**
 
-The suite checks whether structural evidence transfers across workflow objects
-in controlled formula-recovery tasks.  It reports object-level evidence for:
+The suite is a typed structural-claim benchmark protocol.  It checks whether
+structural evidence transfers across workflow objects in controlled
+formula-recovery tasks.  It reports object-level evidence for:
 
 1. Prediction error.
 2. Active-variable recovery.
@@ -13,17 +14,19 @@ in controlled formula-recovery tasks.  It reports object-level evidence for:
 4. Top-ranked interaction-pair recovery.
 5. Downstream pruning/symbolic provenance when available.
 
-The current paper uses pyKAN as the detailed neural case study, but the
-benchmark also includes sparse-library, GA2M-style, tree-interaction, and
-symbolic-library workflow families.  Handoff summaries are descriptive; the
-primary artifact is the row-level Claim Provenance Record.
+The current paper uses pyKAN as the detailed neural reference implementation
+and stress-test case study, but the benchmark also includes sparse-library,
+GA2M-style, tree-interaction, and symbolic-library workflow families.  Handoff
+summaries are descriptive; the primary artifact is the row-level Claim
+Provenance Record.
 
 ## Benchmark Interface
 
 ClaimTransfer-Bench is organized around four release objects:
 
 - `task_card`: formula id, covariate generator, dimensions/sample size, noise,
-  train/test seed, true support, and declared pair labels.
+  train/test seed, true support, claim grammar, official scorer, and declared
+  pair/symbolic labels.
 - `workflow_adapter`: method id, hyperparameters, exposed evidence objects, and
   extraction rules for support/endpoint/pair/symbolic claims.
 - `claim_record`: one row per seed and evidence object with task id, adapter id,
@@ -33,6 +36,45 @@ ClaimTransfer-Bench is organized around four release objects:
 
 The checked-in scripts below rebuild reference `claim_record` summaries for the
 paper rows; long retraining jobs regenerate the raw records.
+
+### Claim Grammar Authoring Rule
+
+The claim grammar is part of the task card and is fixed before running a
+workflow adapter.
+
+- Product cards declare the algebraic product pair(s) in the data-generating
+  formula.
+- Multi-term rational or mixed-sparse cards declare the finite set of pair
+  claims exposed by the formula and the official scorer for each claim.
+- Nested, three-way, and compositional cards are tagged as pairwise-stress cards
+  when no unique pairwise ground truth is implied by the formula.
+- Different grammars for the same formula should be represented as separate
+  task cards, not as post-hoc reinterpretations of one result.
+
+### Minimum Score Report
+
+A valid score report keeps continuous evidence primary and derives binary
+predicates from it.  At minimum it should include:
+
+- standardized prediction MSE and its task-card calibration scale;
+- support F1 or selected support size, plus active-variable ranks when
+  available;
+- endpoint ranks and endpoint-vs-nuisance margins;
+- declared pair rank and true-minus-max-false pair margin under the official
+  scorer;
+- pruning retained support and symbolic status when the workflow exposes them;
+- Wilson intervals for binary predicates and seed quantiles or bootstrap
+  intervals for ranks, margins, support sizes, and MSEs.
+
+### Submitting a New Adapter
+
+To add a workflow, implement an adapter that writes `claim_record` rows with the
+schema above.  The adapter should expose its native evidence object rather than
+forcing all methods into a single importance score.  For example, a sparse
+library adapter writes selected variables and pair-term coefficients; a GA2M
+adapter writes selected univariate/bivariate components; a symbolic-library
+adapter writes variables/operators present in the expression.  The benchmark
+then scores those native objects against the task-card grammar.
 
 ## Reviewer Quickstart
 
