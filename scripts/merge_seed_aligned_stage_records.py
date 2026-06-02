@@ -96,7 +96,8 @@ def choose_showcase_rows(df: pd.DataFrame, max_rows: int) -> pd.DataFrame:
     if df.empty:
         return df
     work = df.copy()
-    work = work[work.get("status", "ok").fillna("ok") != "failed"].copy()
+    if "status" in work.columns:
+        work = work[work["status"].fillna("ok") != "failed"].copy()
     if work.empty:
         return work
     work["_priority"] = work["first_broken_stage"].map(PRIORITY).fillna(9)
