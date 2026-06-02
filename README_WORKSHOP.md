@@ -37,6 +37,15 @@ ClaimTransfer-Bench is organized around four release objects:
 The checked-in scripts below rebuild reference `claim_record` summaries for the
 paper rows; long retraining jobs regenerate the raw records.
 
+Repository layout:
+
+- `task_cards/`: machine-readable task-card examples and task-card rules.
+- `adapters/`: adapter contract for exposing native workflow outputs.
+- `scorers/`: scorer and predicate definitions.
+- `claim_records/`: row-level submission schema and example CSV rows.
+- `score_reports/`: aggregate report convention.
+- `scripts/run_benchmark.py`: quick reviewer runner for available summaries.
+
 ### Benchmark Contract
 
 The benchmark is a row-level structural-claim contract.
@@ -108,6 +117,12 @@ then scores those native objects against the task-card specification.
 
 The fastest check does not retrain pyKAN models.  It verifies the schema,
 Wilson intervals, and the mini-suite table from the checked-in CSV summaries:
+
+```bash
+python scripts/run_benchmark.py
+```
+
+The command above expands to:
 
 ```bash
 python scripts/print_artifact_env.py

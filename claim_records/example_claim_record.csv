@@ -1,0 +1,5 @@
+task_id,adapter,seed,evidence_object,claim_type,target,scorer,rank,margin,predicate,pass,protocol
+weak_centered_core_c025_d100_n1024,pyKAN,0,full_function,pair,"(2,3)",full_model_functional_anova,1,0.061,rank1,true,w16_grid5_no_update
+weak_centered_core_c025_d100_n1024,pyKAN,0,exposed_readout,endpoints,"(2,3)",KAN-FE,4,0.041,top4,true,w16_grid5_no_update
+weak_centered_core_c025_d100_n1024,pyKAN,1,exposed_readout,endpoints,"(2,3)",KAN-FE,17,-0.006,top4,false,w16_grid5_no_update
+

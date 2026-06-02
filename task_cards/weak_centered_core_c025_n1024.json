@@ -1,0 +1,46 @@
+{
+  "task_id": "weak_centered_core_c025_d100_n1024",
+  "formula": "sin(2*pi*x0) + x1^2 + 0.25*x2*x3",
+  "covariates": {
+    "type": "independent_uniform",
+    "low": -1.0,
+    "high": 1.0
+  },
+  "dimension": 100,
+  "samples": 1024,
+  "noise": 0.0,
+  "target_standardization": "train_mean_train_scale",
+  "support": [0, 1, 2, 3],
+  "claim_specification": {
+    "support_claims": [
+      {
+        "claim_type": "support",
+        "target": [0, 1, 2, 3],
+        "predicate": "top_m_contains_all",
+        "m": 4
+      }
+    ],
+    "pair_claims": [
+      {
+        "claim_type": "pair",
+        "target": [2, 3],
+        "official_scorer": "full_model_functional_anova",
+        "predicate": "rank1"
+      }
+    ],
+    "endpoint_claims": [
+      {
+        "claim_type": "endpoints",
+        "target": [2, 3],
+        "predicate": "top_m_contains_all",
+        "m": 4
+      }
+    ]
+  },
+  "stress_tags": ["weak_marginal_signal", "nuisance_maximum"],
+  "seed_policy": {
+    "train_test_seed_block": "declared_by_score_report",
+    "adapter_seed_block": "declared_by_adapter"
+  }
+}
+
