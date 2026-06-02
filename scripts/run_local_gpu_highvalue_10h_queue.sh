@@ -41,7 +41,7 @@ log() {
 }
 
 elapsed_seconds() {
-  echo $(( "$(date +%s)" - START_TS ))
+  echo $(( $(date +%s) - START_TS ))
 }
 
 wait_for_current_lowimpact_queue() {

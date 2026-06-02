@@ -5,35 +5,24 @@ from __future__ import annotations
 
 import argparse
 import math
+import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.evidence_transfer import DEFAULT_TRANSFER_LINKS, wilson_interval
+
 
 DEFAULT_PATTERNS = [
     "results/revision/cross_method_transfer_baselines/**/cross_method_transfer_detail.csv",
 ]
 
-TRANSFER_LINKS = [
-    ("prediction->support", "prediction_success", "support_success_all_true"),
-    ("prediction->endpoint", "prediction_success", "endpoint_success"),
-    ("prediction->pair", "prediction_success", "pair_success_all_true_at_budget"),
-    ("support->pair", "support_success_all_true", "pair_success_all_true_at_budget"),
-    ("endpoint->pair", "endpoint_success", "pair_success_all_true_at_budget"),
-    ("pair->support", "pair_success_all_true_at_budget", "support_success_all_true"),
-]
-
-
-def wilson_interval(k: int, n: int, z: float = 1.96) -> tuple[float, float]:
-    if n <= 0:
-        return (math.nan, math.nan)
-    phat = k / n
-    denom = 1 + z * z / n
-    center = (phat + z * z / (2 * n)) / denom
-    half = z * math.sqrt((phat * (1 - phat) + z * z / (4 * n)) / n) / denom
-    return max(0.0, center - half), min(1.0, center + half)
+TRANSFER_LINKS = [(link.name, link.source_col, link.target_col) for link in DEFAULT_TRANSFER_LINKS]
 
 
 def find_inputs(patterns: list[str]) -> list[Path]:

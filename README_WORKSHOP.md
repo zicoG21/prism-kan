@@ -1,19 +1,22 @@
-# pyKAN Support and Interaction Diagnostic Suite
+# Evidence-Transfer Benchmark for Formula-Recovery Workflows
 
 This repository contains the paper-facing artifacts for:
 
-**Auditing pyKAN Readouts for Support and Interaction Recovery**
+**Evidence-Transfer Benchmarks for Formula-Recovery Workflows**
 
-The suite checks whether pyKAN-style explanations recover known active variables
-and interaction pairs under nuisance features.  It reports four levels:
+The suite checks whether structural evidence transfers across workflow objects
+in controlled formula-recovery tasks.  It reports object-level evidence for:
 
 1. Prediction error.
 2. Active-variable recovery.
 3. Interaction-endpoint retention.
 4. Top-ranked interaction-pair recovery.
+5. Downstream pruning/symbolic provenance when available.
 
-The current paper focuses on a reproducible diagnostic suite for pyKAN support
-and interaction recovery.
+The current paper uses pyKAN as the detailed neural case study, but the
+benchmark also includes sparse-library, GA2M-style, tree-interaction, and
+symbolic-library workflow families.  Unsupported-transfer rates are summary
+statistics; the primary artifact is the object-level evidence-transfer record.
 
 ## Reviewer Quickstart
 
@@ -25,6 +28,8 @@ python scripts/print_artifact_env.py
 python scripts/run_standard_audit_protocol.py \
   --out-dir results/workshop_review_tables/standard_audit_protocol
 python scripts/build_formal_minisuite_baseline_table.py
+python scripts/build_cross_method_transfer_matrix.py \
+  --output-prefix local_notes/generated/reviewer_cross_method_transfer
 ```
 
 Expected outputs:
@@ -34,6 +39,8 @@ Expected outputs:
 - `results/workshop_review_tables/standard_audit_protocol/audit_protocol_schema.json`
 - `results/workshop_review_tables/formal_minisuite/formal_minisuite_baseline_table.csv`
 - `results/workshop_review_tables/formal_minisuite/formal_minisuite_baseline_table.tex`
+- `local_notes/generated/reviewer_cross_method_transfer_method_summary.csv`
+- `local_notes/generated/reviewer_cross_method_transfer_transfer_long.csv`
 
 On the machine used for the paper, these checks are minute-scale.  The pyKAN
 retraining commands below are longer-running.
