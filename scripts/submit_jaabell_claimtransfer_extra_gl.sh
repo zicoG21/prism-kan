@@ -38,7 +38,7 @@ submit sbatch --account="${ACCOUNT}" \
 # novelty claim.
 submit sbatch --account="${ACCOUNT}" \
   --array=0-9 \
-  --export=ALL,PYTHON_BIN="${PY}",SEED_BASE=1200,SEED_COUNT=8,LABEL_SUFFIX=s1200_1207_hess_jb,SCORERS=epim,anova_abs,fd,hessian,hybrid_epim_anova \
+  --export=ALL,PYTHON_BIN="${PY}",SEED_BASE=1200,SEED_COUNT=8,LABEL_SUFFIX=s1200_1207_hess_jb,SCORERS_COLON=epim:anova_abs:fd:hessian:hybrid_epim_anova \
   scripts/greatlakes_spgpu_pair_scorer_grammar_a40.sbatch
 
 # A40/spgpu: EPIM breadth on fresh seeds.  Proposal-vs-verifier evidence is more

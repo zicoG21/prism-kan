@@ -53,7 +53,11 @@ seed_count="${SEED_COUNT:-12}"
 seed_end="$((seed_base + seed_count - 1))"
 seeds="${seed_base}-${seed_end}"
 label_suffix="${LABEL_SUFFIX:-s${seed_base}_${seed_end}}"
-scorers="${SCORERS:-epim,anova_abs,fd,hybrid_epim_anova}"
+if [[ -n "${SCORERS_COLON:-}" ]]; then
+  scorers="${SCORERS_COLON//:/,}"
+else
+  scorers="${SCORERS:-epim,anova_abs,fd,hybrid_epim_anova}"
+fi
 
 echo "[$(date -Is)] node=${SLURM_JOB_NODELIST:-unknown-node}"
 echo "[$(date -Is)] seeds=${seeds} label_suffix=${label_suffix} scorers=${scorers}"
