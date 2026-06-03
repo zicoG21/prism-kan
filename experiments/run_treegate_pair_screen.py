@@ -12,7 +12,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import ExtraTreesRegressor, RandomForestRegressor
 
 from src.data import make_synthetic
 
@@ -117,6 +117,65 @@ def candidate_pair_scores(
     return scores
 
 
+def _normalize(scores: np.ndarray) -> np.ndarray:
+    scores = np.asarray(scores, dtype=float)
+    finite = np.isfinite(scores)
+    if not finite.any():
+        return np.zeros_like(scores, dtype=float)
+    lo = float(np.nanmin(scores[finite]))
+    hi = float(np.nanmax(scores[finite]))
+    if hi <= lo:
+        return np.zeros_like(scores, dtype=float)
+    return (scores - lo) / (hi - lo)
+
+
+def tree_path_cooccurrence(model, dimension: int) -> Tuple[np.ndarray, Dict[Pair, float]]:
+    """Extract path co-occurrence scores from a fitted tree ensemble.
+
+    A path contributes to every unordered pair of variables that appears along
+    that root-to-leaf path.  The score is weighted by the fraction of training
+    samples reaching the leaf.  This is a tree-native candidate-generator score,
+    not a verifier: it says that a pair is repeatedly used in the same rule
+    context, not that the fitted function has a declared interaction component.
+    """
+    endpoint_sum = np.zeros(dimension, dtype=float)
+    pair_scores: Dict[Pair, float] = {}
+
+    for estimator in model.estimators_:
+        tree = estimator.tree_
+        root_count = max(float(tree.n_node_samples[0]), 1.0)
+
+        def visit(node: int, path_features: Tuple[int, ...]) -> None:
+            feature = int(tree.feature[node])
+            left = int(tree.children_left[node])
+            right = int(tree.children_right[node])
+
+            if left == right:
+                uniq = tuple(sorted(set(f for f in path_features if 0 <= f < dimension)))
+                if not uniq:
+                    return
+                weight = float(tree.n_node_samples[node]) / root_count
+                for f in uniq:
+                    endpoint_sum[f] += weight
+                for i, j in itertools.combinations(uniq, 2):
+                    pair = (int(i), int(j))
+                    pair_scores[pair] = pair_scores.get(pair, 0.0) + weight
+                return
+
+            next_path = path_features
+            if feature >= 0:
+                next_path = path_features + (feature,)
+            visit(left, next_path)
+            visit(right, next_path)
+
+        visit(0, tuple())
+
+    scale = max(len(model.estimators_), 1)
+    endpoint_sum /= scale
+    pair_scores = {pair: score / scale for pair, score in pair_scores.items()}
+    return endpoint_sum, pair_scores
+
+
 def summarize_pair_scores(pair_scores: Dict[Pair, float], true_pairs: Sequence[Pair]) -> Dict:
     true_set = set(canonical_pairs(true_pairs))
     ranked = sorted(pair_scores.items(), key=lambda kv: kv[1], reverse=True)
@@ -173,7 +232,8 @@ def run_one(args: argparse.Namespace, function_name: str, seed: int) -> Dict:
     true_endpoints = set(interaction_endpoints(true_pairs))
     true_pair_set = set(true_pairs)
 
-    rf = RandomForestRegressor(
+    forest_cls = ExtraTreesRegressor if args.forest_type == "extra" else RandomForestRegressor
+    rf = forest_cls(
         n_estimators=args.rf_trees,
         random_state=seed,
         n_jobs=args.n_jobs,
@@ -183,11 +243,36 @@ def run_one(args: argparse.Namespace, function_name: str, seed: int) -> Dict:
     rf.fit(X_train, y_train.reshape(-1))
     test_mse = mse(rf.predict(X_test), y_test)
 
-    endpoint_scores = np.asarray(rf.feature_importances_, dtype=float)
+    feature_scores = np.asarray(rf.feature_importances_, dtype=float)
+    path_endpoint_scores, path_pair_scores = tree_path_cooccurrence(rf, args.dimension)
+
+    path_endpoint_from_pairs = np.zeros(args.dimension, dtype=float)
+    for (i, j), score in path_pair_scores.items():
+        path_endpoint_from_pairs[i] = max(path_endpoint_from_pairs[i], score)
+        path_endpoint_from_pairs[j] = max(path_endpoint_from_pairs[j], score)
+
+    if args.gate_score == "feature_importance":
+        endpoint_scores = feature_scores
+    elif args.gate_score == "path_endpoint":
+        endpoint_scores = path_endpoint_scores
+    elif args.gate_score == "path_pair_endpoint":
+        endpoint_scores = path_endpoint_from_pairs
+    elif args.gate_score == "hybrid":
+        endpoint_scores = _normalize(feature_scores) + _normalize(path_endpoint_from_pairs)
+    else:
+        raise ValueError(f"Unknown gate_score={args.gate_score}")
+
     gate_size = min(args.gate_size, args.dimension)
     gated_endpoints = tuple(int(i) for i in np.argsort(-endpoint_scores)[:gate_size])
     gated_endpoint_set = set(gated_endpoints)
-    candidate_pairs = [tuple(sorted(p)) for p in itertools.combinations(gated_endpoints, 2)]
+    candidate_pairs = {tuple(sorted(p)) for p in itertools.combinations(gated_endpoints, 2)}
+
+    direct_pairs_added = []
+    if args.direct_pair_budget > 0 and path_pair_scores:
+        ranked_path_pairs = sorted(path_pair_scores.items(), key=lambda kv: kv[1], reverse=True)
+        direct_pairs_added = [pair for pair, _ in ranked_path_pairs[: args.direct_pair_budget]]
+        candidate_pairs.update(direct_pairs_added)
+    candidate_pairs = sorted(candidate_pairs)
 
     pair_scores = candidate_pair_scores(
         predict_fn=rf.predict,
@@ -211,14 +296,19 @@ def run_one(args: argparse.Namespace, function_name: str, seed: int) -> Dict:
         "test_samples": args.test_samples,
         "dimension": args.dimension,
         "noise": args.noise,
+        "forest_type": args.forest_type,
+        "gate_score": args.gate_score,
         "rf_trees": args.rf_trees,
         "gate_size": gate_size,
+        "direct_pair_budget": args.direct_pair_budget,
         "verify_points": args.verify_points,
         "test_mse": test_mse,
         "true_variables": list(true_vars),
         "true_pairs": list(true_pairs),
         "true_endpoints": sorted(true_endpoints),
         "gated_endpoints": list(gated_endpoints),
+        "top_path_pairs": [(int(i), int(j), float(s)) for (i, j), s in sorted(path_pair_scores.items(), key=lambda kv: kv[1], reverse=True)[:20]],
+        "direct_pairs_added": [(int(i), int(j)) for i, j in direct_pairs_added[:50]],
         "any_pair_endpoint_recall": len(true_endpoints & gated_endpoint_set) / len(true_endpoints) if true_endpoints else np.nan,
         "all_pair_endpoints_in_gate": int(true_endpoints.issubset(gated_endpoint_set)) if true_endpoints else np.nan,
         "candidate_pair_count": len(candidate_pairs),
@@ -245,7 +335,7 @@ def append_rows(path: Path, rows: List[Dict]) -> None:
 
 
 def summarize(df: pd.DataFrame) -> pd.DataFrame:
-    keys = ["function", "samples", "dimension", "noise", "gate_size", "verify_points", "rf_trees"]
+    keys = ["function", "samples", "dimension", "noise", "forest_type", "gate_score", "gate_size", "direct_pair_budget", "verify_points", "rf_trees"]
     rows = []
     for key, g in df.groupby(keys, dropna=False):
         row = dict(zip(keys, key))
@@ -275,6 +365,13 @@ def main() -> None:
     parser.add_argument("--gate-size", type=int, default=20)
     parser.add_argument("--verify-points", type=int, default=256)
     parser.add_argument("--rf-trees", type=int, default=500)
+    parser.add_argument("--forest-type", choices=["rf", "extra"], default="rf")
+    parser.add_argument(
+        "--gate-score",
+        choices=["feature_importance", "path_endpoint", "path_pair_endpoint", "hybrid"],
+        default="feature_importance",
+    )
+    parser.add_argument("--direct-pair-budget", type=int, default=0)
     parser.add_argument("--rf-max-depth", type=int, default=None)
     parser.add_argument("--rf-min-samples-leaf", type=int, default=2)
     parser.add_argument("--n-jobs", type=int, default=8)
@@ -318,7 +415,10 @@ def main() -> None:
                     "dimension": args.dimension,
                     "noise": args.noise,
                     "rf_trees": args.rf_trees,
+                    "forest_type": args.forest_type,
+                    "gate_score": args.gate_score,
                     "gate_size": args.gate_size,
+                    "direct_pair_budget": args.direct_pair_budget,
                     "verify_points": args.verify_points,
                 }
                 append_rows(detail_path, [failed])
