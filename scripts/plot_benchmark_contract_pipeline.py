@@ -25,10 +25,34 @@ COLORS = {
     "report": "#E7F1DF",
     "edge": "#526173",
     "accent": "#0F4C81",
+    "band": "#F8FAFC",
+    "line": "#CBD5E1",
 }
 
 
-def add_box(ax, x, y, w, h, title, fields, color):
+def add_box(ax, x, y, w, h, title, fields, color, tag):
+    tag_patch = FancyBboxPatch(
+        (x + 0.012, y + h + 0.024),
+        0.072,
+        0.046,
+        boxstyle="round,pad=0.006,rounding_size=0.020",
+        facecolor="white",
+        edgecolor=COLORS["line"],
+        linewidth=0.55,
+        transform=ax.transAxes,
+    )
+    ax.add_patch(tag_patch)
+    ax.text(
+        x + 0.048,
+        y + h + 0.047,
+        tag,
+        ha="center",
+        va="center",
+        fontsize=5.8,
+        color=COLORS["muted"],
+        transform=ax.transAxes,
+    )
+
     patch = FancyBboxPatch(
         (x, y),
         w,
@@ -41,12 +65,12 @@ def add_box(ax, x, y, w, h, title, fields, color):
     )
     ax.add_patch(patch)
     ax.text(
-        x + w / 2,
-        y + h - 0.041,
+        x + 0.018,
+        y + h - 0.038,
         title,
-        ha="center",
+        ha="left",
         va="center",
-        fontsize=8.4,
+        fontsize=8.0,
         weight="bold",
         color=COLORS["ink"],
         transform=ax.transAxes,
@@ -57,9 +81,9 @@ def add_box(ax, x, y, w, h, title, fields, color):
         fields,
         ha="left",
         va="top",
-        fontsize=6.9,
+        fontsize=6.45,
         color="#374151",
-        linespacing=1.24,
+        linespacing=1.20,
         transform=ax.transAxes,
     )
 
@@ -75,48 +99,64 @@ def main() -> None:
         }
     )
 
-    fig, ax = plt.subplots(figsize=(9.2, 2.35))
+    fig, ax = plt.subplots(figsize=(9.0, 2.18))
     ax.set_axis_off()
+
+    band = FancyBboxPatch(
+        (0.025, 0.155),
+        0.95,
+        0.655,
+        boxstyle="round,pad=0.010,rounding_size=0.030",
+        facecolor=COLORS["band"],
+        edgecolor="#E2E8F0",
+        linewidth=0.65,
+        transform=ax.transAxes,
+    )
+    ax.add_patch(band)
 
     boxes = [
         (
             0.035,
             "Task card",
-            "formula, covariates\nsupport labels\nlegal claims\nofficial scorers",
+            "formula + covariates\nsupport / legal claims\nofficial scorers",
             COLORS["card"],
+            "fixed",
         ),
         (
             0.278,
             "Workflow adapter",
-            "prediction output\nselected support\npair scores\nreadout / symbolic fields",
+            "prediction output\nselected support\npair / readout / symbolic fields",
             COLORS["adapter"],
+            "method",
         ),
         (
             0.522,
             "claim_record.csv",
-            "task_id, adapter, seed\nevidence_object\nclaim_type, target\nscorer, rank, margin\npredicate, pass",
+            "task_id, adapter, seed\nevidence_object\nclaim, scorer\nrank, margin, predicate, pass",
             COLORS["record"],
+            "submit",
         ),
         (
             0.765,
             "Score report",
-            "by task card\nx claim type\nx evidence object\nCIs and quantiles\nmissing fields explicit",
+            "task card x claim type\nx evidence object\nCIs / quantiles\nmissing fields explicit",
             COLORS["report"],
+            "score",
         ),
     ]
-    w, h, y = 0.19, 0.50, 0.29
-    for x, title, fields, color in boxes:
-        add_box(ax, x, y, w, h, title, fields, color)
+    w, h, y = 0.19, 0.345, 0.365
+    for x, title, fields, color, tag in boxes:
+        add_box(ax, x, y, w, h, title, fields, color, tag)
 
     for i in range(len(boxes) - 1):
         x0 = boxes[i][0] + w + 0.012
         x1 = boxes[i + 1][0] - 0.012
         arrow = FancyArrowPatch(
-            (x0, y + h / 2),
-            (x1, y + h / 2),
+            (x0, y + h / 2 + 0.002),
+            (x1, y + h / 2 + 0.002),
             arrowstyle="-|>",
-            mutation_scale=10,
-            lw=1.0,
+            mutation_scale=9.5,
+            lw=0.95,
             color=COLORS["edge"],
             transform=ax.transAxes,
         )
@@ -128,7 +168,7 @@ def main() -> None:
         "ClaimTransfer-Bench contract",
         ha="left",
         va="center",
-        fontsize=10.0,
+        fontsize=9.8,
         weight="bold",
         color=COLORS["ink"],
         transform=ax.transAxes,
@@ -144,13 +184,24 @@ def main() -> None:
         transform=ax.transAxes,
     )
 
+    ribbon = FancyBboxPatch(
+        (0.055, 0.205),
+        0.89,
+        0.095,
+        boxstyle="round,pad=0.008,rounding_size=0.020",
+        facecolor="white",
+        edgecolor=COLORS["line"],
+        linewidth=0.55,
+        transform=ax.transAxes,
+    )
+    ax.add_patch(ribbon)
     ax.text(
-        0.035,
-        0.115,
-        "The score report is not one leaderboard scalar: it preserves provenance before aggregating success rates.",
-        ha="left",
+        0.5,
+        0.252,
+        "Provenance is preserved before aggregation: no row becomes an untyped model-level success sentence.",
+        ha="center",
         va="center",
-        fontsize=7.0,
+        fontsize=6.9,
         color=COLORS["muted"],
         transform=ax.transAxes,
     )
