@@ -19,7 +19,7 @@ import pandas as pd
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT_DIR = ROOT / "manuscripts" / "workshop_case_study" / "figures"
+OUT_DIR = ROOT / "manuscripts" / "workshop_foundation" / "figures"
 HORIZONTAL = ROOT / "local_notes" / "generated" / "horizontal_evidence_table_20260531.csv"
 STAGE_DISCORDANCE = ROOT / "results" / "revision" / "stage_discordance_summary.csv"
 MINISUITE = ROOT / "results" / "workshop_review_tables" / "formal_minisuite" / "formal_minisuite_baseline_table.csv"
@@ -216,28 +216,28 @@ def stage_discordance_heatmap() -> None:
         ]
     )
 
-    fig, ax = plt.subplots(figsize=(8.2, 3.45))
+    fig, ax = plt.subplots(figsize=(7.45, 3.05))
     im = ax.imshow(mat, cmap=RATE_CMAP, vmin=0, vmax=1, aspect="auto")
     ax.set_xticks(range(3))
-    ax.set_xticklabels(["Full KAN\npair rank-1", "Exposed readout\nendpoints@4", "Prune-input\nendpoints"], fontsize=8.8)
+    ax.set_xticklabels(["Full function\npair rank-1", "Exposed readout\nendpoints@4", "Pruned support\nendpoints"], fontsize=8.0)
     ax.set_yticks(range(len(rows)))
-    ax.set_yticklabels([r[1] for r in rows], fontsize=8.8)
+    ax.set_yticklabels([r[1] for r in rows], fontsize=7.8)
 
     for i in range(mat.shape[0]):
         for j in range(mat.shape[1]):
             color = "white" if mat[i, j] > 0.72 else COLORS["ink"]
-            ax.text(j, i - 0.08, counts[i, j], ha="center", va="center", fontsize=8.4, weight="bold", color=color)
-            ax.text(j, i + 0.17, f"{mat[i,j]:.2f}", ha="center", va="center", fontsize=6.9, color=color)
+            ax.text(j, i - 0.08, counts[i, j], ha="center", va="center", fontsize=7.6, weight="bold", color=color)
+            ax.text(j, i + 0.17, f"{mat[i,j]:.2f}", ha="center", va="center", fontsize=6.3, color=color)
 
-    ax.set_title("Same structural claim, different evidence objects", fontsize=9.8, weight="bold", pad=14)
+    ax.set_title("pyKAN claim transfer splits by workflow object", fontsize=9.2, weight="bold", pad=11)
     ax.text(
         0.5,
-        1.025,
-        "Columns answer different audit questions; colors show within-column success rates.",
+        1.015,
+        "Counts are matched settings; columns authorize different typed claims.",
         ha="center",
         va="bottom",
         transform=ax.transAxes,
-        fontsize=7.2,
+        fontsize=6.8,
         color=COLORS["muted"],
     )
     ax.tick_params(length=0)
@@ -247,17 +247,17 @@ def stage_discordance_heatmap() -> None:
     ax.set_yticks(np.arange(-0.5, len(rows), 1), minor=True)
     ax.grid(which="minor", color="white", linewidth=1.6)
     ax.tick_params(which="minor", bottom=False, left=False)
-    cbar = fig.colorbar(im, ax=ax, fraction=0.035, pad=0.03)
-    cbar.set_label("within-column\nsuccess rate", fontsize=8.6)
-    cbar.ax.tick_params(labelsize=8)
+    cbar = fig.colorbar(im, ax=ax, fraction=0.030, pad=0.028)
+    cbar.set_label("success rate", fontsize=7.2)
+    cbar.ax.tick_params(labelsize=7)
     ax.text(
         0.5,
-        -0.20,
-        "Counts are comparable within an evidence object; discordance across columns is the object of study.",
+        -0.17,
+        "The discordance across columns is the benchmark target, not a metric inconsistency.",
         ha="center",
         va="top",
         transform=ax.transAxes,
-        fontsize=7.2,
+        fontsize=6.7,
         color=COLORS["muted"],
     )
     savefig("stage_discordance_heatmap")

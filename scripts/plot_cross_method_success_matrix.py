@@ -29,7 +29,7 @@ METRICS = [
     ("Prediction", "prediction_success_mean"),
     ("Support", "support_success_all_true_mean"),
     ("Endpoints", "endpoint_success_mean"),
-    ("Pair", "pair_success_all_true_at_budget_mean"),
+    ("Pair claims", "pair_success_all_true_at_budget_mean"),
 ]
 
 FUNCTION_LABELS = {
@@ -62,6 +62,19 @@ METHOD_LABELS = {
     "symbolic_lasso": "Symbolic library",
 }
 
+CURATED_ROWS = [
+    ("formula_bilinear", "sparse_lasso", "aligned control"),
+    ("formula_bilinear", "gbm_hstat", "structure without fit"),
+    ("core_interaction_c025", "gbm_hstat", "weak-product split"),
+    ("core_interaction_c025", "ga2m_spline", "support vs pair"),
+    ("core_interaction_c025", "sparse_spline_lasso", "fit without support"),
+    ("formula_division_mixed", "sparse_lasso", "multi-pair grammar"),
+    ("formula_division_mixed", "sparse_spline_lasso", "fit without pair"),
+    ("formula_division_mixed", "gbm_hstat", "partial-pair evidence"),
+    ("formula_mixed_sparse", "sparse_lasso", "support without pair"),
+    ("formula_mixed_sparse", "symbolic_lasso", "symbolic support split"),
+]
+
 
 def load_summary(path: Path) -> pd.DataFrame:
     df = pd.read_csv(path)
@@ -76,7 +89,10 @@ def load_summary(path: Path) -> pd.DataFrame:
     df["num_runs"] = pd.to_numeric(df["num_runs"], errors="coerce").fillna(0).astype(int)
     df["function_order"] = df["function"].map({f: i for i, f in enumerate(FUNCTION_ORDER)})
     df["method_order"] = df["method"].map({m: i for i, m in enumerate(METHOD_ORDER)})
-    df = df.sort_values(["function_order", "method_order"], kind="stable")
+    # Smoke rows and full rows can share a function/method label. Keep the
+    # highest-run row for the main paper figure; the full CSV remains available.
+    df = df.sort_values(["function_order", "method_order", "num_runs"], ascending=[True, True, False], kind="stable")
+    df = df.drop_duplicates(["function", "method"], keep="first")
     return df
 
 
@@ -94,30 +110,49 @@ def write_compact(df: pd.DataFrame, path: Path) -> None:
     pd.DataFrame(rows).to_csv(path, index=False)
 
 
-def plot(df: pd.DataFrame, out_base: Path) -> None:
+def select_curated_rows(df: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    for order, (function, method, group) in enumerate(CURATED_ROWS):
+        hit = df[(df["function"] == function) & (df["method"] == method)].copy()
+        if hit.empty:
+            continue
+        hit["curated_order"] = order
+        hit["curated_group"] = group
+        rows.append(hit)
+    if not rows:
+        return df.copy()
+    return pd.concat(rows, ignore_index=True).sort_values("curated_order", kind="stable")
+
+
+def plot(df: pd.DataFrame, out_base: Path, *, curated: bool) -> None:
     configure_paper_plots(usetex=False)
+    if curated:
+        df = select_curated_rows(df)
     data = df[[col for _, col in METRICS]].to_numpy(dtype=float)
     row_labels = [
         f"{FUNCTION_LABELS.get(str(f), str(f))} / {METHOD_LABELS.get(str(m), str(m))}"
         for f, m in zip(df["function"], df["method"])
     ]
-    function_labels = [FUNCTION_LABELS.get(str(f), str(f)) for f in df["function"]]
+    group_labels = df["curated_group"].to_list() if "curated_group" in df.columns else [
+        FUNCTION_LABELS.get(str(f), str(f)) for f in df["function"]
+    ]
 
-    fig_h = max(3.8, 0.255 * len(df) + 0.9)
-    fig, ax = plt.subplots(figsize=(6.3, fig_h))
+    fig_h = max(3.55, 0.31 * len(df) + 0.75)
+    fig, ax = plt.subplots(figsize=(6.8, fig_h))
     cmap = plt.get_cmap("Blues").copy()
     cmap.set_bad("#F3F4F6")
     im = ax.imshow(np.ma.masked_invalid(data), vmin=0.0, vmax=1.0, cmap=cmap, aspect="auto")
 
     ax.set_xticks(np.arange(len(METRICS)))
-    ax.set_xticklabels([label for label, _ in METRICS], rotation=28, ha="right")
+    ax.set_xticklabels([label for label, _ in METRICS], rotation=0, ha="center")
     ax.set_yticks(np.arange(len(row_labels)))
     ax.set_yticklabels(row_labels)
-    ax.set_title("Structural evidence is object-specific across workflows", loc="left", pad=7)
+    ax.set_title("Typed claims split across workflow adapters", loc="left", pad=7)
 
-    # Function group separators.
+    # Group separators for the curated main-paper figure.  The group names stay
+    # in the caption/text so the heatmap itself remains readable at column width.
     for i in range(len(df)):
-        if i > 0 and function_labels[i] != function_labels[i - 1]:
+        if i > 0 and group_labels[i] != group_labels[i - 1]:
             ax.axhline(i - 0.5, color="#111827", linewidth=0.55)
 
     for i in range(data.shape[0]):
@@ -126,7 +161,7 @@ def plot(df: pd.DataFrame, out_base: Path) -> None:
             if np.isfinite(val):
                 txt = f"{val:.2f}"
                 color = "white" if val > 0.62 else "#111827"
-                ax.text(j, i, txt, ha="center", va="center", fontsize=6.7, color=color)
+                ax.text(j, i, txt, ha="center", va="center", fontsize=7.1, color=color)
             else:
                 ax.text(j, i, "NA", ha="center", va="center", fontsize=6.2, color="#6B7280")
 
@@ -134,14 +169,14 @@ def plot(df: pd.DataFrame, out_base: Path) -> None:
     for spine in ax.spines.values():
         spine.set_visible(False)
     ax.set_xlim(-0.5, len(METRICS) - 0.5)
-    ax.set_ylabel("formula / workflow")
-    cbar = fig.colorbar(im, ax=ax, fraction=0.045, pad=0.025)
+    ax.set_ylabel("")
+    cbar = fig.colorbar(im, ax=ax, fraction=0.038, pad=0.025)
     cbar.set_label("success rate")
     cbar.outline.set_linewidth(0.4)
 
-    note = "Rows use the same structural labels; columns are different evidence objects."
-    fig.text(0.08, 0.015, note, ha="left", va="bottom", fontsize=6.7, color="#4B5563")
-    fig.tight_layout(rect=(0, 0.05, 1, 1))
+    note = "Rows are representative adapter contracts; the full matrix is reported in the artifact."
+    fig.text(0.08, 0.018, note, ha="left", va="bottom", fontsize=6.7, color="#4B5563")
+    fig.tight_layout(rect=(0, 0.055, 1, 1))
     out_base.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_base.with_suffix(".pdf"))
     fig.savefig(out_base.with_suffix(".png"), dpi=450)
@@ -155,24 +190,25 @@ def main() -> None:
     parser.add_argument(
         "--input",
         type=Path,
-        default=Path("local_notes/generated/cross_method_transfer_matrix_20260601_gl_method_summary.csv"),
+        default=Path("local_notes/generated/cross_method_transfer_matrix_20260602_210723_method_summary.csv"),
     )
     parser.add_argument(
         "--out-base",
         type=Path,
-        default=Path("local_notes/generated/cross_method_success_matrix_20260601"),
+        default=Path("local_notes/generated/cross_method_success_matrix_20260602_210723"),
     )
     parser.add_argument(
         "--manuscript-out-base",
         type=Path,
-        default=Path("manuscripts/workshop_case_study/figures/cross_method_success_matrix"),
+        default=Path("manuscripts/workshop_foundation/figures/cross_method_success_matrix"),
     )
+    parser.add_argument("--all-rows", action="store_true", help="Plot all rows instead of the curated main-paper rows.")
     args = parser.parse_args()
     df = load_summary(args.input)
     compact_path = args.out_base.with_name(args.out_base.name + ".csv")
     write_compact(df, compact_path)
-    plot(df, args.out_base)
-    plot(df, args.manuscript_out_base)
+    plot(df, args.out_base, curated=not args.all_rows)
+    plot(df, args.manuscript_out_base, curated=not args.all_rows)
     print(f"[saved] {compact_path}")
 
 

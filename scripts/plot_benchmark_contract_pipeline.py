@@ -11,7 +11,6 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
-import matplotlib.patheffects as pe
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,11 +19,12 @@ OUT_DIR = ROOT / "manuscripts" / "workshop_foundation" / "figures"
 COLORS = {
     "ink": "#1F2937",
     "muted": "#64748B",
-    "card": "#E8F1F2",
-    "adapter": "#E9E3F5",
-    "record": "#F5E9D6",
-    "report": "#E2EEDC",
-    "edge": "#334155",
+    "card": "#EAF3F4",
+    "adapter": "#EEE9F7",
+    "record": "#F7ECD8",
+    "report": "#E7F1DF",
+    "edge": "#526173",
+    "accent": "#0F4C81",
 }
 
 
@@ -33,32 +33,31 @@ def add_box(ax, x, y, w, h, title, fields, color):
         (x, y),
         w,
         h,
-        boxstyle="round,pad=0.012,rounding_size=0.025",
+        boxstyle="round,pad=0.010,rounding_size=0.018",
         facecolor=color,
         edgecolor=COLORS["edge"],
-        linewidth=0.9,
+        linewidth=0.75,
         transform=ax.transAxes,
     )
-    patch.set_path_effects([pe.SimplePatchShadow(offset=(1.0, -1.0), alpha=0.12), pe.Normal()])
     ax.add_patch(patch)
     ax.text(
         x + w / 2,
-        y + h - 0.052,
+        y + h - 0.041,
         title,
         ha="center",
         va="center",
-        fontsize=9.2,
+        fontsize=8.4,
         weight="bold",
         color=COLORS["ink"],
         transform=ax.transAxes,
     )
     ax.text(
         x + 0.022,
-        y + h - 0.105,
+        y + h - 0.084,
         fields,
         ha="left",
         va="top",
-        fontsize=7.45,
+        fontsize=6.9,
         color="#374151",
         linespacing=1.24,
         transform=ax.transAxes,
@@ -76,20 +75,20 @@ def main() -> None:
         }
     )
 
-    fig, ax = plt.subplots(figsize=(10.4, 3.1))
+    fig, ax = plt.subplots(figsize=(9.2, 2.35))
     ax.set_axis_off()
 
     boxes = [
         (
             0.035,
             "Task card",
-            "formula / covariates\nsupport labels\nlegal claims\nofficial scorers\nseeds",
+            "formula, covariates\nsupport labels\nlegal claims\nofficial scorers",
             COLORS["card"],
         ),
         (
             0.278,
             "Workflow adapter",
-            "prediction output\nselected support\npair scores\nreadout fields\nsymbolic output",
+            "prediction output\nselected support\npair scores\nreadout / symbolic fields",
             COLORS["adapter"],
         ),
         (
@@ -101,11 +100,11 @@ def main() -> None:
         (
             0.765,
             "Score report",
-            "by task card\nx claim type\nx evidence object\nCI / quantiles\nmissing fields explicit",
+            "by task card\nx claim type\nx evidence object\nCIs and quantiles\nmissing fields explicit",
             COLORS["report"],
         ),
     ]
-    w, h, y = 0.19, 0.54, 0.31
+    w, h, y = 0.19, 0.50, 0.29
     for x, title, fields, color in boxes:
         add_box(ax, x, y, w, h, title, fields, color)
 
@@ -116,42 +115,42 @@ def main() -> None:
             (x0, y + h / 2),
             (x1, y + h / 2),
             arrowstyle="-|>",
-            mutation_scale=12,
-            lw=1.15,
+            mutation_scale=10,
+            lw=1.0,
             color=COLORS["edge"],
             transform=ax.transAxes,
         )
         ax.add_patch(arrow)
 
     ax.text(
-        0.5,
-        0.94,
-        "ClaimTransfer-Bench input-output contract",
-        ha="center",
+        0.035,
+        0.925,
+        "ClaimTransfer-Bench contract",
+        ha="left",
         va="center",
-        fontsize=11.2,
+        fontsize=10.0,
         weight="bold",
         color=COLORS["ink"],
         transform=ax.transAxes,
     )
     ax.text(
-        0.5,
-        0.885,
-        "A method is evaluated by the structural claims its native workflow objects can support.",
-        ha="center",
+        0.035,
+        0.845,
+        "Evaluation unit: task card x workflow adapter x evidence object x typed structural claim.",
+        ha="left",
         va="center",
-        fontsize=8.0,
+        fontsize=7.15,
         color=COLORS["muted"],
         transform=ax.transAxes,
     )
 
     ax.text(
-        0.5,
-        0.13,
-        "Ordinary metrics report a number; the benchmark also records where the evidence came from and which scorer/predicate made it valid.",
-        ha="center",
+        0.035,
+        0.115,
+        "The score report is not one leaderboard scalar: it preserves provenance before aggregating success rates.",
+        ha="left",
         va="center",
-        fontsize=7.8,
+        fontsize=7.0,
         color=COLORS["muted"],
         transform=ax.transAxes,
     )
