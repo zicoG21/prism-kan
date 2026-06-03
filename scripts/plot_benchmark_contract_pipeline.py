@@ -99,13 +99,13 @@ def main() -> None:
         }
     )
 
-    fig, ax = plt.subplots(figsize=(9.0, 2.18))
+    fig, ax = plt.subplots(figsize=(9.0, 1.92))
     ax.set_axis_off()
 
     band = FancyBboxPatch(
-        (0.025, 0.155),
+        (0.025, 0.075),
         0.95,
-        0.655,
+        0.730,
         boxstyle="round,pad=0.010,rounding_size=0.030",
         facecolor=COLORS["band"],
         edgecolor="#E2E8F0",
@@ -144,7 +144,7 @@ def main() -> None:
             "score",
         ),
     ]
-    w, h, y = 0.19, 0.345, 0.365
+    w, h, y = 0.19, 0.355, 0.335
     for x, title, fields, color, tag in boxes:
         add_box(ax, x, y, w, h, title, fields, color, tag)
 
@@ -164,7 +164,7 @@ def main() -> None:
 
     ax.text(
         0.035,
-        0.925,
+        0.945,
         "ClaimTransfer-Bench contract",
         ha="left",
         va="center",
@@ -175,7 +175,7 @@ def main() -> None:
     )
     ax.text(
         0.035,
-        0.845,
+        0.870,
         "Evaluation unit: task card x workflow adapter x evidence object x typed structural claim.",
         ha="left",
         va="center",
@@ -185,9 +185,9 @@ def main() -> None:
     )
 
     ribbon = FancyBboxPatch(
-        (0.055, 0.205),
+        (0.055, 0.125),
         0.89,
-        0.095,
+        0.090,
         boxstyle="round,pad=0.008,rounding_size=0.020",
         facecolor="white",
         edgecolor=COLORS["line"],
@@ -197,7 +197,7 @@ def main() -> None:
     ax.add_patch(ribbon)
     ax.text(
         0.5,
-        0.252,
+        0.170,
         "Provenance is preserved before aggregation: no row becomes an untyped model-level success sentence.",
         ha="center",
         va="center",
