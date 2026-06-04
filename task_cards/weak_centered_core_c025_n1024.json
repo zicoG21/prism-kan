@@ -10,37 +10,69 @@
   "samples": 1024,
   "noise": 0.0,
   "target_standardization": "train_mean_train_scale",
-  "support": [0, 1, 2, 3],
+  "support": [
+    0,
+    1,
+    2,
+    3
+  ],
   "claim_specification": {
     "support_claims": [
       {
         "claim_type": "support",
-        "target": [0, 1, 2, 3],
+        "target": [
+          0,
+          1,
+          2,
+          3
+        ],
         "predicate": "top_m_contains_all",
-        "m": 4
+        "m": 4,
+        "claim_id": "weak_centered_core_c025_d100_n1024:support:top_m_contains_all:[0, 1, 2, 3]",
+        "official_scorer": "ranked_support_or_endpoint_score"
       }
     ],
     "pair_claims": [
       {
         "claim_type": "pair",
-        "target": [2, 3],
+        "target": [
+          2,
+          3
+        ],
         "official_scorer": "full_model_functional_anova",
-        "predicate": "rank1"
+        "predicate": "rank1",
+        "claim_id": "weak_centered_core_c025_d100_n1024:pair:rank1:[2, 3]"
       }
     ],
     "endpoint_claims": [
       {
         "claim_type": "endpoints",
-        "target": [2, 3],
+        "target": [
+          2,
+          3
+        ],
         "predicate": "top_m_contains_all",
-        "m": 4
+        "m": 4,
+        "claim_id": "weak_centered_core_c025_d100_n1024:endpoints:top_m_contains_all:[2, 3]",
+        "official_scorer": "ranked_support_or_endpoint_score"
       }
     ]
   },
-  "stress_tags": ["weak_marginal_signal", "nuisance_maximum"],
+  "stress_tags": [
+    "weak_marginal_signal",
+    "nuisance_maximum"
+  ],
   "seed_policy": {
     "train_test_seed_block": "declared_by_score_report",
     "adapter_seed_block": "declared_by_adapter"
-  }
+  },
+  "task_family": "weak_centered",
+  "split": "public",
+  "registry_version": "claimtransfer_v0_public",
+  "audit_purpose": "diagnostic evidence-transfer card",
+  "official_outputs": [
+    "claim_records",
+    "score_report",
+    "coverage_table"
+  ]
 }
-

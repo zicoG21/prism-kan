@@ -120,6 +120,23 @@ def official_pass(row: pd.Series) -> float:
             return float("nan")
         return float(raw >= 0.5)
 
+    if predicate == "value_le":
+        if math.isnan(raw) or math.isnan(threshold):
+            return float("nan")
+        return float(raw <= threshold)
+
+    if predicate == "value_ge":
+        if math.isnan(raw) or math.isnan(threshold):
+            return float("nan")
+        return float(raw >= threshold)
+
+    if predicate == "exact_string_match":
+        expected = str(row.get("target", "")).strip()
+        observed = str(row.get("raw_value", "")).strip()
+        if not expected or not observed:
+            return float("nan")
+        return float(expected == observed)
+
     if predicate == "stress_card":
         return float("nan")
 
@@ -138,6 +155,8 @@ def wilson(successes: int, trials: int, z: float = 1.96) -> tuple[float, float]:
 
 def summarize(df: pd.DataFrame) -> pd.DataFrame:
     groups = [
+        "registry_version",
+        "split",
         "task_family",
         "task_id",
         "adapter_family",
@@ -174,7 +193,7 @@ def summarize(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def coverage(summary: pd.DataFrame) -> pd.DataFrame:
-    groups = ["adapter_family", "task_family", "claim_type"]
+    groups = ["registry_version", "split", "adapter_family", "task_family", "claim_type"]
     rows = []
     for keys, g in summary.groupby(groups, dropna=False):
         row = dict(zip(groups, keys))
@@ -230,6 +249,14 @@ def main() -> None:
     args = parser.parse_args()
 
     df = pd.read_csv(args.input, low_memory=False)
+    if "split" not in df.columns:
+        df["split"] = "public"
+    if "registry_version" not in df.columns:
+        df["registry_version"] = "claimtransfer_v0_public"
+    if "missing_reason" not in df.columns:
+        df["missing_reason"] = ""
+    if "runtime_seconds" not in df.columns:
+        df["runtime_seconds"] = ""
     df["pass"] = df.apply(official_pass, axis=1)
     df["rank_num"] = df["rank"].map(as_float)
     df["margin_num"] = df["margin"].map(as_float)

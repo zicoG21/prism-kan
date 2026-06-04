@@ -1,0 +1,100 @@
+{
+  "version": "claimtransfer_v1_scientific_templates",
+  "schema_version": "claimtransfer_task_card_schema_v1",
+  "split": "hidden_template",
+  "cards": [
+    {
+      "task_id": "feynman_style_energy_hidden_template",
+      "task_family": "scientific_expression",
+      "split": "hidden_template",
+      "registry_version": "claimtransfer_v1_scientific_templates",
+      "formula": "0.5*m*v^2 + m*g*h",
+      "covariates": {"type": "synthetic_physical", "variables": ["m", "v", "g", "h"]},
+      "dimension": 4,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [0, 1, 2, 3],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "energy:support:all_variables",
+            "claim_type": "support",
+            "target": [0, 1, 2, 3],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 4
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "energy:symbolic:operator_recall",
+            "claim_type": "symbolic_operator_recall",
+            "target": "plus,multiply,power",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "value_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "energy:symbolic:complexity",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "value_le",
+            "threshold": 12
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "private",
+        "adapter_seed_block": "private",
+        "hidden_seed_policy": "formula parameters and seeds may be withheld"
+      },
+      "stress_tags": ["scientific_expression", "operator_recovery"],
+      "audit_purpose": "template for expression-level symbolic claims",
+      "official_outputs": ["claim_records", "score_report", "coverage_table"]
+    },
+    {
+      "task_id": "correlated_covariate_pair_hidden_template",
+      "task_family": "correlated_covariates",
+      "split": "hidden_template",
+      "registry_version": "claimtransfer_v1_scientific_templates",
+      "formula": "sin(2*pi*x0) + x1^2 + c*x2*x3 with correlated nuisance block",
+      "covariates": {"type": "correlated_gaussian_block", "rho": 0.7},
+      "dimension": 100,
+      "samples": 2048,
+      "noise": 0.05,
+      "target_standardization": "train_mean_train_scale",
+      "support": [0, 1, 2, 3],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "corr_pair:support:active4",
+            "claim_type": "support",
+            "target": [0, 1, 2, 3],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 4
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "corr_pair:pair:2_3",
+            "claim_type": "pair",
+            "target": [2, 3],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "private",
+        "adapter_seed_block": "private",
+        "hidden_seed_policy": "covariate covariance and seeds may be withheld"
+      },
+      "stress_tags": ["correlated_covariates", "hidden_pair_claim"],
+      "audit_purpose": "template for hidden correlated-covariate structural claims",
+      "official_outputs": ["claim_records", "score_report", "coverage_table"]
+    }
+  ]
+}

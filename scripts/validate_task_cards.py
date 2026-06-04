@@ -18,11 +18,31 @@ import pandas as pd
 
 REQUIRED_CARD_FIELDS = {
     "task_id",
+    "task_family",
+    "split",
+    "registry_version",
     "formula",
+    "covariates",
     "dimension",
     "samples",
     "support",
     "claim_specification",
+    "seed_policy",
+    "stress_tags",
+}
+
+ALLOWED_SPLITS = {"public", "hidden", "hidden_template", "private"}
+ALLOWED_PREDICATES = {
+    "mse_lt",
+    "rank1",
+    "rank_at_budget",
+    "top_m_contains_all",
+    "contains_all",
+    "binary_true",
+    "stress_card",
+    "value_le",
+    "value_ge",
+    "exact_string_match",
 }
 
 
@@ -59,6 +79,24 @@ def load_cards(path: Path) -> list[dict[str, Any]]:
     return cards
 
 
+def validate_registry(path: Path, cards: list[dict[str, Any]]) -> list[str]:
+    errors: list[str] = []
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if isinstance(data, dict) and "cards" in data:
+        if "version" not in data:
+            errors.append(f"{path.name}: registry missing version")
+        if "schema_version" not in data:
+            errors.append(f"{path.name}: registry missing schema_version")
+        split = data.get("split")
+        if split is not None and split not in ALLOWED_SPLITS:
+            errors.append(f"{path.name}: invalid registry split {split!r}")
+    ids = [str(c.get("task_id", "")) for c in cards]
+    dupes = sorted({x for x in ids if ids.count(x) > 1})
+    if dupes:
+        errors.append(f"{path.name}: duplicate task_id values: {dupes}")
+    return errors
+
+
 def validate_card(card: dict[str, Any], source: Path) -> list[str]:
     errors: list[str] = []
     missing = sorted(REQUIRED_CARD_FIELDS - set(card))
@@ -68,6 +106,19 @@ def validate_card(card: dict[str, Any], source: Path) -> list[str]:
     task_id = str(card.get("task_id", ""))
     if not task_id:
         errors.append("empty task_id")
+
+    split = card.get("split")
+    if split not in ALLOWED_SPLITS:
+        errors.append(f"split must be one of {sorted(ALLOWED_SPLITS)}, got {split!r}")
+
+    if not isinstance(card.get("covariates", {}), dict):
+        errors.append("covariates must be an object")
+
+    if not isinstance(card.get("seed_policy", {}), dict):
+        errors.append("seed_policy must be an object")
+
+    if not isinstance(card.get("stress_tags", []), list):
+        errors.append("stress_tags must be a list")
 
     support = card.get("support", [])
     if not isinstance(support, list) or not all(isinstance(v, int) for v in support):
@@ -93,8 +144,21 @@ def validate_card(card: dict[str, Any], source: Path) -> list[str]:
             for field in ("claim_type", "target", "predicate"):
                 if field not in claim:
                     errors.append(f"{key}[{i}] missing {field}")
+            if claim.get("predicate") not in ALLOWED_PREDICATES:
+                errors.append(f"{key}[{i}] has unknown predicate {claim.get('predicate')!r}")
+            if "claim_id" not in claim:
+                errors.append(f"{key}[{i}] missing claim_id")
+            if "official_scorer" not in claim:
+                errors.append(f"{key}[{i}] missing official_scorer")
             if claim.get("claim_type") == "pair" and "official_scorer" not in claim:
                 errors.append(f"{key}[{i}] pair claim missing official_scorer")
+            target = claim.get("target")
+            if claim.get("claim_type") in {"support", "endpoints"}:
+                if not isinstance(target, list) or not all(isinstance(v, int) for v in target):
+                    errors.append(f"{key}[{i}] target must be integer list")
+            if claim.get("claim_type") == "pair":
+                if not isinstance(target, list) or len(target) != 2:
+                    errors.append(f"{key}[{i}] pair target must be length-2 integer list")
 
     if not has_claim:
         errors.append("no legal claims declared")
@@ -124,7 +188,10 @@ def main() -> None:
     rows = []
     all_errors: list[str] = []
     for path in sorted(task_dir.glob("*.json")):
+        if path.name.endswith("_schema.json"):
+            continue
         cards = load_cards(path)
+        all_errors.extend(validate_registry(path, cards))
         for card in cards:
             errors = validate_card(card, path)
             all_errors.extend(errors)
@@ -135,7 +202,10 @@ def main() -> None:
             rows.append(
                 {
                     "source": str(path),
+                    "registry_version": card.get("registry_version", ""),
+                    "split": card.get("split", ""),
                     "task_id": card.get("task_id", ""),
+                    "task_family": card.get("task_family", ""),
                     "dimension": card.get("dimension", ""),
                     "samples": card.get("samples", ""),
                     "support_size": len(card.get("support", []) or []),

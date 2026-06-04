@@ -21,3 +21,10 @@ python scripts/validate_task_cards.py
 
 The public registry is a diagnostic split.  Hidden cards or private seeds can
 use the same task-card schema for leaderboard-style evaluation.
+
+Contract files:
+
+- `task_card_schema.json`: machine-readable schema.
+- `claimtransfer_v0_public.json`: public diagnostic registry.
+- `claimtransfer_v0_hidden_template.json`: offline hidden-split template.
+- `docs/task_card_authoring_protocol.md`: authoring and versioning rules.

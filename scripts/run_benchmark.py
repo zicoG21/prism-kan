@@ -25,9 +25,24 @@ def run(cmd: list[str]) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
+        "--mode",
+        choices=["quick", "public", "full", "hidden"],
+        default="quick",
+        help=(
+            "quick rebuilds reports from released outputs; public/full also run "
+            "paper summary builders; hidden validates hidden-template cards and "
+            "scores a supplied hidden adapter-output file if provided."
+        ),
+    )
+    parser.add_argument(
         "--out-dir",
         default="results/workshop_review_tables/standard_audit_protocol",
         help="Output directory for the standard audit protocol summary.",
+    )
+    parser.add_argument(
+        "--hidden-input",
+        default="",
+        help="Optional hidden/private normalized adapter-output CSV to score in hidden mode.",
     )
     parser.add_argument(
         "--skip-cross-method",
@@ -46,12 +61,35 @@ def main() -> None:
     run([py, "scripts/validate_task_cards.py"])
     run([py, "scripts/build_claim_records.py"])
     run([py, "scripts/build_score_report.py"])
-    run([py, "scripts/run_standard_audit_protocol.py", "--out-dir", args.out_dir])
+    run([py, "scripts/build_benchmark_manifest.py"])
+    run([py, "scripts/check_benchmark_artifact.py"])
 
-    if not args.skip_minisuite:
+    if args.mode == "hidden":
+        if args.hidden_input:
+            run(
+                [
+                    py,
+                    "scripts/build_score_report.py",
+                    "--input",
+                    args.hidden_input,
+                    "--claim-record-out",
+                    "claim_records/hidden_claim_records.csv",
+                    "--score-report-out",
+                    "score_reports/hidden_score_report.csv",
+                    "--coverage-out",
+                    "score_reports/hidden_coverage_table.csv",
+                ]
+            )
+        print("\nHidden mode validated task-card contracts. Provide --hidden-input to score private rows.")
+        return
+
+    if args.mode in {"public", "full"}:
+        run([py, "scripts/run_standard_audit_protocol.py", "--out-dir", args.out_dir])
+
+    if args.mode == "full" and not args.skip_minisuite:
         run([py, "scripts/build_formal_minisuite_baseline_table.py"])
 
-    if not args.skip_cross_method:
+    if args.mode == "full" and not args.skip_cross_method:
         run(
             [
                 py,

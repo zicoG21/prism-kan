@@ -253,7 +253,7 @@ def stage_discordance_heatmap() -> None:
     ax.text(
         0.5,
         -0.17,
-        "The discordance across columns is the benchmark target, not a metric inconsistency.",
+        "The discordance across columns is the audit target, not a metric inconsistency.",
         ha="center",
         va="top",
         transform=ax.transAxes,

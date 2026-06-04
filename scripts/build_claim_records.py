@@ -85,6 +85,8 @@ def task_id(function: str, row: pd.Series) -> str:
 
 def add(rows: list[dict[str, Any]], **kwargs: Any) -> None:
     base = {
+        "registry_version": "claimtransfer_v0_public",
+        "split": "public",
         "task_id": "",
         "task_family": "",
         "adapter": "",
@@ -104,6 +106,8 @@ def add(rows: list[dict[str, Any]], **kwargs: Any) -> None:
         "raw_value": "",
         "selected_set": "",
         "candidate_set": "",
+        "missing_reason": "",
+        "runtime_seconds": "",
         "protocol": "",
     }
     base.update(kwargs)
@@ -255,6 +259,16 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--results-root", default="results/revision")
     parser.add_argument("--out", default="claim_records/released_adapter_outputs.csv")
+    parser.add_argument(
+        "--split",
+        default="public",
+        help="Split label to attach to released evidence rows.",
+    )
+    parser.add_argument(
+        "--registry-version",
+        default="claimtransfer_v0_public",
+        help="Task-card registry version to attach to released evidence rows.",
+    )
     args = parser.parse_args()
 
     root = Path(args.results_root)
@@ -274,6 +288,9 @@ def main() -> None:
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     df = pd.DataFrame(rows)
+    if not df.empty:
+        df["split"] = args.split
+        df["registry_version"] = args.registry_version
     df.to_csv(out, index=False)
     print(f"Wrote {out} ({len(df)} raw evidence rows)")
     if not df.empty:

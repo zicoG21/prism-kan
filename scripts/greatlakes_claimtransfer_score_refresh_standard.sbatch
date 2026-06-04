@@ -33,6 +33,8 @@ echo "[$(date -Is)] refreshing ClaimTransfer official reports"
 "$PY" scripts/validate_task_cards.py
 "$PY" scripts/build_claim_records.py
 "$PY" scripts/build_score_report.py
+"$PY" scripts/build_benchmark_manifest.py
+"$PY" scripts/check_benchmark_artifact.py
 
 if [[ "${BUILD_FIGURE_SUMMARIES:-1}" == "1" ]]; then
   "$PY" scripts/build_cross_method_transfer_matrix.py || true

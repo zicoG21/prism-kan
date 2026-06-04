@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claimtransfer.local/claim_record_schema.json",
+  "title": "ClaimTransfer official claim-record row",
+  "type": "object",
+  "required": [
+    "registry_version",
+    "split",
+    "task_id",
+    "adapter",
+    "evidence_object",
+    "claim_type",
+    "scorer",
+    "predicate",
+    "pass"
+  ],
+  "properties": {
+    "registry_version": {"type": "string"},
+    "split": {"type": "string"},
+    "task_id": {"type": "string"},
+    "task_family": {"type": "string"},
+    "adapter": {"type": "string"},
+    "adapter_family": {"type": "string"},
+    "seed": {"type": ["integer", "string"]},
+    "evidence_object": {"type": "string"},
+    "claim_type": {"type": "string"},
+    "target": {"type": ["string", "array", "object"]},
+    "scorer": {"type": "string"},
+    "predicate": {"type": "string"},
+    "rank_num": {"type": ["number", "null"]},
+    "margin_num": {"type": ["number", "null"]},
+    "raw_num": {"type": ["number", "null"]},
+    "pass": {"type": ["number", "null"]},
+    "missing_reason": {"type": "string"},
+    "protocol": {"type": "string"}
+  }
+}

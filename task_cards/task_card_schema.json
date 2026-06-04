@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claimtransfer.local/task_card_schema.json",
+  "title": "ClaimTransfer task-card schema",
+  "type": "object",
+  "required": [
+    "task_id",
+    "task_family",
+    "split",
+    "registry_version",
+    "formula",
+    "covariates",
+    "dimension",
+    "samples",
+    "support",
+    "claim_specification",
+    "seed_policy",
+    "stress_tags"
+  ],
+  "properties": {
+    "task_id": {"type": "string", "minLength": 1},
+    "task_family": {"type": "string", "minLength": 1},
+    "split": {"type": "string", "enum": ["public", "hidden", "hidden_template", "private"]},
+    "registry_version": {"type": "string", "minLength": 1},
+    "formula": {"type": "string", "minLength": 1},
+    "covariates": {"type": "object"},
+    "dimension": {"type": "integer", "minimum": 1},
+    "samples": {"type": "integer", "minimum": 1},
+    "noise": {"type": "number"},
+    "target_standardization": {"type": "string"},
+    "support": {
+      "type": "array",
+      "items": {"type": "integer", "minimum": 0},
+      "uniqueItems": true
+    },
+    "claim_specification": {"type": "object"},
+    "seed_policy": {"type": "object"},
+    "stress_tags": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "audit_purpose": {"type": "string"},
+    "official_outputs": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}

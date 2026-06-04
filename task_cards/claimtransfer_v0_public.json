@@ -7,13 +7,75 @@
       "dimension": 100,
       "samples": 1024,
       "noise": 0.0,
-      "support": [0, 1, 2],
+      "support": [
+        0,
+        1,
+        2
+      ],
       "claim_specification": {
-        "support_claims": [{"claim_type": "support", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 3}],
-        "endpoint_claims": [{"claim_type": "endpoints", "target": [0, 1], "predicate": "top_m_contains_all", "m": 3}],
-        "pair_claims": [{"claim_type": "pair", "target": [0, 1], "official_scorer": "functional_anova", "predicate": "rank1"}]
+        "support_claims": [
+          {
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 3,
+            "claim_id": "bilinear_d100_n1024:support:top_m_contains_all:[0, 1, 2]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 3,
+            "claim_id": "bilinear_d100_n1024:endpoints:top_m_contains_all:[0, 1]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1",
+            "claim_id": "bilinear_d100_n1024:pair:rank1:[0, 1]"
+          }
+        ]
       },
-      "stress_tags": ["positive_product_control"]
+      "stress_tags": [
+        "positive_product_control"
+      ],
+      "task_family": "bilinear",
+      "split": "public",
+      "registry_version": "claimtransfer_v0_public",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "target_standardization": "train_mean_train_scale",
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "audit_purpose": "diagnostic evidence-transfer card",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
     },
     {
       "task_id": "weak_centered_d100_n1024",
@@ -21,13 +83,78 @@
       "dimension": 100,
       "samples": 1024,
       "noise": 0.0,
-      "support": [0, 1, 2, 3],
+      "support": [
+        0,
+        1,
+        2,
+        3
+      ],
       "claim_specification": {
-        "support_claims": [{"claim_type": "support", "target": [0, 1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
-        "endpoint_claims": [{"claim_type": "endpoints", "target": [2, 3], "predicate": "top_m_contains_all", "m": 4}],
-        "pair_claims": [{"claim_type": "pair", "target": [2, 3], "official_scorer": "functional_anova", "predicate": "rank1"}]
+        "support_claims": [
+          {
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 4,
+            "claim_id": "weak_centered_d100_n1024:support:top_m_contains_all:[0, 1, 2, 3]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_type": "endpoints",
+            "target": [
+              2,
+              3
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 4,
+            "claim_id": "weak_centered_d100_n1024:endpoints:top_m_contains_all:[2, 3]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_type": "pair",
+            "target": [
+              2,
+              3
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1",
+            "claim_id": "weak_centered_d100_n1024:pair:rank1:[2, 3]"
+          }
+        ]
       },
-      "stress_tags": ["weak_marginal_signal", "nuisance_maximum"]
+      "stress_tags": [
+        "weak_marginal_signal",
+        "nuisance_maximum"
+      ],
+      "task_family": "weak_centered",
+      "split": "public",
+      "registry_version": "claimtransfer_v0_public",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "target_standardization": "train_mean_train_scale",
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "audit_purpose": "diagnostic evidence-transfer card",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
     },
     {
       "task_id": "trig_product_d100_n1024",
@@ -35,13 +162,75 @@
       "dimension": 100,
       "samples": 1024,
       "noise": 0.0,
-      "support": [0, 1, 2],
+      "support": [
+        0,
+        1,
+        2
+      ],
       "claim_specification": {
-        "support_claims": [{"claim_type": "support", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 3}],
-        "endpoint_claims": [{"claim_type": "endpoints", "target": [0, 1], "predicate": "top_m_contains_all", "m": 3}],
-        "pair_claims": [{"claim_type": "pair", "target": [0, 1], "official_scorer": "functional_anova", "predicate": "rank1"}]
+        "support_claims": [
+          {
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 3,
+            "claim_id": "trig_product_d100_n1024:support:top_m_contains_all:[0, 1, 2]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 3,
+            "claim_id": "trig_product_d100_n1024:endpoints:top_m_contains_all:[0, 1]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1",
+            "claim_id": "trig_product_d100_n1024:pair:rank1:[0, 1]"
+          }
+        ]
       },
-      "stress_tags": ["positive_product_control"]
+      "stress_tags": [
+        "positive_product_control"
+      ],
+      "task_family": "trig_product",
+      "split": "public",
+      "registry_version": "claimtransfer_v0_public",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "target_standardization": "train_mean_train_scale",
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "audit_purpose": "diagnostic evidence-transfer card",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
     },
     {
       "task_id": "rational_product_d100_n1024",
@@ -49,13 +238,76 @@
       "dimension": 100,
       "samples": 1024,
       "noise": 0.0,
-      "support": [0, 1, 2],
+      "support": [
+        0,
+        1,
+        2
+      ],
       "claim_specification": {
-        "support_claims": [{"claim_type": "support", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 3}],
-        "endpoint_claims": [{"claim_type": "endpoints", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 3}],
-        "pair_claims": [{"claim_type": "pair", "target": [0, 1], "official_scorer": "functional_anova", "predicate": "rank1"}]
+        "support_claims": [
+          {
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 3,
+            "claim_id": "rational_product_d100_n1024:support:top_m_contains_all:[0, 1, 2]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 3,
+            "claim_id": "rational_product_d100_n1024:endpoints:top_m_contains_all:[0, 1, 2]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1",
+            "claim_id": "rational_product_d100_n1024:pair:rank1:[0, 1]"
+          }
+        ]
       },
-      "stress_tags": ["rational_pair"]
+      "stress_tags": [
+        "rational_pair"
+      ],
+      "task_family": "rational_product",
+      "split": "public",
+      "registry_version": "claimtransfer_v0_public",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "target_standardization": "train_mean_train_scale",
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "audit_purpose": "diagnostic evidence-transfer card",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
     },
     {
       "task_id": "division_mixed_d100_n1024",
@@ -63,16 +315,92 @@
       "dimension": 100,
       "samples": 1024,
       "noise": 0.0,
-      "support": [0, 1, 2, 3],
+      "support": [
+        0,
+        1,
+        2,
+        3
+      ],
       "claim_specification": {
-        "support_claims": [{"claim_type": "support", "target": [0, 1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
-        "endpoint_claims": [{"claim_type": "endpoints", "target": [0, 1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
+        "support_claims": [
+          {
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 4,
+            "claim_id": "division_mixed_d100_n1024:support:top_m_contains_all:[0, 1, 2, 3]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 4,
+            "claim_id": "division_mixed_d100_n1024:endpoints:top_m_contains_all:[0, 1, 2, 3]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
         "pair_claims": [
-          {"claim_type": "pair", "target": [0, 1], "official_scorer": "functional_anova", "predicate": "rank_at_budget", "budget": 2},
-          {"claim_type": "pair", "target": [2, 3], "official_scorer": "functional_anova", "predicate": "rank_at_budget", "budget": 2}
+          {
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank_at_budget",
+            "budget": 2,
+            "claim_id": "division_mixed_d100_n1024:pair:rank_at_budget:[0, 1]"
+          },
+          {
+            "claim_type": "pair",
+            "target": [
+              2,
+              3
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank_at_budget",
+            "budget": 2,
+            "claim_id": "division_mixed_d100_n1024:pair:rank_at_budget:[2, 3]"
+          }
         ]
       },
-      "stress_tags": ["multi_pair", "rational_pair"]
+      "stress_tags": [
+        "multi_pair",
+        "rational_pair"
+      ],
+      "task_family": "division_mixed",
+      "split": "public",
+      "registry_version": "claimtransfer_v0_public",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "target_standardization": "train_mean_train_scale",
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "audit_purpose": "diagnostic evidence-transfer card",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
     },
     {
       "task_id": "mixed_sparse_d100_n1024",
@@ -80,13 +408,79 @@
       "dimension": 100,
       "samples": 1024,
       "noise": 0.0,
-      "support": [0, 1, 2, 3],
+      "support": [
+        0,
+        1,
+        2,
+        3
+      ],
       "claim_specification": {
-        "support_claims": [{"claim_type": "support", "target": [0, 1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
-        "endpoint_claims": [{"claim_type": "endpoints", "target": [1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
-        "pair_claims": [{"claim_type": "pair", "target": [1, 2], "official_scorer": "functional_anova", "predicate": "rank1"}]
+        "support_claims": [
+          {
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 4,
+            "claim_id": "mixed_sparse_d100_n1024:support:top_m_contains_all:[0, 1, 2, 3]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_type": "endpoints",
+            "target": [
+              1,
+              2,
+              3
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 4,
+            "claim_id": "mixed_sparse_d100_n1024:endpoints:top_m_contains_all:[1, 2, 3]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_type": "pair",
+            "target": [
+              1,
+              2
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1",
+            "claim_id": "mixed_sparse_d100_n1024:pair:rank1:[1, 2]"
+          }
+        ]
       },
-      "stress_tags": ["mixed_sparse", "readout_pruning_boundary"]
+      "stress_tags": [
+        "mixed_sparse",
+        "readout_pruning_boundary"
+      ],
+      "task_family": "mixed_sparse",
+      "split": "public",
+      "registry_version": "claimtransfer_v0_public",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "target_standardization": "train_mean_train_scale",
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "audit_purpose": "diagnostic evidence-transfer card",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
     },
     {
       "task_id": "sqrt_energy_d100_n1024",
@@ -94,13 +488,75 @@
       "dimension": 100,
       "samples": 1024,
       "noise": 0.0,
-      "support": [0, 1, 2],
+      "support": [
+        0,
+        1,
+        2
+      ],
       "claim_specification": {
-        "support_claims": [{"claim_type": "support", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 3}],
-        "endpoint_claims": [{"claim_type": "endpoints", "target": [0, 1], "predicate": "top_m_contains_all", "m": 3}],
-        "pair_claims": [{"claim_type": "pair", "target": [0, 1], "official_scorer": "functional_anova", "predicate": "rank1"}]
+        "support_claims": [
+          {
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 3,
+            "claim_id": "sqrt_energy_d100_n1024:support:top_m_contains_all:[0, 1, 2]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 3,
+            "claim_id": "sqrt_energy_d100_n1024:endpoints:top_m_contains_all:[0, 1]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1",
+            "claim_id": "sqrt_energy_d100_n1024:pair:rank1:[0, 1]"
+          }
+        ]
       },
-      "stress_tags": ["positive_product_control"]
+      "stress_tags": [
+        "positive_product_control"
+      ],
+      "task_family": "sqrt_energy",
+      "split": "public",
+      "registry_version": "claimtransfer_v0_public",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "target_standardization": "train_mean_train_scale",
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "audit_purpose": "diagnostic evidence-transfer card",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
     },
     {
       "task_id": "nested_trig_d100_n1024",
@@ -108,13 +564,76 @@
       "dimension": 100,
       "samples": 1024,
       "noise": 0.0,
-      "support": [0, 1, 2],
+      "support": [
+        0,
+        1,
+        2
+      ],
       "claim_specification": {
-        "support_claims": [{"claim_type": "support", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 3}],
-        "endpoint_claims": [{"claim_type": "endpoints", "target": [1, 2], "predicate": "top_m_contains_all", "m": 3}],
-        "pair_claims": [{"claim_type": "pair", "target": [1, 2], "official_scorer": "scorer_stress", "predicate": "stress_card"}]
+        "support_claims": [
+          {
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 3,
+            "claim_id": "nested_trig_d100_n1024:support:top_m_contains_all:[0, 1, 2]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_type": "endpoints",
+            "target": [
+              1,
+              2
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 3,
+            "claim_id": "nested_trig_d100_n1024:endpoints:top_m_contains_all:[1, 2]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_type": "pair",
+            "target": [
+              1,
+              2
+            ],
+            "official_scorer": "scorer_stress",
+            "predicate": "stress_card",
+            "claim_id": "nested_trig_d100_n1024:pair:stress_card:[1, 2]"
+          }
+        ]
       },
-      "stress_tags": ["nested_composition", "pairwise_stress"]
+      "stress_tags": [
+        "nested_composition",
+        "pairwise_stress"
+      ],
+      "task_family": "nested_trig",
+      "split": "public",
+      "registry_version": "claimtransfer_v0_public",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "target_standardization": "train_mean_train_scale",
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "audit_purpose": "diagnostic evidence-transfer card",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
     },
     {
       "task_id": "three_way_product_d100_n1024",
@@ -122,13 +641,79 @@
       "dimension": 100,
       "samples": 1024,
       "noise": 0.0,
-      "support": [0, 1, 2, 3],
+      "support": [
+        0,
+        1,
+        2,
+        3
+      ],
       "claim_specification": {
-        "support_claims": [{"claim_type": "support", "target": [0, 1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
-        "endpoint_claims": [{"claim_type": "endpoints", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 4}],
-        "pair_claims": [{"claim_type": "pair", "target": [0, 1], "official_scorer": "scorer_stress", "predicate": "stress_card"}]
+        "support_claims": [
+          {
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 4,
+            "claim_id": "three_way_product_d100_n1024:support:top_m_contains_all:[0, 1, 2, 3]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 4,
+            "claim_id": "three_way_product_d100_n1024:endpoints:top_m_contains_all:[0, 1, 2]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "scorer_stress",
+            "predicate": "stress_card",
+            "claim_id": "three_way_product_d100_n1024:pair:stress_card:[0, 1]"
+          }
+        ]
       },
-      "stress_tags": ["three_way", "pairwise_stress"]
+      "stress_tags": [
+        "three_way",
+        "pairwise_stress"
+      ],
+      "task_family": "three_way_product",
+      "split": "public",
+      "registry_version": "claimtransfer_v0_public",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "target_standardization": "train_mean_train_scale",
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "audit_purpose": "diagnostic evidence-transfer card",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
     },
     {
       "task_id": "exp_product_d100_n1024",
@@ -136,12 +721,62 @@
       "dimension": 100,
       "samples": 1024,
       "noise": 0.0,
-      "support": [0, 1, 2],
+      "support": [
+        0,
+        1,
+        2
+      ],
       "claim_specification": {
-        "support_claims": [{"claim_type": "support", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 3}],
-        "pair_claims": [{"claim_type": "pair", "target": [0, 1], "official_scorer": "functional_anova", "predicate": "rank1"}]
+        "support_claims": [
+          {
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 3,
+            "claim_id": "exp_product_d100_n1024:support:top_m_contains_all:[0, 1, 2]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1",
+            "claim_id": "exp_product_d100_n1024:pair:rank1:[0, 1]"
+          }
+        ]
       },
-      "stress_tags": ["product_like"]
+      "stress_tags": [
+        "product_like"
+      ],
+      "task_family": "exp_product",
+      "split": "public",
+      "registry_version": "claimtransfer_v0_public",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "target_standardization": "train_mean_train_scale",
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "audit_purpose": "diagnostic evidence-transfer card",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
     },
     {
       "task_id": "log_product_d100_n1024",
@@ -149,12 +784,62 @@
       "dimension": 100,
       "samples": 1024,
       "noise": 0.0,
-      "support": [0, 1, 2],
+      "support": [
+        0,
+        1,
+        2
+      ],
       "claim_specification": {
-        "support_claims": [{"claim_type": "support", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 3}],
-        "pair_claims": [{"claim_type": "pair", "target": [0, 1], "official_scorer": "functional_anova", "predicate": "rank1"}]
+        "support_claims": [
+          {
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 3,
+            "claim_id": "log_product_d100_n1024:support:top_m_contains_all:[0, 1, 2]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1",
+            "claim_id": "log_product_d100_n1024:pair:rank1:[0, 1]"
+          }
+        ]
       },
-      "stress_tags": ["product_like"]
+      "stress_tags": [
+        "product_like"
+      ],
+      "task_family": "log_product",
+      "split": "public",
+      "registry_version": "claimtransfer_v0_public",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "target_standardization": "train_mean_train_scale",
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "audit_purpose": "diagnostic evidence-transfer card",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
     },
     {
       "task_id": "semi_breast_cancer_core",
@@ -162,12 +847,63 @@
       "dimension": 30,
       "samples": 384,
       "noise": 0.0,
-      "support": [0, 1, 2, 3],
+      "support": [
+        0,
+        1,
+        2,
+        3
+      ],
       "claim_specification": {
-        "support_claims": [{"claim_type": "support", "target": [0, 1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
-        "pair_claims": [{"claim_type": "pair", "target": [2, 3], "official_scorer": "functional_anova", "predicate": "rank1"}]
+        "support_claims": [
+          {
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 4,
+            "claim_id": "semi_breast_cancer_core:support:top_m_contains_all:[0, 1, 2, 3]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_type": "pair",
+            "target": [
+              2,
+              3
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1",
+            "claim_id": "semi_breast_cancer_core:pair:rank1:[2, 3]"
+          }
+        ]
       },
-      "stress_tags": ["semi_synthetic_covariates"]
+      "stress_tags": [
+        "semi_synthetic_covariates"
+      ],
+      "task_family": "semi_breast_cancer",
+      "split": "public",
+      "registry_version": "claimtransfer_v0_public",
+      "covariates": {
+        "type": "semi_synthetic_real_covariates",
+        "source": "breast_cancer"
+      },
+      "target_standardization": "train_mean_train_scale",
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "audit_purpose": "diagnostic evidence-transfer card",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
     },
     {
       "task_id": "semi_diabetes_core",
@@ -175,12 +911,63 @@
       "dimension": 10,
       "samples": 128,
       "noise": 0.0,
-      "support": [0, 1, 2, 3],
+      "support": [
+        0,
+        1,
+        2,
+        3
+      ],
       "claim_specification": {
-        "support_claims": [{"claim_type": "support", "target": [0, 1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
-        "pair_claims": [{"claim_type": "pair", "target": [2, 3], "official_scorer": "functional_anova", "predicate": "rank1"}]
+        "support_claims": [
+          {
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 4,
+            "claim_id": "semi_diabetes_core:support:top_m_contains_all:[0, 1, 2, 3]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_type": "pair",
+            "target": [
+              2,
+              3
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1",
+            "claim_id": "semi_diabetes_core:pair:rank1:[2, 3]"
+          }
+        ]
       },
-      "stress_tags": ["semi_synthetic_covariates"]
+      "stress_tags": [
+        "semi_synthetic_covariates"
+      ],
+      "task_family": "semi_diabetes",
+      "split": "public",
+      "registry_version": "claimtransfer_v0_public",
+      "covariates": {
+        "type": "semi_synthetic_real_covariates",
+        "source": "diabetes"
+      },
+      "target_standardization": "train_mean_train_scale",
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "audit_purpose": "diagnostic evidence-transfer card",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
     },
     {
       "task_id": "semi_wine_core",
@@ -188,12 +975,65 @@
       "dimension": 13,
       "samples": 178,
       "noise": 0.0,
-      "support": [0, 1, 2, 3],
+      "support": [
+        0,
+        1,
+        2,
+        3
+      ],
       "claim_specification": {
-        "support_claims": [{"claim_type": "support", "target": [0, 1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
-        "pair_claims": [{"claim_type": "pair", "target": [2, 3], "official_scorer": "functional_anova", "predicate": "rank1"}]
+        "support_claims": [
+          {
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "predicate": "top_m_contains_all",
+            "m": 4,
+            "claim_id": "semi_wine_core:support:top_m_contains_all:[0, 1, 2, 3]",
+            "official_scorer": "ranked_support_or_endpoint_score"
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_type": "pair",
+            "target": [
+              2,
+              3
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1",
+            "claim_id": "semi_wine_core:pair:rank1:[2, 3]"
+          }
+        ]
       },
-      "stress_tags": ["semi_synthetic_covariates"]
+      "stress_tags": [
+        "semi_synthetic_covariates"
+      ],
+      "task_family": "semi_wine",
+      "split": "public",
+      "registry_version": "claimtransfer_v0_public",
+      "covariates": {
+        "type": "semi_synthetic_real_covariates",
+        "source": "wine"
+      },
+      "target_standardization": "train_mean_train_scale",
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "audit_purpose": "diagnostic evidence-transfer card",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
     }
-  ]
+  ],
+  "schema_version": "claimtransfer_task_card_schema_v1",
+  "split": "public"
 }

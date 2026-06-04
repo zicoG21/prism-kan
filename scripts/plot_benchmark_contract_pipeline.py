@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Draw the ClaimTransfer-Bench contract pipeline figure.
+"""Draw the ClaimTransfer audit-contract pipeline figure.
 
-This is a static specification figure: it shows the benchmark input/output
-contract rather than an experiment result.
+This is a static protocol figure: it shows the audit input/output contract
+rather than an experiment result.
 """
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT_DIR = ROOT / "manuscripts" / "workshop_foundation" / "figures"
+OUT_DIR = ROOT / "manuscripts" / "submission_neurips_workshop_v0" / "figures"
 
 COLORS = {
     "ink": "#1F2937",
@@ -165,7 +165,7 @@ def main() -> None:
     ax.text(
         0.035,
         0.940,
-        "ClaimTransfer-Bench contract",
+        "ClaimTransfer audit contract",
         ha="left",
         va="center",
         fontsize=9.8,
@@ -176,7 +176,7 @@ def main() -> None:
     ax.text(
         0.035,
         0.865,
-        "Evaluation unit: task card x workflow adapter x evidence object x typed structural claim.",
+        "Audit unit: task card x workflow adapter x evidence object x typed structural claim.",
         ha="left",
         va="center",
         fontsize=7.15,
