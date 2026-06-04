@@ -292,6 +292,7 @@ Current local support:
 
 - hidden scoring mode: `python scripts/run_benchmark.py --hidden --hidden-input ...`;
 - protocol document: `docs/hidden_evaluation_protocol.md`;
+- submission metadata schema and validator for offline benchmark packages;
 - remaining gap: real private cards/seeds held outside the public repo.
 
 ### 14. More Realistic Scientific Cards

@@ -23,6 +23,11 @@ OFFICIAL_DOCS = {
     "docs/task_card_authoring_protocol.md",
 }
 
+EXCLUDED_PREFIXES = (
+    "score_reports/example_",
+    "score_reports/submission_score/",
+)
+
 
 def sha256(path: Path) -> str:
     h = hashlib.sha256()
@@ -73,11 +78,14 @@ def main() -> None:
             if path.name.startswith("."):
                 continue
             rel = path.relative_to(ROOT)
+            rel_str = str(rel)
+            if any(rel_str.startswith(prefix) for prefix in EXCLUDED_PREFIXES):
+                continue
             if root_name == "docs" and str(rel) not in OFFICIAL_DOCS:
                 continue
             rows.append(
                 {
-                    "path": str(rel),
+                    "path": rel_str,
                     "artifact_group": root_name,
                     "bytes": path.stat().st_size,
                     "rows_if_csv": count_rows(path),

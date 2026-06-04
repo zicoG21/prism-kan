@@ -47,12 +47,31 @@ Missing evidence objects should be omitted or marked with `missing_reason`.
 They should not be converted into failures for claims a workflow does not
 expose.
 
+## Metadata File
+
+Submit a JSON metadata file with:
+
+- `submission_id`
+- `method_name`
+- `adapter_family`
+- `method_description`
+- `native_outputs`
+- `tuning_policy`
+- `compute_budget`
+- `missing_field_policy`
+- optional `model_artifacts`, `contact`, and `license`
+
+The schema is `adapters/submission_metadata_schema.json`; a minimal example is
+`examples/minimal_submission_metadata.json`.
+
 ## Official Scoring
 
 Run:
 
 ```bash
-python scripts/score_submission.py path/to/submission.csv --out-dir score_reports/submission_score
+python scripts/score_submission.py path/to/submission.csv \
+  --metadata path/to/submission_metadata.json \
+  --out-dir score_reports/submission_score
 ```
 
 Outputs:
@@ -60,6 +79,8 @@ Outputs:
 - `claim_records.csv`
 - `score_report.csv`
 - `coverage_table.csv`
+- `dashboard/`
+- `submission_metadata.json` when metadata is supplied
 
 For private or held-out evaluation, use the same submission format.  Hidden task
 cards may withhold formula labels or seeds, but the official scorer uses the

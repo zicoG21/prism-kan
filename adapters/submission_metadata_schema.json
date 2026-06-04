@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claimtransfer.local/submission_metadata_schema.json",
+  "title": "ClaimTransfer submission metadata",
+  "type": "object",
+  "required": [
+    "submission_id",
+    "method_name",
+    "adapter_family",
+    "method_description",
+    "native_outputs",
+    "tuning_policy",
+    "compute_budget",
+    "missing_field_policy"
+  ],
+  "properties": {
+    "submission_id": {"type": "string"},
+    "method_name": {"type": "string"},
+    "adapter_family": {"type": "string"},
+    "method_description": {"type": "string"},
+    "native_outputs": {"type": "array", "items": {"type": "string"}},
+    "tuning_policy": {"type": "string"},
+    "compute_budget": {
+      "type": "object",
+      "properties": {
+        "hardware": {"type": "string"},
+        "wall_time": {"type": "string"},
+        "seeds": {"type": ["integer", "string"]},
+        "notes": {"type": "string"}
+      }
+    },
+    "missing_field_policy": {"type": "string"},
+    "model_artifacts": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "contact": {"type": "string"},
+    "license": {"type": "string"}
+  }
+}

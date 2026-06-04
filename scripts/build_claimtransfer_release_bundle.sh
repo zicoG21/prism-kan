@@ -67,6 +67,7 @@ collect_official_docs() {
     scripts/run_benchmark.py \
     scripts/validate_task_cards.py \
     scripts/validate_adapter_registry.py \
+    scripts/validate_submission_metadata.py \
     scripts/build_claim_records.py \
     scripts/build_score_report.py \
     scripts/build_benchmark_manifest.py \
@@ -78,7 +79,8 @@ collect_official_docs() {
     scripts/check_release_overlay_checkout.sh \
     scripts/print_artifact_env.py \
     scripts/build_claimtransfer_release_bundle.sh \
-    examples/minimal_adapter.py
+    examples/minimal_adapter.py \
+    examples/minimal_submission_metadata.json
   do
     [[ -f "$f" ]] && printf '%s\n' "$f"
   done

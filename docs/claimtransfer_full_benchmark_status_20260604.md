@@ -10,6 +10,7 @@ Updated: 2026-06-04
 - Scientific/expression templates: `task_cards/claimtransfer_v1_scientific_templates.json`
 - Adapter-output schema: `adapters/adapter_output_schema.json`
 - Adapter-family registry: `adapters/adapter_family_registry.json`
+- Submission metadata schema: `adapters/submission_metadata_schema.json`
 - Claim-record schema: `claim_records/claim_record_schema.json`
 - Offline submission scorer: `scripts/score_submission.py`
 - Artifact manifest builder: `scripts/build_benchmark_manifest.py`
@@ -35,6 +36,7 @@ The following commands were run successfully:
 ```bash
 python3 scripts/validate_task_cards.py
 python3 scripts/validate_adapter_registry.py
+python3 scripts/validate_submission_metadata.py examples/minimal_submission_metadata.json
 python3 scripts/build_claim_records.py
 python3 scripts/build_score_report.py
 python3 scripts/run_benchmark.py --quick
@@ -57,7 +59,7 @@ Current generated scale:
 - 694 aggregate score-report rows.
 - 255 coverage rows.
 - Artifact manifest generated under `score_reports/benchmark_manifest.csv`
-  with 60 official contract and report entries.
+  with 41 official contract and report entries.
 
 ## P0 Status
 
@@ -105,6 +107,7 @@ Still data-dependent:
 Implemented as offline benchmark scaffolding:
 
 - submission format;
+- submission metadata schema and validator;
 - offline submission scorer;
 - hidden-template task cards;
 - scientific/expression templates;
@@ -139,6 +142,6 @@ Current properties:
 - no overfull boxes, undefined references, or citation warnings in the latest
   compile;
 - current artifact scale synchronized in the draft:
-  117,114 claim rows, 694 score rows, 255 coverage rows, 60 manifest entries;
+  117,114 claim rows, 694 score rows, 255 coverage rows, 41 manifest entries;
 - paper identity: official-scored benchmark contract, with pyKAN as the
   high-resolution case study and non-KAN rows as adapter-interface checks.

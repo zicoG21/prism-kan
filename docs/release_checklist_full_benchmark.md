@@ -28,9 +28,11 @@ Expected current scale:
 - `task_cards/*.json`
 - `adapters/adapter_output_schema.json`
 - `adapters/adapter_family_registry.json`
+- `adapters/submission_metadata_schema.json`
 - `claim_records/claim_record_schema.json`
 - `claim_records/example_claim_record.csv`
 - `scripts/validate_adapter_registry.py`
+- `scripts/validate_submission_metadata.py`
 - `scripts/build_claim_records.py`
 - `scripts/build_score_report.py`
 - `scripts/score_submission.py`

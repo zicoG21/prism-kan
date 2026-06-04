@@ -10,6 +10,7 @@ requested output directory.
 from __future__ import annotations
 
 import argparse
+import shutil
 import os
 import subprocess
 import sys
@@ -41,6 +42,11 @@ def main() -> None:
         action="store_true",
         help="Validate task cards before scoring the submission.",
     )
+    parser.add_argument(
+        "--metadata",
+        default="",
+        help="Optional ClaimTransfer submission metadata JSON.",
+    )
     args = parser.parse_args()
 
     submission = Path(args.submission_csv)
@@ -53,6 +59,14 @@ def main() -> None:
 
     if args.validate_task_cards:
         run([py, "scripts/validate_task_cards.py"])
+        run([py, "scripts/validate_adapter_registry.py"])
+
+    if args.metadata:
+        metadata = Path(args.metadata)
+        if not metadata.exists():
+            raise SystemExit(f"Submission metadata file does not exist: {metadata}")
+        run([py, "scripts/validate_submission_metadata.py", str(metadata)])
+        shutil.copy2(metadata, out_dir / "submission_metadata.json")
 
     run(
         [
@@ -66,6 +80,18 @@ def main() -> None:
             str(out_dir / "score_report.csv"),
             "--coverage-out",
             str(out_dir / "coverage_table.csv"),
+        ]
+    )
+    run(
+        [
+            py,
+            "scripts/build_typed_dashboard.py",
+            "--score-report",
+            str(out_dir / "score_report.csv"),
+            "--coverage",
+            str(out_dir / "coverage_table.csv"),
+            "--out-dir",
+            str(out_dir / "dashboard"),
         ]
     )
     print(f"\nOfficial submission score written to {out_dir}")

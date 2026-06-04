@@ -51,12 +51,14 @@ bash scripts/check_release_overlay_checkout.sh
 - Scientific/expression templates: `task_cards/claimtransfer_v1_scientific_templates.json`
 - Adapter-output schema: `adapters/adapter_output_schema.json`
 - Adapter-family registry: `adapters/adapter_family_registry.json`
+- Submission metadata schema: `adapters/submission_metadata_schema.json`
 - Claim-record schema: `claim_records/claim_record_schema.json`
 
 ## Official Scoring
 
 ```bash
 python scripts/validate_adapter_registry.py
+python scripts/validate_submission_metadata.py examples/minimal_submission_metadata.json
 python scripts/build_claim_records.py
 python scripts/build_score_report.py
 python scripts/check_benchmark_artifact.py
@@ -83,7 +85,9 @@ Minimal examples:
 
 ```bash
 python examples/minimal_adapter.py --out examples/minimal_submission_generated.csv
-python scripts/score_submission.py examples/minimal_submission.csv --out-dir score_reports/example_minimal
+python scripts/score_submission.py examples/minimal_submission.csv \
+  --out-dir score_reports/example_minimal \
+  --metadata examples/minimal_submission_metadata.json
 ```
 
 Use hidden/offline mode for private evaluation:

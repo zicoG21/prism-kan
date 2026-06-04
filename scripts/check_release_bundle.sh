@@ -28,10 +28,12 @@ tar -xzf "$latest" -C "$tmpdir"
     --out examples/minimal_submission_generated.csv
   "$PYTHON_BIN" scripts/score_submission.py examples/minimal_submission_generated.csv \
     --out-dir score_reports/example_generated_check \
-    --validate-task-cards
+    --validate-task-cards \
+    --metadata examples/minimal_submission_metadata.json
   "$PYTHON_BIN" scripts/score_submission.py examples/minimal_submission.csv \
     --out-dir score_reports/example_minimal_check \
-    --validate-task-cards
+    --validate-task-cards \
+    --metadata examples/minimal_submission_metadata.json
 )
 
 echo "ClaimTransfer release bundle smoke test passed: $latest"

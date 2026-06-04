@@ -1,0 +1,24 @@
+{
+  "submission_id": "minimal-example-v0",
+  "method_name": "ExampleSparseAndSymbolic",
+  "adapter_family": "example",
+  "method_description": "Tiny hand-written adapter-output rows used only to demonstrate the ClaimTransfer submission package.",
+  "native_outputs": [
+    "prediction_mse",
+    "selected_support",
+    "pair_rank",
+    "symbolic_operators",
+    "expression_complexity"
+  ],
+  "tuning_policy": "No training or tuning; fixed rows for artifact smoke testing.",
+  "compute_budget": {
+    "hardware": "none",
+    "wall_time": "<1s",
+    "seeds": 1,
+    "notes": "The example is not a benchmarked method."
+  },
+  "missing_field_policy": "Rows for unavailable workflow objects are omitted rather than converted into structural failures.",
+  "model_artifacts": [],
+  "contact": "anonymous",
+  "license": "MIT-compatible example"
+}
