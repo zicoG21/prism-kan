@@ -39,6 +39,12 @@
     "raw_value": {"type": ["number", "string", "boolean"]},
     "selected_set": {"type": ["string", "array"]},
     "candidate_set": {"type": ["string", "array"]},
+    "expression": {"type": "string"},
+    "operators": {"type": ["string", "array"]},
+    "expression_complexity": {"type": ["number", "string"]},
+    "coefficient_error": {"type": ["number", "string"]},
+    "extrapolation_error": {"type": ["number", "string"]},
+    "unit_consistency": {"type": ["number", "string", "boolean"]},
     "missing_reason": {"type": "string"},
     "runtime_seconds": {"type": ["number", "string"]},
     "protocol": {"type": "string"}

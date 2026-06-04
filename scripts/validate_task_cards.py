@@ -43,6 +43,11 @@ ALLOWED_PREDICATES = {
     "value_le",
     "value_ge",
     "exact_string_match",
+    "exact_expression_match",
+    "operator_recall_ge",
+    "complexity_le",
+    "coefficient_error_le",
+    "extrapolation_mse_lt",
 }
 
 

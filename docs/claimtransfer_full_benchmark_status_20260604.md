@@ -54,7 +54,7 @@ Current generated scale:
 - 694 aggregate score-report rows.
 - 255 coverage rows.
 - Artifact manifest generated under `score_reports/benchmark_manifest.csv`
-  with 52 official contract and report entries.
+  with 57 official contract and report entries.
 
 ## P0 Status
 
@@ -135,6 +135,6 @@ Current properties:
 - no overfull boxes, undefined references, or citation warnings in the latest
   compile;
 - current artifact scale synchronized in the draft:
-  117,114 claim rows, 694 score rows, 255 coverage rows, 52 manifest entries;
+  117,114 claim rows, 694 score rows, 255 coverage rows, 57 manifest entries;
 - paper identity: official-scored benchmark contract, with pyKAN as the
   high-resolution case study and non-KAN rows as adapter-interface checks.

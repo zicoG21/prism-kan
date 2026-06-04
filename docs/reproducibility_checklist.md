@@ -22,7 +22,7 @@ Validated 21 task cards.
 Wrote claim_records/released_claim_records.csv (117114 claim rows)
 Wrote score_reports/score_report.csv (694 aggregate rows)
 Wrote score_reports/coverage_table.csv (255 coverage rows)
-Wrote .../score_reports/benchmark_manifest.csv (52 files)
+Wrote .../score_reports/benchmark_manifest.csv (57 files)
 ClaimTransfer benchmark artifact check passed.
 ```
 

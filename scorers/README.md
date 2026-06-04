@@ -46,8 +46,8 @@ benchmark can add expression-level claim types without merging them with
 support or pair claims:
 
 - exact expression match;
-- operator recovery;
-- coefficient error;
+- operator recovery (`operator_recall_ge`);
+- coefficient error (`coefficient_error_le`);
 - expression complexity;
-- extrapolation error;
+- extrapolation error (`extrapolation_mse_lt`);
 - dimensional or unit consistency when available.

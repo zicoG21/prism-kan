@@ -32,7 +32,7 @@
             "claim_type": "symbolic_operator_recall",
             "target": "plus,multiply,power",
             "official_scorer": "symbolic_expression_quality",
-            "predicate": "value_ge",
+            "predicate": "operator_recall_ge",
             "threshold": 0.95
           },
           {
@@ -40,7 +40,7 @@
             "claim_type": "symbolic_complexity",
             "target": "max_complexity",
             "official_scorer": "symbolic_expression_quality",
-            "predicate": "value_le",
+            "predicate": "complexity_le",
             "threshold": 12
           }
         ]

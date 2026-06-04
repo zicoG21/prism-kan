@@ -56,6 +56,27 @@ def flatten_ints(value: Any) -> set[int]:
     return out
 
 
+def flatten_tokens(value: Any) -> set[str]:
+    parsed = parse_obj(value)
+    out: set[str] = set()
+    if parsed is None:
+        return out
+    if isinstance(parsed, dict):
+        parsed = parsed.values()
+    if isinstance(parsed, (list, tuple, set)):
+        for item in parsed:
+            out.update(flatten_tokens(item))
+        return out
+    text = str(parsed).strip()
+    if not text:
+        return out
+    for part in text.replace(";", ",").split(","):
+        token = part.strip().strip("'\"").lower()
+        if token:
+            out.add(token)
+    return out
+
+
 def as_float(value: object) -> float:
     try:
         if value == "":
@@ -136,6 +157,39 @@ def official_pass(row: pd.Series) -> float:
         if not expected or not observed:
             return float("nan")
         return float(expected == observed)
+
+    if predicate == "exact_expression_match":
+        expected = str(row.get("target", "")).strip()
+        observed = str(row.get("raw_value", "")).strip()
+        if not expected or not observed:
+            return float("nan")
+        return float(expected == observed)
+
+    if predicate == "operator_recall_ge":
+        if not math.isnan(raw):
+            if math.isnan(threshold):
+                threshold = 0.95
+            return float(raw >= threshold)
+        target = flatten_tokens(row.get("target", ""))
+        observed = flatten_tokens(row.get("selected_set", "")) or flatten_tokens(row.get("raw_value", ""))
+        if not target or not observed:
+            return float("nan")
+        recall = len(target & observed) / len(target)
+        if math.isnan(threshold):
+            threshold = 0.95
+        return float(recall >= threshold)
+
+    if predicate in {"complexity_le", "coefficient_error_le"}:
+        if math.isnan(raw) or math.isnan(threshold):
+            return float("nan")
+        return float(raw <= threshold)
+
+    if predicate == "extrapolation_mse_lt":
+        if math.isnan(raw):
+            return float("nan")
+        if math.isnan(threshold):
+            threshold = 0.05
+        return float(raw < threshold)
 
     if predicate == "stress_card":
         return float("nan")

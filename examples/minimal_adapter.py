@@ -117,6 +117,36 @@ ROWS = [
         "rank": "17",
         "margin": "-0.04",
     },
+    {
+        "registry_version": "claimtransfer_v1_scientific_templates",
+        "split": "hidden_template",
+        "task_id": "feynman_style_energy_hidden_template",
+        "task_family": "scientific_expression",
+        "adapter": "ExampleSymbolic",
+        "adapter_family": "example_symbolic",
+        "evidence_object": "symbolic_expression",
+        "claim_type": "symbolic_operator_recall",
+        "target": "plus,multiply,power",
+        "scorer": "symbolic_expression_quality",
+        "predicate": "operator_recall_ge",
+        "threshold": "0.95",
+        "selected_set": "['plus', 'multiply', 'power']",
+    },
+    {
+        "registry_version": "claimtransfer_v1_scientific_templates",
+        "split": "hidden_template",
+        "task_id": "feynman_style_energy_hidden_template",
+        "task_family": "scientific_expression",
+        "adapter": "ExampleSymbolic",
+        "adapter_family": "example_symbolic",
+        "evidence_object": "symbolic_expression",
+        "claim_type": "symbolic_complexity",
+        "target": "max_complexity",
+        "scorer": "symbolic_expression_quality",
+        "predicate": "complexity_le",
+        "threshold": "12",
+        "raw_value": "7",
+    },
 ]
 
 
@@ -134,8 +164,8 @@ def main() -> None:
             full = {col: "" for col in COLUMNS}
             full.update(
                 {
-                    "registry_version": "claimtransfer_v0_public",
-                    "split": "public",
+                    "registry_version": row.get("registry_version", "claimtransfer_v0_public"),
+                    "split": row.get("split", "public"),
                     "source_kind": "example",
                     "source_file": str(out),
                     "seed": "0",
