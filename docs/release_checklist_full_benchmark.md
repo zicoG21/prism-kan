@@ -44,6 +44,7 @@ Expected current scale:
 - `scripts/check_release_bundle.sh`
 - `scripts/check_release_overlay_checkout.sh`
 - `scripts/build_hidden_private_bundle.py`
+- `scripts/validate_hidden_bundle.py`
 - `examples/minimal_adapter.py`
 - `examples/minimal_submission.csv`
 - release documentation under `docs/`

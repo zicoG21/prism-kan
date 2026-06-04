@@ -28,6 +28,7 @@ Updated: 2026-06-04
 - Clean-checkout release-overlay smoke test:
   `scripts/check_release_overlay_checkout.sh`
 - Hidden/private bundle generator: `scripts/build_hidden_private_bundle.py`
+- Hidden/private leakage validator: `scripts/validate_hidden_bundle.py`
 - Benchmark paper draft: `manuscripts/foundation_benchmark_dev/main.tex`
 
 ## Completed Verification
@@ -48,6 +49,7 @@ python3 scripts/run_benchmark.py --mode public --skip-cross-method --skip-minisu
 python3 scripts/score_submission.py claim_records/released_adapter_outputs.csv --out-dir score_reports/submission_score --validate-task-cards
 bash scripts/build_claimtransfer_release_bundle.sh
 python3 scripts/build_hidden_private_bundle.py
+python3 scripts/validate_hidden_bundle.py
 bash scripts/check_release_bundle.sh
 bash scripts/check_release_overlay_checkout.sh
 ```
@@ -63,7 +65,7 @@ Current generated scale:
 - 255 coverage rows.
 - 377 missingness-report rows.
 - Artifact manifest generated under `score_reports/benchmark_manifest.csv`
-  with 44 official contract and report entries.
+  with 45 official contract and report entries.
 
 ## P0 Status
 
@@ -121,6 +123,8 @@ Implemented as offline benchmark scaffolding:
 - release-bundle script for packaging ignored generated CSVs and documentation.
 - hidden/private bundle generator that writes participant and private scoring
   registries plus a private seed manifest.
+- hidden/private leakage validator that checks participant cards withhold
+  formulas, supports, claim targets, and private seed blocks.
 - clean release-bundle smoke test from a temporary directory without
   `results/revision`.
 - clean source-checkout plus release-bundle overlay smoke test.
@@ -148,6 +152,6 @@ Current properties:
   compile;
 - current artifact scale synchronized in the draft:
   117,114 claim rows, 694 score rows, 255 coverage rows, 377 missingness rows,
-  44 manifest entries;
+  45 manifest entries;
 - paper identity: official-scored benchmark contract, with pyKAN as the
   high-resolution case study and non-KAN rows as adapter-interface checks.

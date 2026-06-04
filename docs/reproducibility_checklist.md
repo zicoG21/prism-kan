@@ -26,7 +26,7 @@ Wrote claim_records/released_claim_records.csv (117114 claim rows)
 Wrote score_reports/score_report.csv (694 aggregate rows)
 Wrote score_reports/coverage_table.csv (255 coverage rows)
 Wrote score_reports/missingness_report.csv (377 missingness rows)
-Wrote .../score_reports/benchmark_manifest.csv (44 files)
+Wrote .../score_reports/benchmark_manifest.csv (45 files)
 ClaimTransfer benchmark artifact check passed.
 ```
 
@@ -47,6 +47,8 @@ This test:
 - extracts the bundle to a temporary directory;
 - reruns the quick path from the extracted bundle;
 - builds hidden/private participant and scorer registries;
+- validates that the participant hidden view withholds labels, targets, and
+  private seed blocks;
 - generates a minimal adapter submission;
 - scores both generated and static minimal submissions.
 
@@ -91,6 +93,7 @@ Maintainers can generate hidden participant and private scoring views:
 
 ```bash
 python scripts/build_hidden_private_bundle.py
+python scripts/validate_hidden_bundle.py
 python scripts/run_benchmark.py --hidden --hidden-input claim_records/released_adapter_outputs.csv
 ```
 

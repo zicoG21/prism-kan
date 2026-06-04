@@ -33,6 +33,7 @@ tar -xzf "$latest" -C "$source_dir"
     --validate-task-cards \
     --metadata examples/minimal_submission_metadata.json
   "$PYTHON_BIN" scripts/build_hidden_private_bundle.py
+  "$PYTHON_BIN" scripts/validate_hidden_bundle.py
 )
 
 echo "ClaimTransfer clean-checkout overlay check passed."

@@ -76,6 +76,7 @@ collect_official_docs() {
     scripts/check_benchmark_artifact.py \
     scripts/score_submission.py \
     scripts/build_hidden_private_bundle.py \
+    scripts/validate_hidden_bundle.py \
     scripts/check_release_bundle.sh \
     scripts/check_release_overlay_checkout.sh \
     scripts/print_artifact_env.py \

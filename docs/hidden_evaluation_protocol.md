@@ -34,6 +34,13 @@ python scripts/run_benchmark.py --hidden --hidden-input path/to/private_submissi
    missingness, and runtime metadata.  Row-level hidden records can be withheld
    until the evaluation closes.
 
+Maintainers can check the generated participant/private split before release:
+
+```bash
+python scripts/build_hidden_private_bundle.py
+python scripts/validate_hidden_bundle.py
+```
+
 ## Leakage Rules
 
 - A hidden card must not expose support labels or declared pairs to an adapter
@@ -52,6 +59,8 @@ The repository contains:
 - public cards: `task_cards/claimtransfer_v0_public.json`;
 - hidden templates: `task_cards/claimtransfer_v0_hidden_template.json`;
 - hidden scoring path in `scripts/run_benchmark.py`;
+- hidden/private bundle generator: `scripts/build_hidden_private_bundle.py`;
+- leakage validator: `scripts/validate_hidden_bundle.py`;
 - hidden score output paths ignored by git.
 
 The next maturity step is to store a real private-card/seed bundle outside the
