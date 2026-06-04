@@ -64,6 +64,7 @@ python scripts/validate_adapter_outputs.py claim_records/released_adapter_output
 python scripts/build_claim_records.py
 python scripts/build_score_report.py
 python scripts/validate_claim_records.py claim_records/released_claim_records.csv
+python scripts/validate_score_reports.py
 python scripts/check_benchmark_artifact.py
 ```
 

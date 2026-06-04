@@ -14,6 +14,7 @@ Updated: 2026-06-04
 - Claim-record schema: `claim_records/claim_record_schema.json`
 - Adapter-output validator: `scripts/validate_adapter_outputs.py`
 - Claim-record validator: `scripts/validate_claim_records.py`
+- Score-report validator: `scripts/validate_score_reports.py`
 - Offline submission scorer: `scripts/score_submission.py`
 - Artifact manifest builder: `scripts/build_benchmark_manifest.py`
 - Authoring protocol: `docs/task_card_authoring_protocol.md`
@@ -45,6 +46,7 @@ python3 scripts/validate_adapter_outputs.py claim_records/released_adapter_outpu
 python3 scripts/build_claim_records.py
 python3 scripts/build_score_report.py
 python3 scripts/validate_claim_records.py claim_records/released_claim_records.csv
+python3 scripts/validate_score_reports.py
 python3 scripts/run_benchmark.py --quick
 python3 scripts/run_benchmark.py --hidden
 python3 scripts/run_benchmark.py --hidden --hidden-input claim_records/released_adapter_outputs.csv
@@ -68,11 +70,12 @@ Current generated scale:
   plus pass-value validity checked.
 - 694 aggregate score-report rows.
 - 255 coverage rows.
+- Score/coverage/gap/missingness report validation generated from reporting-policy checks: 36 checks.
 - Coverage-gap report generated from adapter-family contracts and public task
   families: 464 expected cells, 205 covered and 259 missing.
 - 377 missingness-report rows.
 - Artifact manifest generated under `score_reports/benchmark_manifest.csv`
-  with 48 official contract and report entries.
+  with 49 official contract and report entries.
 
 ## P0 Status
 
@@ -89,6 +92,8 @@ Complete for an alpha benchmark artifact:
 - typed dashboard views by adapter, task, evidence object, scorer, and claim type.
 - coverage-gap report showing which adapter-family/task-family/claim-type cells
   are covered or missing.
+- score-report validation for required columns, Wilson intervals, unit
+  intervals, and nonnegative counts.
 - official missingness report for omitted or non-scorable evidence objects.
 - reviewer-facing release bundle under `artifacts/release/`.
 
@@ -162,6 +167,6 @@ Current properties:
   compile;
 - current artifact scale synchronized in the draft:
   117,114 claim rows, 694 score rows, 255 coverage rows, 377 missingness rows,
-  48 manifest entries;
+  49 manifest entries;
 - paper identity: official-scored benchmark contract, with pyKAN as the
   high-resolution case study and non-KAN rows as adapter-interface checks.

@@ -101,6 +101,7 @@ def main() -> None:
     run([py, "scripts/build_score_report.py"])
     run([py, "scripts/validate_claim_records.py"])
     run([py, "scripts/build_coverage_gap_report.py"])
+    run([py, "scripts/validate_score_reports.py"])
     run([py, "scripts/build_benchmark_manifest.py"])
     run([py, "scripts/build_typed_dashboard.py"])
     run(
