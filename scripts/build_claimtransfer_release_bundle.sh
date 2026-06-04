@@ -22,7 +22,7 @@ cd "$ROOT"
 PYTHON_BIN="${PYTHON_BIN:-python}"
 OUT_DIR="${OUT_DIR:-artifacts/release}"
 SKIP_QUICK="${SKIP_QUICK:-0}"
-stamp="${STAMP:-$(date +%Y%m%d_%H%M%S)}"
+stamp="${STAMP:-$(date +%Y%m%d_%H%M%S_%N)}"
 
 mkdir -p "$OUT_DIR"
 filelist="$OUT_DIR/claimtransfer_release_filelist_${stamp}.txt"
@@ -74,8 +74,10 @@ collect_official_docs() {
     scripts/score_submission.py \
     scripts/build_hidden_private_bundle.py \
     scripts/check_release_bundle.sh \
+    scripts/check_release_overlay_checkout.sh \
     scripts/print_artifact_env.py \
-    scripts/build_claimtransfer_release_bundle.sh
+    scripts/build_claimtransfer_release_bundle.sh \
+    examples/minimal_adapter.py
   do
     [[ -f "$f" ]] && printf '%s\n' "$f"
   done

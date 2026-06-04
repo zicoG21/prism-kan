@@ -24,6 +24,11 @@ tar -xzf "$latest" -C "$tmpdir"
   cd "$tmpdir"
   "$PYTHON_BIN" scripts/run_benchmark.py --quick
   "$PYTHON_BIN" scripts/build_hidden_private_bundle.py
+  "$PYTHON_BIN" examples/minimal_adapter.py \
+    --out examples/minimal_submission_generated.csv
+  "$PYTHON_BIN" scripts/score_submission.py examples/minimal_submission_generated.csv \
+    --out-dir score_reports/example_generated_check \
+    --validate-task-cards
   "$PYTHON_BIN" scripts/score_submission.py examples/minimal_submission.csv \
     --out-dir score_reports/example_minimal_check \
     --validate-task-cards

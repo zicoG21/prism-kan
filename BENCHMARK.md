@@ -37,6 +37,12 @@ Verify the packed bundle from a temporary directory:
 bash scripts/check_release_bundle.sh
 ```
 
+Simulate a clean source checkout plus release-bundle overlay:
+
+```bash
+bash scripts/check_release_overlay_checkout.sh
+```
+
 ## Core Contract
 
 - Task-card schema: `task_cards/task_card_schema.json`
