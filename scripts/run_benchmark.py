@@ -59,12 +59,29 @@ def main() -> None:
         action="store_true",
         help="Skip the formal mini-suite summary.",
     )
+    parser.add_argument(
+        "--rebuild-adapter-outputs",
+        action="store_true",
+        help=(
+            "Force rebuilding released adapter outputs from local result CSVs. "
+            "By default the runner uses bundled released outputs when results/revision is absent."
+        ),
+    )
     args = parser.parse_args()
 
     py = sys.executable
     run([py, "scripts/print_artifact_env.py"])
     run([py, "scripts/validate_task_cards.py"])
-    run([py, "scripts/build_claim_records.py"])
+    result_root = ROOT / "results" / "revision"
+    released_outputs = ROOT / "claim_records" / "released_adapter_outputs.csv"
+    if args.rebuild_adapter_outputs or result_root.exists() or not released_outputs.exists():
+        run([py, "scripts/build_claim_records.py"])
+    else:
+        print(
+            "+ using bundled claim_records/released_adapter_outputs.csv "
+            "(results/revision not present)",
+            flush=True,
+        )
     run([py, "scripts/build_score_report.py"])
     run([py, "scripts/build_benchmark_manifest.py"])
     run([py, "scripts/build_typed_dashboard.py"])
