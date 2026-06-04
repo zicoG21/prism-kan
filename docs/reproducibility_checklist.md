@@ -4,8 +4,8 @@ Last updated: 2026-06-04
 
 This checklist describes the reviewer-facing ClaimTransfer benchmark artifact.
 The quick path does not retrain pyKAN models. It rebuilds official claim records,
-score reports, coverage tables, dashboards, and manifests from released
-adapter-output CSVs.
+score reports, coverage tables, coverage-gap reports, missingness reports,
+dashboards, and manifests from released adapter-output CSVs.
 
 ## Quick Reviewer Path
 
@@ -25,8 +25,9 @@ required columns: 12
 Wrote claim_records/released_claim_records.csv (117114 claim rows)
 Wrote score_reports/score_report.csv (694 aggregate rows)
 Wrote score_reports/coverage_table.csv (255 coverage rows)
+Wrote score_reports/coverage_gap_report.csv (464 expected cells)
 Wrote score_reports/missingness_report.csv (377 missingness rows)
-Wrote .../score_reports/benchmark_manifest.csv (45 files)
+Wrote .../score_reports/benchmark_manifest.csv (47 files)
 ClaimTransfer benchmark artifact check passed.
 ```
 

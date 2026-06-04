@@ -22,6 +22,7 @@ Expected current scale:
 - at least 100,000 claim rows;
 - at least 600 aggregate score-report rows;
 - at least 200 coverage rows.
+- at least 200 coverage-gap rows.
 - at least 200 missingness-report rows.
 
 ## Files That Should Be Versioned
@@ -37,6 +38,7 @@ Expected current scale:
 - `scripts/validate_submission_metadata.py`
 - `scripts/build_claim_records.py`
 - `scripts/build_score_report.py`
+- `scripts/build_coverage_gap_report.py`
 - `scripts/score_submission.py`
 - `scripts/run_benchmark.py`
 - `scripts/build_typed_dashboard.py`

@@ -28,6 +28,8 @@
 /score_reports/hidden_bundle_validation.csv
 /score_reports/hidden_score_report.csv
 /score_reports/hidden_score_report.md
+/score_reports/coverage_gap_report.csv
+/score_reports/coverage_gap_report.md
 /score_reports/submission_score/
 /score_reports/example_*/
 /dashboards/

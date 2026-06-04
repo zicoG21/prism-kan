@@ -71,6 +71,7 @@ collect_official_docs() {
     scripts/validate_submission_metadata.py \
     scripts/build_claim_records.py \
     scripts/build_score_report.py \
+    scripts/build_coverage_gap_report.py \
     scripts/build_benchmark_manifest.py \
     scripts/build_typed_dashboard.py \
     scripts/check_benchmark_artifact.py \

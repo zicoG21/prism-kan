@@ -12,8 +12,8 @@ python scripts/run_benchmark.py --quick
 ```
 
 This validates task cards, rebuilds released adapter-output rows, recomputes
-official claim records, rebuilds score and coverage reports, and checks the
-artifact manifest.
+official claim records, rebuilds score/coverage/gap/missingness reports, and
+checks the artifact manifest.
 
 The quick check does not retrain pyKAN models or require a GPU; it rebuilds
 official score reports from released/generated adapter-output CSVs.
@@ -72,6 +72,7 @@ Generated outputs:
 - `claim_records/released_claim_records.csv`
 - `score_reports/score_report.csv`
 - `score_reports/coverage_table.csv`
+- `score_reports/coverage_gap_report.csv`
 - `score_reports/missingness_report.csv`
 - `score_reports/benchmark_manifest.csv`
 

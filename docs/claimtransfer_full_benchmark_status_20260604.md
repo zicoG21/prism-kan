@@ -23,6 +23,7 @@ Updated: 2026-06-04
 - Full release checklist: `docs/release_checklist_full_benchmark.md`
 - Minimal adapter example: `examples/minimal_adapter.py`
 - Typed dashboard builder: `scripts/build_typed_dashboard.py`
+- Coverage-gap report builder: `scripts/build_coverage_gap_report.py`
 - Release bundle builder: `scripts/build_claimtransfer_release_bundle.sh`
 - Release bundle smoke test: `scripts/check_release_bundle.sh`
 - Clean-checkout release-overlay smoke test:
@@ -63,9 +64,11 @@ Current generated scale:
 - 117,114 official claim-record rows.
 - 694 aggregate score-report rows.
 - 255 coverage rows.
+- Coverage-gap report generated from adapter-family contracts and public task
+  families: 464 expected cells, 205 covered and 259 missing.
 - 377 missingness-report rows.
 - Artifact manifest generated under `score_reports/benchmark_manifest.csv`
-  with 45 official contract and report entries.
+  with 47 official contract and report entries.
 
 ## P0 Status
 
@@ -79,6 +82,8 @@ Complete for an alpha benchmark artifact:
 - offline scoring harness.
 - minimal participant adapter example;
 - typed dashboard views by adapter, task, evidence object, scorer, and claim type.
+- coverage-gap report showing which adapter-family/task-family/claim-type cells
+  are covered or missing.
 - official missingness report for omitted or non-scorable evidence objects.
 - reviewer-facing release bundle under `artifacts/release/`.
 
@@ -152,6 +157,6 @@ Current properties:
   compile;
 - current artifact scale synchronized in the draft:
   117,114 claim rows, 694 score rows, 255 coverage rows, 377 missingness rows,
-  45 manifest entries;
+  47 manifest entries;
 - paper identity: official-scored benchmark contract, with pyKAN as the
   high-resolution case study and non-KAN rows as adapter-interface checks.

@@ -29,6 +29,7 @@ REQUIRED_FILES = [
     "scripts/validate_submission_metadata.py",
     "scripts/build_claim_records.py",
     "scripts/build_score_report.py",
+    "scripts/build_coverage_gap_report.py",
     "scripts/build_benchmark_manifest.py",
     "scripts/run_benchmark.py",
     "scripts/score_submission.py",
@@ -40,6 +41,7 @@ REQUIRED_FILES = [
     "score_reports/adapter_output_validation.csv",
     "score_reports/score_report.csv",
     "score_reports/coverage_table.csv",
+    "score_reports/coverage_gap_report.csv",
     "score_reports/missingness_report.csv",
     "score_reports/benchmark_manifest.csv",
 ]
@@ -54,6 +56,7 @@ def main() -> None:
     parser.add_argument("--min-claim-rows", type=int, default=100000)
     parser.add_argument("--min-score-rows", type=int, default=600)
     parser.add_argument("--min-coverage-rows", type=int, default=200)
+    parser.add_argument("--min-gap-rows", type=int, default=200)
     parser.add_argument("--min-missingness-rows", type=int, default=200)
     args = parser.parse_args()
 
@@ -67,6 +70,7 @@ def main() -> None:
         "adapter_output_validation": csv_rows(ROOT / "score_reports/adapter_output_validation.csv"),
         "score_report": csv_rows(ROOT / "score_reports/score_report.csv"),
         "coverage_table": csv_rows(ROOT / "score_reports/coverage_table.csv"),
+        "coverage_gap_report": csv_rows(ROOT / "score_reports/coverage_gap_report.csv"),
         "missingness_report": csv_rows(ROOT / "score_reports/missingness_report.csv"),
         "benchmark_manifest": csv_rows(ROOT / "score_reports/benchmark_manifest.csv"),
     }
@@ -74,6 +78,8 @@ def main() -> None:
         raise SystemExit(f"score_report too small: {checks['score_report']}")
     if checks["coverage_table"] < args.min_coverage_rows:
         raise SystemExit(f"coverage_table too small: {checks['coverage_table']}")
+    if checks["coverage_gap_report"] < args.min_gap_rows:
+        raise SystemExit(f"coverage_gap_report too small: {checks['coverage_gap_report']}")
     if checks["missingness_report"] < args.min_missingness_rows:
         raise SystemExit(f"missingness_report too small: {checks['missingness_report']}")
 
