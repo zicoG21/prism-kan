@@ -27,7 +27,10 @@ set -euo pipefail
 #   A40_BATCH_SIZE=24576 A40_PAIR_CHUNK_SIZE=2048 \
 #     bash scripts/submit_claimtransfer_full_benchmark_gl.sh
 #
-# For small pyKAN jobs on A40, packed mode usually uses the device better:
+# Packed mode is disabled by default.  Great Lakes A40 nodes often run in
+# NVIDIA "Exclusive Process" compute mode, where multiple Python/CUDA processes
+# cannot share one GPU unless MPS is explicitly configured.  Use packed mode
+# only after verifying MPS works on the allocated node:
 #
 #   USE_A40_PACKED=1 SUBMIT_GPU=0 SUBMIT_STANDARD=0 \
 #     bash scripts/submit_claimtransfer_full_benchmark_gl.sh
@@ -66,6 +69,8 @@ if [[ "${SUBMIT_SPGPU}" == "1" ]]; then
   # A40/spgpu fresh private-seed claim cards.  Command-line partition overrides
   # the script's default gpu partition.
   if [[ "${USE_A40_PACKED}" == "1" ]]; then
+    echo "WARNING: USE_A40_PACKED=1 assumes CUDA MPS or non-exclusive compute mode."
+    echo "WARNING: If nvidia-smi reports Compute Mode 'E. Process', packed lanes may fail."
     submit sbatch --account="${ACCOUNT}" --array=0-11 \
       --export=ALL,PYTHON_BIN="${PY}",SEED_BASE="${A40_SEED_BASE:-3000}",PACK_FACTOR="${A40_PACK_FACTOR:-4}",SEEDS_PER_LANE="${A40_SEEDS_PER_LANE:-4}",LABEL_SUFFIX="${A40_LABEL_SUFFIX:-s3000_pack4}",BATCH_SIZE="${A40_PACKED_BATCH_SIZE:-12288}",PAIR_CHUNK_SIZE="${A40_PACKED_PAIR_CHUNK_SIZE:-1000}" \
       scripts/greatlakes_claimtransfer_hidden_claimcards_a40_packed.sbatch
