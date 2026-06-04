@@ -264,12 +264,12 @@ bash scripts/submit_claimtransfer_gapfill_gl.sh
 ```
 
 This submits CPU-only cross-method rows for the missing exp/log/sqrt/trig,
-three-way, scientific-expression, and correlated-covariate families plus
-TreeGate candidate/verifier rows for the missing formula and scientific
-families.  It also submits a dependent score refresh that rebuilds the coverage
-gap and readiness reports on Great Lakes.  Semi-synthetic non-KAN rows and
-symbolic operator-recall rows remain separate adapter/symbolic-track work, not
-GPU seed-sweep work.
+three-way, scientific-expression, correlated-covariate, and semi-synthetic
+real-covariate families plus TreeGate candidate/verifier rows for the missing
+formula, scientific, and semi-synthetic families.  It also submits a dependent
+score refresh that rebuilds the coverage gap and readiness reports on Great
+Lakes.  Symbolic operator-recall rows remain separate adapter/symbolic-track
+work, not GPU seed-sweep work.
 
 ### 10. Strengthen Symbolic Evaluation Layer
 

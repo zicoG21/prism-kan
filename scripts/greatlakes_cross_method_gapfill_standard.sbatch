@@ -5,7 +5,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=36G
-#SBATCH --array=0-34
+#SBATCH --array=0-49
 #SBATCH --time=04:00:00
 #SBATCH --output=logs/greatlakes/%x_%A_%a.out
 #SBATCH --error=logs/greatlakes/%x_%A_%a.err
@@ -37,6 +37,9 @@ TASKS=(
   "three_way_gap|formula_three_way_product|0.00|0.0|0|1024|100"
   "scientific_energy_gap|feynman_energy|0.00|0.0|0|2048|100"
   "correlated_core_gap|core_interaction_c025|0.00|0.75|8|2048|100"
+  "semi_breast_cancer_gap|semisynthetic_breast_cancer|0.00|0.0|0|1024|30"
+  "semi_diabetes_gap|semisynthetic_diabetes|0.00|0.0|0|1024|10"
+  "semi_wine_gap|semisynthetic_wine|0.00|0.0|0|1024|13"
 )
 
 METHODS=(
@@ -84,6 +87,7 @@ echo "[$(date -Is)] host=$(hostname) task=${TASK_LABEL} function=${FUNCTION} noi
   --noise "${NOISE}" \
   --nuisance_correlation "${RHO}" \
   --n_correlated_proxies "${PROXIES}" \
+  --semisynthetic_c "${SEMISYNTHETIC_C:-0.25}" \
   --seeds ${SEEDS} \
   --cv 3 \
   --max_iter 3000 \

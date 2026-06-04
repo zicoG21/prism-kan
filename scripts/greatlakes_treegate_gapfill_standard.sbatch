@@ -5,7 +5,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
-#SBATCH --array=0-5
+#SBATCH --array=0-6
 #SBATCH --time=1-00:00:00
 #SBATCH --output=logs/greatlakes/%x_%A_%a.out
 #SBATCH --error=logs/greatlakes/%x_%A_%a.err
@@ -34,6 +34,7 @@ ROWS=(
   "gap_scientific_gravity_s160_179|feynman_gravity|2048|100|0.00|160-179|30|256|700|2"
   "gap_scientific_coulomb_s160_179|feynman_coulomb|2048|100|0.00|160-179|30|256|700|2"
   "gap_scientific_damped_wave_s160_179|feynman_damped_wave|2048|100|0.00|160-179|30|256|700|2"
+  "gap_semisynthetic_s160_199|semisynthetic_breast_cancer,semisynthetic_diabetes,semisynthetic_wine|1024|30|0.00|160-199|24|256|700|2"
 )
 
 row="${ROWS[$SLURM_ARRAY_TASK_ID]}"
@@ -51,6 +52,7 @@ echo "[$(date -Is)] CPU-only TreeGate gap fill; no GPU requested."
   --test-samples 2048 \
   --dimension "$dimension" \
   --noise "$noise" \
+  --semisynthetic-c "${SEMISYNTHETIC_C:-0.25}" \
   --seeds "$seeds" \
   --gate-size "$gate_size" \
   --verify-points "$verify_points" \

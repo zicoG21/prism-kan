@@ -166,9 +166,10 @@ Still data-dependent:
 - targeted gap-fill scripts now exist for missing public task families:
   `bash scripts/submit_claimtransfer_gapfill_gl.sh` submits CPU-only
   cross-method and TreeGate rows for exp/log/sqrt/trig/three-way,
-  scientific-expression, and correlated-covariate gaps, with a dependent
-  official score refresh.  This is preferred over re-running broad scorergram
-  arrays when the missing cells are adapter-family coverage gaps.
+  scientific-expression, correlated-covariate, and semi-synthetic
+  real-covariate gaps, with a dependent official score refresh.  This is
+  preferred over re-running broad scorergram arrays when the missing cells are
+  adapter-family coverage gaps.
 
 ## P2 Status
 

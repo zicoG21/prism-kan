@@ -5,6 +5,7 @@ import itertools
 import sys
 import time
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Iterable
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -12,6 +13,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 import numpy as np
 import pandas as pd
+from sklearn.datasets import load_breast_cancer, load_diabetes, load_wine
 from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.linear_model import ElasticNetCV, LassoCV, RidgeCV
 from sklearn.preprocessing import SplineTransformer, StandardScaler
@@ -20,6 +22,77 @@ from src.data import make_synthetic
 
 
 Pair = tuple[int, int]
+
+
+def load_real_covariates(name: str) -> np.ndarray:
+    if name == "diabetes":
+        X = load_diabetes().data.astype(np.float32)
+    elif name == "breast_cancer":
+        X = load_breast_cancer().data.astype(np.float32)
+    elif name == "wine":
+        X = load_wine().data.astype(np.float32)
+    else:
+        raise ValueError(f"Unknown semisynthetic covariate dataset {name!r}")
+    return StandardScaler().fit_transform(X).astype(np.float32)
+
+
+def make_semisynthetic_transfer_data(
+    dataset: str,
+    n_train: int,
+    n_test: int,
+    c: float,
+    noise: float,
+    seed: int,
+) -> dict[str, object]:
+    X_pool = load_real_covariates(dataset)
+    rng = np.random.default_rng(int(seed))
+    n_total = int(n_train) + int(n_test)
+    idx = rng.choice(len(X_pool), size=n_total, replace=n_total > len(X_pool))
+    Z = np.tanh(X_pool[idx]).astype(np.float32)
+    y_clean = (np.sin(np.pi * Z[:, 0]) + Z[:, 1] ** 2 + float(c) * Z[:, 2] * Z[:, 3]).astype(np.float32)
+    if noise > 0:
+        y_clean_std = float(np.std(y_clean)) or 1.0
+        y = y_clean + rng.normal(0.0, float(noise) * y_clean_std, size=n_total).astype(np.float32)
+    else:
+        y = y_clean
+    X_train = Z[:n_train]
+    X_test = Z[n_train:]
+    y_train = y[:n_train].reshape(-1, 1)
+    y_test = y[n_train:].reshape(-1, 1)
+    mean = float(y_train.mean())
+    std = float(y_train.std()) or 1.0
+    gt = SimpleNamespace(active_variables=(0, 1, 2, 3), interactions=((2, 3),))
+    return {
+        "X_train": X_train.astype(np.float32),
+        "y_train": ((y_train - mean) / std).astype(np.float32),
+        "X_test": X_test.astype(np.float32),
+        "y_test": ((y_test - mean) / std).astype(np.float32),
+        "ground_truth": gt,
+    }
+
+
+def make_transfer_data(args: argparse.Namespace, function_name: str, seed: int) -> dict[str, object]:
+    if function_name.startswith("semisynthetic_"):
+        dataset = function_name.removeprefix("semisynthetic_")
+        return make_semisynthetic_transfer_data(
+            dataset=dataset,
+            n_train=args.samples,
+            n_test=args.test_samples,
+            c=args.semisynthetic_c,
+            noise=args.noise,
+            seed=seed,
+        )
+    return make_synthetic(
+        function_name=function_name,
+        n_train=args.samples,
+        n_test=args.test_samples,
+        d=args.dimension,
+        noise=args.noise,
+        seed=seed,
+        standardize_target=True,
+        nuisance_correlation=args.nuisance_correlation,
+        n_correlated_proxies=args.n_correlated_proxies,
+    )
 
 
 def canonical_pairs(pairs: Iterable[tuple[int, int]]) -> set[Pair]:
@@ -189,17 +262,7 @@ def run_sparse_library(
     seed: int,
 ) -> dict[str, object]:
     t0 = time.time()
-    data = make_synthetic(
-        function_name=function,
-        n_train=args.samples,
-        n_test=args.test_samples,
-        d=args.dimension,
-        noise=args.noise,
-        seed=seed,
-        standardize_target=True,
-        nuisance_correlation=args.nuisance_correlation,
-        n_correlated_proxies=args.n_correlated_proxies,
-    )
+    data = make_transfer_data(args, function, seed)
     X_train = data["X_train"].astype(np.float32)
     y_train = data["y_train"].reshape(-1).astype(np.float32)
     X_test = data["X_test"].astype(np.float32)
@@ -342,17 +405,7 @@ def h_pair_score(
 
 def run_gbm_hstat(args: argparse.Namespace, function: str, seed: int) -> dict[str, object]:
     t0 = time.time()
-    data = make_synthetic(
-        function_name=function,
-        n_train=args.samples,
-        n_test=args.test_samples,
-        d=args.dimension,
-        noise=args.noise,
-        seed=seed,
-        standardize_target=True,
-        nuisance_correlation=args.nuisance_correlation,
-        n_correlated_proxies=args.n_correlated_proxies,
-    )
+    data = make_transfer_data(args, function, seed)
     X_train = data["X_train"].astype(np.float32)
     y_train = data["y_train"].reshape(-1).astype(np.float32)
     X_test = data["X_test"].astype(np.float32)
@@ -527,17 +580,7 @@ def make_symbolic_library_design(
 
 def run_symbolic_lasso(args: argparse.Namespace, function: str, seed: int) -> dict[str, object]:
     t0 = time.time()
-    data = make_synthetic(
-        function_name=function,
-        n_train=args.samples,
-        n_test=args.test_samples,
-        d=args.dimension,
-        noise=args.noise,
-        seed=seed,
-        standardize_target=True,
-        nuisance_correlation=args.nuisance_correlation,
-        n_correlated_proxies=args.n_correlated_proxies,
-    )
+    data = make_transfer_data(args, function, seed)
     X_train = data["X_train"].astype(np.float32)
     y_train = data["y_train"].reshape(-1).astype(np.float32)
     X_test = data["X_test"].astype(np.float32)
@@ -673,17 +716,7 @@ def score_tensor_pair_ridge(
 
 def run_ga2m_spline(args: argparse.Namespace, function: str, seed: int) -> dict[str, object]:
     t0 = time.time()
-    data = make_synthetic(
-        function_name=function,
-        n_train=args.samples,
-        n_test=args.test_samples,
-        d=args.dimension,
-        noise=args.noise,
-        seed=seed,
-        standardize_target=True,
-        nuisance_correlation=args.nuisance_correlation,
-        n_correlated_proxies=args.n_correlated_proxies,
-    )
+    data = make_transfer_data(args, function, seed)
     X_train = data["X_train"].astype(np.float32)
     y_train = data["y_train"].reshape(-1).astype(np.float32)
     X_test = data["X_test"].astype(np.float32)
@@ -889,6 +922,7 @@ def main() -> None:
     parser.add_argument("--noise", type=float, default=0.0)
     parser.add_argument("--nuisance_correlation", type=float, default=0.0)
     parser.add_argument("--n_correlated_proxies", type=int, default=0)
+    parser.add_argument("--semisynthetic_c", type=float, default=0.25)
     parser.add_argument("--top_m", type=int, default=4)
     parser.add_argument("--pair_budget", type=int, default=1)
     parser.add_argument("--pred_mse_threshold", type=float, default=0.05)

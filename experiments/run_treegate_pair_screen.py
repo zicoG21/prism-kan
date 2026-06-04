@@ -5,6 +5,7 @@ import itertools
 import sys
 import traceback
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Callable, Dict, Iterable, List, Sequence, Tuple
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -12,12 +13,83 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 import numpy as np
 import pandas as pd
+from sklearn.datasets import load_breast_cancer, load_diabetes, load_wine
 from sklearn.ensemble import ExtraTreesRegressor, RandomForestRegressor
+from sklearn.preprocessing import StandardScaler
 
 from src.data import make_synthetic
 
 
 Pair = Tuple[int, int]
+
+
+def load_real_covariates(name: str) -> np.ndarray:
+    if name == "diabetes":
+        X = load_diabetes().data.astype(np.float32)
+    elif name == "breast_cancer":
+        X = load_breast_cancer().data.astype(np.float32)
+    elif name == "wine":
+        X = load_wine().data.astype(np.float32)
+    else:
+        raise ValueError(f"Unknown semisynthetic covariate dataset {name!r}")
+    return StandardScaler().fit_transform(X).astype(np.float32)
+
+
+def make_semisynthetic_treegate_data(
+    dataset: str,
+    n_train: int,
+    n_test: int,
+    c: float,
+    noise: float,
+    seed: int,
+) -> dict[str, object]:
+    X_pool = load_real_covariates(dataset)
+    rng = np.random.default_rng(int(seed))
+    n_total = int(n_train) + int(n_test)
+    idx = rng.choice(len(X_pool), size=n_total, replace=n_total > len(X_pool))
+    Z = np.tanh(X_pool[idx]).astype(np.float32)
+    y_clean = (np.sin(np.pi * Z[:, 0]) + Z[:, 1] ** 2 + float(c) * Z[:, 2] * Z[:, 3]).astype(np.float32)
+    if noise > 0:
+        y_clean_std = float(np.std(y_clean)) or 1.0
+        y = y_clean + rng.normal(0.0, float(noise) * y_clean_std, size=n_total).astype(np.float32)
+    else:
+        y = y_clean
+    X_train = Z[:n_train]
+    X_test = Z[n_train:]
+    y_train = y[:n_train].reshape(-1, 1)
+    y_test = y[n_train:].reshape(-1, 1)
+    mean = float(y_train.mean())
+    std = float(y_train.std()) or 1.0
+    gt = SimpleNamespace(active_variables=(0, 1, 2, 3), interactions=((2, 3),))
+    return {
+        "X_train": X_train.astype(np.float32),
+        "y_train": ((y_train - mean) / std).astype(np.float32),
+        "X_test": X_test.astype(np.float32),
+        "y_test": ((y_test - mean) / std).astype(np.float32),
+        "ground_truth": gt,
+    }
+
+
+def make_treegate_data(args: argparse.Namespace, function_name: str, seed: int) -> dict[str, object]:
+    if function_name.startswith("semisynthetic_"):
+        dataset = function_name.removeprefix("semisynthetic_")
+        return make_semisynthetic_treegate_data(
+            dataset=dataset,
+            n_train=args.samples,
+            n_test=args.test_samples,
+            c=args.semisynthetic_c,
+            noise=args.noise,
+            seed=seed,
+        )
+    return make_synthetic(
+        function_name=function_name,
+        n_train=args.samples,
+        n_test=args.test_samples,
+        d=args.dimension,
+        noise=args.noise,
+        seed=seed,
+        standardize_target=True,
+    )
 
 
 def canonical_pairs(pairs: Sequence[Tuple[int, int]]) -> Tuple[Pair, ...]:
@@ -212,15 +284,7 @@ def summarize_pair_scores(pair_scores: Dict[Pair, float], true_pairs: Sequence[P
 
 
 def run_one(args: argparse.Namespace, function_name: str, seed: int) -> Dict:
-    data = make_synthetic(
-        function_name=function_name,
-        n_train=args.samples,
-        n_test=args.test_samples,
-        d=args.dimension,
-        noise=args.noise,
-        seed=seed,
-        standardize_target=True,
-    )
+    data = make_treegate_data(args, function_name, seed)
     X_train = data["X_train"]
     y_train = data["y_train"]
     X_test = data["X_test"]
@@ -361,6 +425,7 @@ def main() -> None:
     parser.add_argument("--test-samples", type=int, default=2048)
     parser.add_argument("--dimension", type=int, default=100)
     parser.add_argument("--noise", type=float, default=0.0)
+    parser.add_argument("--semisynthetic-c", type=float, default=0.25)
     parser.add_argument("--seeds", type=str, default="0-9")
     parser.add_argument("--gate-size", type=int, default=20)
     parser.add_argument("--verify-points", type=int, default=256)

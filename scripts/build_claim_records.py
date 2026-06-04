@@ -66,6 +66,11 @@ SEMISYNTH_META: dict[str, dict[str, Any]] = {
 
 def meta_for_row(function: str, row: pd.Series) -> tuple[str, str, dict[str, Any]]:
     """Return task id/family metadata, with overrides for template-style rows."""
+    if function.startswith("semisynthetic_"):
+        dataset = function.removeprefix("semisynthetic_")
+        meta = SEMISYNTH_META.get(dataset)
+        if meta is not None:
+            return str(meta["task_id"]), str(meta["family"]), dict(meta)
     meta = dict(FORMULA_META.get(function, {"family": function, "support": [], "pairs": [], "endpoints": []}))
     rho = as_float(row.get("nuisance_correlation", ""))
     proxies = as_float(row.get("n_correlated_proxies", ""))
