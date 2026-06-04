@@ -222,6 +222,35 @@ def convert_scorergram(path: Path, rows: list[dict[str, Any]]) -> None:
         add(rows, **common, evidence_object="pair_scorer", claim_type="pair", target=target_str(pairs), scorer=scorer, predicate="rank_at_budget", budget=len(pairs) or 1, rank=r.get("true_interaction_worst_rank", r.get("true_pair_worst_rank", "")), margin=r.get("true_interaction_mean_score_margin", r.get("min_true_minus_max_false", "")))
 
 
+def convert_epim_pairverify(path: Path, rows: list[dict[str, Any]]) -> None:
+    df = pd.read_csv(path)
+    for _, r in df.iterrows():
+        if str(r.get("status", "ok")) != "ok":
+            continue
+        function = str(r["function"])
+        meta = FORMULA_META.get(function, {})
+        tid = task_id(function, r)
+        q = r.get("proposal_q", "")
+        common = {
+            "task_id": tid,
+            "task_family": meta.get("family", function),
+            "adapter": "EPIM-PairVerify",
+            "adapter_family": "epim_pairverify",
+            "source_kind": "epim_pairverify",
+            "source_file": str(path),
+            "seed": int(r["seed"]),
+            "protocol": f"proposal_q={q}",
+        }
+        pairs = norm_pairs(r.get("true_pair"), meta.get("pairs", []))
+        endpoints = sorted({v for p in pairs for v in p}) or meta.get("endpoints", [])
+
+        add(rows, **common, evidence_object="prediction", claim_type="prediction", target="low_mse", scorer="mse", predicate="mse_lt", threshold=0.05, raw_value=r.get("test_mse", ""))
+        add(rows, **common, evidence_object="epim_endpoint_proposal", claim_type="endpoints", target=target_str(endpoints), scorer="EPIM", predicate="binary_true", budget=q, raw_value=r.get("epim_endpoint_contains_true_pair", ""), rank=r.get("epim_true_pair_rank", ""))
+        add(rows, **common, evidence_object="epim_pair_proposal", claim_type="candidate_pair", target=target_str(pairs), scorer="EPIM", predicate="binary_true", budget=q, raw_value=r.get("epim_proposal_contains_true_pair", ""), rank=r.get("epim_true_pair_rank", ""), candidate_set=r.get("epim_top_pairs", ""))
+        add(rows, **common, evidence_object="pairverify_practical", claim_type="pair", target=target_str(pairs), scorer="candidate_functional_anova", predicate="binary_true", budget=q, raw_value=r.get("practical_verified_top_is_true_pair", ""), rank=r.get("verified_true_pair_rank", ""), margin=r.get("verified_true_minus_max_candidate_false", ""), candidate_set=r.get("epim_top_pairs", ""))
+        add(rows, **common, evidence_object="pairverify_probe", claim_type="pair", target=target_str(pairs), scorer="candidate_functional_anova_oracle", predicate="binary_true", budget=q, raw_value=r.get("verified_top_is_true_pair", ""), rank=r.get("verified_true_pair_rank", ""), margin=r.get("verified_true_minus_max_candidate_false", ""), candidate_set=r.get("epim_top_pairs", ""))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--results-root", default="results/revision")
@@ -236,6 +265,7 @@ def main() -> None:
         ("**/cross_method_transfer_detail.csv", convert_cross_method),
         ("**/treegate_pair_screen_detail.csv", convert_treegate),
         ("**/pair_scorer_claim_grammar_detail.csv", convert_scorergram),
+        ("**/epim_pairverify_detail.csv", convert_epim_pairverify),
     ]
     for pattern, converter in patterns:
         for path in sorted(root.glob(pattern)):
