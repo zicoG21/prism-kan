@@ -44,6 +44,8 @@ Updated: 2026-06-04
 - Release-contract validator: `scripts/validate_release_contract.py`
 - Full benchmark readiness report:
   `scripts/build_full_benchmark_readiness_report.py`
+- Release-candidate gate report:
+  `scripts/build_release_candidate_report.py`
 - Benchmark paper draft: `manuscripts/foundation_benchmark_dev/main.tex`
 
 ## Completed Verification
@@ -62,6 +64,7 @@ python3 scripts/validate_claim_records.py claim_records/released_claim_records.c
 python3 scripts/validate_score_reports.py
 python3 scripts/summarize_coverage_gaps.py
 python3 scripts/build_full_benchmark_readiness_report.py
+python3 scripts/build_release_candidate_report.py
 python3 scripts/refresh_from_greatlakes_results.py --no-unpack
 python3 scripts/run_benchmark.py --quick
 python3 scripts/run_benchmark.py --hidden
@@ -93,14 +96,17 @@ Current generated scale:
   missing.
 - 469 missingness-report rows.
 - Full benchmark readiness report generated under
-  `score_reports/full_benchmark_readiness.csv` with 18 P0/P1/P2 checks:
+  `score_reports/full_benchmark_readiness.csv` with 19 P0/P1/P2 checks:
   P0 is complete for the alpha artifact; P1 has one data-dependent coverage
   blocker; P2 offline scaffolding is complete with public release/tag marked as
   future work.
+- Release-candidate gate report generated under
+  `score_reports/release_candidate_report.csv`; it separates alpha packaging
+  readiness from P1 data blockers and the later public tag/server step.
 - Coverage-gap priority summary generated under
   `score_reports/coverage_gap_summary.csv` for GL/merge planning.
 - Artifact manifest generated under `score_reports/benchmark_manifest.csv`
-  with 56 official contract and report entries.
+  with 59 official contract and report entries.
 
 Workshop-paper status:
 
@@ -195,6 +201,8 @@ Implemented as offline benchmark scaffolding:
 - clean source-checkout plus release-bundle overlay smoke test.
 - readiness report showing offline submission, hidden/private bundle, and
   release packaging checks complete.
+- release-candidate gate report showing which pre-tag gates are green and which
+  data-dependent gates still wait on GL result merges.
 
 Still future work for a public benchmark release:
 

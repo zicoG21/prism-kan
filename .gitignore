@@ -40,6 +40,9 @@
 /score_reports/coverage_gap_summary.md
 /score_reports/full_benchmark_readiness.csv
 /score_reports/full_benchmark_readiness.md
+/score_reports/release_candidate_report.csv
+/score_reports/release_candidate_report.md
+/score_reports/release_candidate_report.json
 /score_reports/greatlakes_refresh_report.csv
 /score_reports/greatlakes_refresh_report.md
 /score_reports/submission_score/

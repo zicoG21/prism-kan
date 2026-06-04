@@ -163,10 +163,13 @@ Current alpha readiness check:
 
 ```bash
 python scripts/build_full_benchmark_readiness_report.py
+python scripts/build_release_candidate_report.py
 ```
 
 generates `score_reports/full_benchmark_readiness.csv`; as of 2026-06-04 the
 report marks all P0 checks complete for the local alpha artifact.
+The release-candidate report separates pre-tag alpha packaging gates from
+data-dependent P1 coverage blockers and later public tag/server work.
 
 Great Lakes merge/refresh path:
 

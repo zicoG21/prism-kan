@@ -10,6 +10,7 @@ Run from a fresh clone or temporary checkout:
 ```bash
 python scripts/run_benchmark.py --quick
 python scripts/build_full_benchmark_readiness_report.py
+python scripts/build_release_candidate_report.py
 python scripts/refresh_from_greatlakes_results.py --no-unpack
 python scripts/check_benchmark_artifact.py --min-claim-rows 100000 --min-score-rows 600 --min-coverage-rows 200 --min-missingness-rows 200
 python examples/minimal_adapter.py --out examples/minimal_submission_generated.csv
@@ -26,7 +27,9 @@ Expected current scale:
 - at least 200 coverage rows.
 - at least 200 coverage-gap rows.
 - at least 200 missingness-report rows.
-- 18 readiness rows spanning P0, P1, and P2.
+- 19 readiness rows spanning P0, P1, and P2.
+- 9 release-candidate gate rows separating alpha packaging, data coverage
+  blockers, and future public tag/server work.
 
 ## Files That Should Be Versioned
 
@@ -48,6 +51,7 @@ Expected current scale:
 - `scripts/build_coverage_gap_report.py`
 - `scripts/summarize_coverage_gaps.py`
 - `scripts/build_full_benchmark_readiness_report.py`
+- `scripts/build_release_candidate_report.py`
 - `scripts/greatlakes_cross_method_gapfill_standard.sbatch`
 - `scripts/greatlakes_treegate_gapfill_standard.sbatch`
 - `scripts/submit_claimtransfer_gapfill_gl.sh`
@@ -70,6 +74,7 @@ Expected current scale:
 - `claim_records/released_claim_records.csv`
 - `claim_records/hidden_claim_records.csv`
 - `score_reports/benchmark_manifest.*`
+- `score_reports/release_candidate_report.*`
 - `score_reports/missingness_report.*`
 - `score_reports/hidden_*`
 - `score_reports/submission_score/`
@@ -83,6 +88,7 @@ Expected current scale:
 - Confirm GL result packs are unpacked and indexed.
 - Rebuild released adapter outputs and official score reports.
 - Rebuild typed dashboards.
+- Rebuild the release-candidate gate report.
 - Run the clean checkout and release-bundle overlay checks.
 - Add adapter-family budget/hyperparameter notes.
 - Add a hidden/offline demonstration or clearly label hidden support as

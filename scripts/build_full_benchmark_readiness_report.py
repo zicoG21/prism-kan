@@ -195,6 +195,7 @@ def build_checks() -> list[Check]:
     hidden_participant = file_exists("artifacts/private_hidden/claimtransfer_v0_hidden_participant.json")
     hidden_private = file_exists("artifacts/private_hidden/claimtransfer_v0_hidden_private_scoring.json")
     release_bundle_exists = any((ROOT / "artifacts/release").glob("claimtransfer_release_*.tar.gz"))
+    release_candidate_rows = csv_rows(ROOT / "score_reports/release_candidate_report.csv")
 
     checks.extend(
         [
@@ -221,10 +222,17 @@ def build_checks() -> list[Check]:
             ),
             Check(
                 "P2",
+                "release-candidate gate",
+                ok_or_blocked(release_candidate_rows >= 8, "alpha_complete"),
+                f"{release_candidate_rows} gate rows in score_reports/release_candidate_report.csv",
+                "rerun scripts/build_release_candidate_report.py after each GL merge and before tagging",
+            ),
+            Check(
+                "P2",
                 "public benchmark release",
                 "future_work",
-                "no public tag or hosted submission server is expected yet",
-                "freeze registry version, publish release bundle, then tag",
+                "no public tag or hosted submission server is expected yet; release-candidate gates track pre-tag readiness",
+                "resolve P1 coverage blockers, freeze registry version, publish release bundle, then tag",
             ),
         ]
     )
