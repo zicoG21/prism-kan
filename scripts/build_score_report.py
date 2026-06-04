@@ -273,6 +273,38 @@ def coverage(summary: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows).sort_values(groups)
 
 
+def missingness(df: pd.DataFrame) -> pd.DataFrame:
+    groups = [
+        "registry_version",
+        "split",
+        "adapter_family",
+        "adapter",
+        "task_family",
+        "claim_type",
+        "evidence_object",
+        "scorer",
+        "predicate",
+        "missing_reason",
+    ]
+    rows = []
+    for keys, g in df.groupby(groups, dropna=False):
+        pass_missing = g["pass"].isna()
+        explicit_missing = g["missing_reason"].fillna("").astype(str).str.strip() != ""
+        row = dict(zip(groups, keys))
+        row.update(
+            {
+                "rows": int(len(g)),
+                "seeds": int(g["seed"].nunique()),
+                "missing_pass_rows": int(pass_missing.sum()),
+                "explicit_missing_reason_rows": int(explicit_missing.sum()),
+                "missing_pass_rate": float(pass_missing.mean()) if len(g) else float("nan"),
+                "explicit_missing_reason_rate": float(explicit_missing.mean()) if len(g) else float("nan"),
+            }
+        )
+        rows.append(row)
+    return pd.DataFrame(rows).sort_values(groups)
+
+
 def to_markdown(df: pd.DataFrame, max_rows: int = 80) -> str:
     if df.empty:
         return "No rows."
@@ -300,6 +332,7 @@ def main() -> None:
     parser.add_argument("--claim-record-out", default="claim_records/released_claim_records.csv")
     parser.add_argument("--score-report-out", default="score_reports/score_report.csv")
     parser.add_argument("--coverage-out", default="score_reports/coverage_table.csv")
+    parser.add_argument("--missingness-out", default="score_reports/missingness_report.csv")
     args = parser.parse_args()
 
     df = pd.read_csv(args.input, low_memory=False)
@@ -319,22 +352,28 @@ def main() -> None:
     claim_out = Path(args.claim_record_out)
     score_out = Path(args.score_report_out)
     coverage_out = Path(args.coverage_out)
+    missingness_out = Path(args.missingness_out)
     claim_out.parent.mkdir(parents=True, exist_ok=True)
     score_out.parent.mkdir(parents=True, exist_ok=True)
     coverage_out.parent.mkdir(parents=True, exist_ok=True)
+    missingness_out.parent.mkdir(parents=True, exist_ok=True)
 
     df.to_csv(claim_out, index=False)
     summary = summarize(df)
     cov = coverage(summary)
+    miss = missingness(df)
     summary.to_csv(score_out, index=False)
     cov.to_csv(coverage_out, index=False)
+    miss.to_csv(missingness_out, index=False)
 
     score_out.with_suffix(".md").write_text("# Official score report\n\n" + to_markdown(summary) + "\n", encoding="utf-8")
     coverage_out.with_suffix(".md").write_text("# Coverage table\n\n" + to_markdown(cov) + "\n", encoding="utf-8")
+    missingness_out.with_suffix(".md").write_text("# Missingness report\n\n" + to_markdown(miss) + "\n", encoding="utf-8")
 
     print(f"Wrote {claim_out} ({len(df)} claim rows)")
     print(f"Wrote {score_out} ({len(summary)} aggregate rows)")
     print(f"Wrote {coverage_out} ({len(cov)} coverage rows)")
+    print(f"Wrote {missingness_out} ({len(miss)} missingness rows)")
 
 
 if __name__ == "__main__":

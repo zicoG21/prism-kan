@@ -106,6 +106,7 @@ collect_official_docs() {
     claim_records/released_claim_records.csv \
     score_reports/score_report.csv \
     score_reports/coverage_table.csv \
+    score_reports/missingness_report.csv \
     score_reports/benchmark_manifest.csv \
     dashboards/README.md
   do

@@ -58,8 +58,9 @@ Current generated scale:
 - 117,114 official claim-record rows.
 - 694 aggregate score-report rows.
 - 255 coverage rows.
+- 377 missingness-report rows.
 - Artifact manifest generated under `score_reports/benchmark_manifest.csv`
-  with 41 official contract and report entries.
+  with 43 official contract and report entries.
 
 ## P0 Status
 
@@ -73,6 +74,7 @@ Complete for an alpha benchmark artifact:
 - offline scoring harness.
 - minimal participant adapter example;
 - typed dashboard views by adapter, task, evidence object, scorer, and claim type.
+- official missingness report for omitted or non-scorable evidence objects.
 - reviewer-facing release bundle under `artifacts/release/`.
 
 ## P1 Status
@@ -142,6 +144,7 @@ Current properties:
 - no overfull boxes, undefined references, or citation warnings in the latest
   compile;
 - current artifact scale synchronized in the draft:
-  117,114 claim rows, 694 score rows, 255 coverage rows, 41 manifest entries;
+  117,114 claim rows, 694 score rows, 255 coverage rows, 377 missingness rows,
+  43 manifest entries;
 - paper identity: official-scored benchmark contract, with pyKAN as the
   high-resolution case study and non-KAN rows as adapter-interface checks.

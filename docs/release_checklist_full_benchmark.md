@@ -9,7 +9,7 @@ Run from a fresh clone or temporary checkout:
 
 ```bash
 python scripts/run_benchmark.py --quick
-python scripts/check_benchmark_artifact.py --min-claim-rows 100000 --min-score-rows 600 --min-coverage-rows 200
+python scripts/check_benchmark_artifact.py --min-claim-rows 100000 --min-score-rows 600 --min-coverage-rows 200 --min-missingness-rows 200
 python examples/minimal_adapter.py --out examples/minimal_submission_generated.csv
 python scripts/score_submission.py examples/minimal_submission.csv --out-dir score_reports/example_minimal
 bash scripts/check_release_bundle.sh
@@ -22,6 +22,7 @@ Expected current scale:
 - at least 100,000 claim rows;
 - at least 600 aggregate score-report rows;
 - at least 200 coverage rows.
+- at least 200 missingness-report rows.
 
 ## Files That Should Be Versioned
 
@@ -52,6 +53,7 @@ Expected current scale:
 - `claim_records/released_claim_records.csv`
 - `claim_records/hidden_claim_records.csv`
 - `score_reports/benchmark_manifest.*`
+- `score_reports/missingness_report.*`
 - `score_reports/hidden_*`
 - `score_reports/submission_score/`
 - `score_reports/example_*/`

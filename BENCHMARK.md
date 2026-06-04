@@ -2,7 +2,8 @@
 
 ClaimTransfer is an official-scored benchmark contract for structural claim
 transfer.  Methods expose raw or normalized evidence objects; official scorers
-recompute claim records, score reports, coverage tables, and artifact manifests.
+recompute claim records, score reports, coverage tables, missingness reports,
+and artifact manifests.
 
 ## Quick Check
 
@@ -70,6 +71,7 @@ Generated outputs:
 - `claim_records/released_claim_records.csv`
 - `score_reports/score_report.csv`
 - `score_reports/coverage_table.csv`
+- `score_reports/missingness_report.csv`
 - `score_reports/benchmark_manifest.csv`
 
 ## Submission Scoring

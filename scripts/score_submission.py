@@ -80,6 +80,8 @@ def main() -> None:
             str(out_dir / "score_report.csv"),
             "--coverage-out",
             str(out_dir / "coverage_table.csv"),
+            "--missingness-out",
+            str(out_dir / "missingness_report.csv"),
         ]
     )
     run(

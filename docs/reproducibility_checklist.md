@@ -22,7 +22,8 @@ Validated 21 task cards.
 Wrote claim_records/released_claim_records.csv (117114 claim rows)
 Wrote score_reports/score_report.csv (694 aggregate rows)
 Wrote score_reports/coverage_table.csv (255 coverage rows)
-Wrote .../score_reports/benchmark_manifest.csv (41 files)
+Wrote score_reports/missingness_report.csv (377 missingness rows)
+Wrote .../score_reports/benchmark_manifest.csv (43 files)
 ClaimTransfer benchmark artifact check passed.
 ```
 
@@ -75,8 +76,9 @@ Expected output:
 
 ```text
 Wrote .../claim_records.csv (6 claim rows)
-Wrote .../score_report.csv (6 aggregate rows)
-Wrote .../coverage_table.csv (6 coverage rows)
+Wrote .../score_report.csv (6 or 8 aggregate rows, depending on static versus generated example)
+Wrote .../coverage_table.csv (6 or 8 coverage rows, depending on static versus generated example)
+Wrote .../missingness_report.csv (6 or 8 missingness rows, depending on static versus generated example)
 Official submission score written to ...
 ```
 
@@ -101,6 +103,7 @@ Core generated outputs:
 - `claim_records/released_claim_records.csv`
 - `score_reports/score_report.csv`
 - `score_reports/coverage_table.csv`
+- `score_reports/missingness_report.csv`
 - `score_reports/benchmark_manifest.csv`
 - `dashboards/*.csv` and `dashboards/*.md`
 - `artifacts/release/claimtransfer_release_*.tar.gz`

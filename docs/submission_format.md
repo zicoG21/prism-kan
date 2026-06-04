@@ -79,6 +79,7 @@ Outputs:
 - `claim_records.csv`
 - `score_report.csv`
 - `coverage_table.csv`
+- `missingness_report.csv`
 - `dashboard/`
 - `submission_metadata.json` when metadata is supplied
 
