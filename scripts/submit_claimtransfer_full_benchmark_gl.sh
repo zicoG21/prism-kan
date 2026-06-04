@@ -40,6 +40,7 @@ mkdir -p logs/greatlakes
 
 PY="${PYTHON_BIN:-$PWD/.venv/bin/python}"
 ACCOUNT="${ACCOUNT:-jaabell0}"
+STANDARD_ACCOUNT="${STANDARD_ACCOUNT:-jaabell0}"
 
 SUBMIT_GPU="${SUBMIT_GPU:-1}"
 SUBMIT_SPGPU="${SUBMIT_SPGPU:-1}"
@@ -49,6 +50,7 @@ USE_A40_PACKED="${USE_A40_PACKED:-0}"
 
 echo "[$(date -Is)] ClaimTransfer full benchmark submit"
 echo "[$(date -Is)] account=${ACCOUNT}"
+echo "[$(date -Is)] standard_account=${STANDARD_ACCOUNT}"
 echo "[$(date -Is)] python=${PY}"
 echo "[$(date -Is)] submit_gpu=${SUBMIT_GPU} submit_spgpu=${SUBMIT_SPGPU} submit_standard=${SUBMIT_STANDARD} submit_score_refresh=${SUBMIT_SCORE_REFRESH} use_a40_packed=${USE_A40_PACKED}"
 
@@ -96,17 +98,17 @@ fi
 if [[ "${SUBMIT_STANDARD}" == "1" ]]; then
   # CPU-only cross-adapter coverage and TreeGate candidate screens.  These do
   # not consume GPU quota.
-  submit sbatch --account="${ACCOUNT}" \
+  submit sbatch --account="${STANDARD_ACCOUNT}" \
     --export=ALL,PYTHON_BIN="${PY}",SEED_START="${XFER_SEED_START:-70}",SEED_STOP="${XFER_SEED_STOP:-99}",GA2M_SEED_STOP="${XFER_GA2M_SEED_STOP:-89}",SYMBOLIC_SEED_STOP="${XFER_SYMBOLIC_SEED_STOP:-89}" \
     scripts/greatlakes_cross_method_transfer_baselines_extended.sbatch
 
-  submit sbatch --account="${ACCOUNT}" --array=0-23 \
+  submit sbatch --account="${STANDARD_ACCOUNT}" --array=0-23 \
     --export=ALL,PYTHON_BIN="${PY}" \
     scripts/greatlakes_treegate_pair_screen_extended_standard.sbatch
 fi
 
 if [[ "${SUBMIT_SCORE_REFRESH}" == "1" ]]; then
-  submit sbatch --account="${ACCOUNT}" \
+  submit sbatch --account="${STANDARD_ACCOUNT}" \
     --export=ALL,PYTHON_BIN="${PY}",BUILD_FIGURE_SUMMARIES=1 \
     scripts/greatlakes_claimtransfer_score_refresh_standard.sbatch
 fi
