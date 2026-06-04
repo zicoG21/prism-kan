@@ -66,6 +66,7 @@ collect_official_docs() {
     requirements.txt \
     scripts/run_benchmark.py \
     scripts/validate_task_cards.py \
+    scripts/validate_adapter_registry.py \
     scripts/build_claim_records.py \
     scripts/build_score_report.py \
     scripts/build_benchmark_manifest.py \

@@ -88,6 +88,7 @@ def main() -> None:
     py = sys.executable
     run([py, "scripts/print_artifact_env.py"])
     run([py, "scripts/validate_task_cards.py"])
+    run([py, "scripts/validate_adapter_registry.py"])
     released_outputs = ROOT / "claim_records" / "released_adapter_outputs.csv"
     if args.rebuild_adapter_outputs or not released_outputs.exists() or released_outputs.stat().st_size == 0:
         run([py, "scripts/build_claim_records.py"])

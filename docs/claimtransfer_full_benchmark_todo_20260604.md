@@ -183,6 +183,9 @@ For each adapter:
 Current local support:
 
 - adapter-family policy: `docs/adapter_fairness_and_budget_policy.md`;
+- machine-readable adapter-family registry:
+  `adapters/adapter_family_registry.json`;
+- adapter-family validator: `scripts/validate_adapter_registry.py`;
 - minimal adapter example: `examples/minimal_adapter.py`;
 - offline scorer: `scripts/score_submission.py`.
 

@@ -20,8 +20,10 @@ REQUIRED_FILES = [
     "task_cards/claimtransfer_v0_hidden_template.json",
     "task_cards/claimtransfer_v1_scientific_templates.json",
     "adapters/adapter_output_schema.json",
+    "adapters/adapter_family_registry.json",
     "claim_records/claim_record_schema.json",
     "scripts/validate_task_cards.py",
+    "scripts/validate_adapter_registry.py",
     "scripts/build_claim_records.py",
     "scripts/build_score_report.py",
     "scripts/build_benchmark_manifest.py",
@@ -31,6 +33,7 @@ REQUIRED_FILES = [
     "scripts/build_hidden_private_bundle.py",
     "scripts/check_release_bundle.sh",
     "score_reports/task_card_validation.csv",
+    "score_reports/adapter_family_validation.csv",
     "score_reports/score_report.csv",
     "score_reports/coverage_table.csv",
     "score_reports/benchmark_manifest.csv",
@@ -54,6 +57,7 @@ def main() -> None:
 
     checks = {
         "task_card_validation": csv_rows(ROOT / "score_reports/task_card_validation.csv"),
+        "adapter_family_validation": csv_rows(ROOT / "score_reports/adapter_family_validation.csv"),
         "score_report": csv_rows(ROOT / "score_reports/score_report.csv"),
         "coverage_table": csv_rows(ROOT / "score_reports/coverage_table.csv"),
         "benchmark_manifest": csv_rows(ROOT / "score_reports/benchmark_manifest.csv"),

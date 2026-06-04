@@ -1,0 +1,113 @@
+{
+  "schema_version": "claimtransfer_adapter_family_registry_v1",
+  "families": [
+    {
+      "adapter_family": "pykan_workflow",
+      "native_outputs": [
+        "prediction_mse",
+        "fitted_function_pair_scores",
+        "readout_endpoint_scores",
+        "selected_support_refit",
+        "pruned_support",
+        "symbolic_status"
+      ],
+      "licensed_claim_types": [
+        "prediction",
+        "support",
+        "endpoints",
+        "pair",
+        "symbolic_status"
+      ],
+      "tuning_policy": "Fixed task-card recipe; no tuning on structural labels.",
+      "budget_policy": "Training budget and width/grid settings recorded in the protocol field.",
+      "missing_field_policy": "Omit unavailable workflow objects; failed extraction is a missing row with missing_reason.",
+      "positive_control_requirement": "At least one product-like positive-control card with support/endpoints/pair rows.",
+      "stress_card_requirement": "At least one weak-centered or pruning/symbolic stress card."
+    },
+    {
+      "adapter_family": "sparse_library",
+      "native_outputs": [
+        "prediction_mse",
+        "selected_variables",
+        "selected_terms",
+        "term_coefficients"
+      ],
+      "licensed_claim_types": ["prediction", "support", "endpoints", "pair"],
+      "tuning_policy": "Regularization selected by prediction validation loss or a predeclared sparsity budget.",
+      "budget_policy": "Library size, interaction degree, and regularization grid are recorded before scoring.",
+      "missing_field_policy": "No readout, pruning, or symbolic rows unless the implementation exposes them.",
+      "positive_control_requirement": "At least one bilinear or mixed-sparse card.",
+      "stress_card_requirement": "At least one weak-centered or division/rational card."
+    },
+    {
+      "adapter_family": "ga2m_additive",
+      "native_outputs": [
+        "prediction_mse",
+        "selected_univariate_components",
+        "selected_bivariate_components",
+        "component_scores"
+      ],
+      "licensed_claim_types": ["prediction", "support", "endpoints", "pair"],
+      "tuning_policy": "Component and interaction budgets are fixed before scoring.",
+      "budget_policy": "Maximum component count and interaction count are recorded in protocol.",
+      "missing_field_policy": "Symbolic and pruning rows are missing unless the adapter exports them.",
+      "positive_control_requirement": "At least one product-like pair card.",
+      "stress_card_requirement": "At least one nested/compositional or weak-centered card."
+    },
+    {
+      "adapter_family": "tree_interaction",
+      "native_outputs": [
+        "prediction_mse",
+        "feature_importance",
+        "pair_scores",
+        "candidate_pair_set"
+      ],
+      "licensed_claim_types": ["prediction", "support", "endpoints", "candidate_pair", "pair"],
+      "tuning_policy": "Tree count, depth, and pair-scoring rule are predeclared.",
+      "budget_policy": "Candidate budget and verifier budget are recorded separately.",
+      "missing_field_policy": "Candidate rows do not imply verifier rows; absent verifier rows are explicit missing rows.",
+      "positive_control_requirement": "At least one product-like card with a candidate and verifier row.",
+      "stress_card_requirement": "At least one high-dimensional nuisance or weak-centered card."
+    },
+    {
+      "adapter_family": "symbolic_library",
+      "native_outputs": [
+        "prediction_mse",
+        "expression",
+        "expression_variables",
+        "operators",
+        "pair_terms",
+        "expression_complexity"
+      ],
+      "licensed_claim_types": [
+        "prediction",
+        "support",
+        "endpoints",
+        "pair",
+        "symbolic_status",
+        "symbolic_operator_recall",
+        "symbolic_complexity"
+      ],
+      "tuning_policy": "Search space, operator set, and search budget are fixed before scoring.",
+      "budget_policy": "Expression complexity and candidate-expression budget are recorded in protocol.",
+      "missing_field_policy": "Expression status does not license support or pair rows unless variables/pair terms are exposed.",
+      "positive_control_requirement": "At least one card with known expression operators.",
+      "stress_card_requirement": "At least one card where symbolic status and sparse support can disagree."
+    },
+    {
+      "adapter_family": "epim_treegate",
+      "native_outputs": [
+        "prediction_mse",
+        "candidate_endpoint_scores",
+        "candidate_pair_set",
+        "verifier_pair_scores"
+      ],
+      "licensed_claim_types": ["prediction", "endpoints", "candidate_pair", "pair"],
+      "tuning_policy": "Candidate generator and verifier scorer are fixed independently.",
+      "budget_policy": "Candidate set size and verifier scorer budget are reported separately.",
+      "missing_field_policy": "Candidate-pair success is not substituted for verified pair success.",
+      "positive_control_requirement": "At least one card where candidate and verifier both recover the pair.",
+      "stress_card_requirement": "At least one card where candidate inclusion succeeds but verifier rank fails."
+    }
+  ]
+}
