@@ -9,6 +9,7 @@ from checked-in or previously generated CSVs.
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -19,7 +20,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def run(cmd: list[str]) -> None:
     print("+", " ".join(cmd), flush=True)
-    subprocess.run(cmd, cwd=ROOT, check=True)
+    env = os.environ.copy()
+    filters = ["ignore::UserWarning"]
+    existing = env.get("PYTHONWARNINGS", "")
+    env["PYTHONWARNINGS"] = ",".join([*filters, existing]) if existing else ",".join(filters)
+    subprocess.run(cmd, cwd=ROOT, check=True, env=env)
 
 
 def main() -> None:

@@ -11,6 +11,17 @@ import pandas as pd
 
 
 ROOT = Path(__file__).resolve().parents[1]
+OFFICIAL_DOCS = {
+    "docs/adapter_fairness_and_budget_policy.md",
+    "docs/claimtransfer_full_benchmark_status_20260604.md",
+    "docs/claimtransfer_full_benchmark_todo_20260604.md",
+    "docs/hidden_evaluation_protocol.md",
+    "docs/release_checklist_full_benchmark.md",
+    "docs/reproducibility_checklist.md",
+    "docs/statistical_reporting_policy.md",
+    "docs/submission_format.md",
+    "docs/task_card_authoring_protocol.md",
+}
 
 
 def sha256(path: Path) -> str:
@@ -62,6 +73,8 @@ def main() -> None:
             if path.name.startswith("."):
                 continue
             rel = path.relative_to(ROOT)
+            if root_name == "docs" and str(rel) not in OFFICIAL_DOCS:
+                continue
             rows.append(
                 {
                     "path": str(rel),

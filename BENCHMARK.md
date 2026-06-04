@@ -14,6 +14,23 @@ This validates task cards, rebuilds released adapter-output rows, recomputes
 official claim records, rebuilds score and coverage reports, and checks the
 artifact manifest.
 
+The quick check does not retrain pyKAN models or require a GPU; it rebuilds
+official score reports from released/generated adapter-output CSVs.
+
+## Release Bundle
+
+Generated CSVs and score reports are intentionally not committed to git.  Build
+the reviewer-facing artifact bundle with:
+
+```bash
+bash scripts/build_claimtransfer_release_bundle.sh
+```
+
+This runs the quick check and packs task cards, schemas, released adapter
+outputs, official claim records, score reports, typed dashboards, examples,
+benchmark documentation, and the critical scoring scripts under
+`artifacts/release/`.
+
 ## Core Contract
 
 - Task-card schema: `task_cards/task_card_schema.json`
