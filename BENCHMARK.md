@@ -48,6 +48,13 @@ claim records and aggregate reports:
 python scripts/score_submission.py path/to/submission.csv --out-dir score_reports/submission_score
 ```
 
+Minimal examples:
+
+```bash
+python examples/minimal_adapter.py --out examples/minimal_submission_generated.csv
+python scripts/score_submission.py examples/minimal_submission.csv --out-dir score_reports/example_minimal
+```
+
 Use hidden/offline mode for private evaluation:
 
 ```bash
@@ -60,3 +67,19 @@ ClaimTransfer does not merge prediction, support, endpoint, pair, pruning, and
 symbolic claims into one scalar.  Reports are grouped by registry version,
 split, task card, adapter, evidence object, claim type, scorer, and predicate.
 Alternative scorers produce separate scorer-indexed records.
+
+## Typed Dashboard
+
+Generate benchmark views without collapsing typed claims into one leaderboard:
+
+```bash
+python scripts/build_typed_dashboard.py
+```
+
+Outputs are written under `dashboards/`:
+
+- `adapter_by_claim.md`
+- `task_by_claim.md`
+- `object_by_claim.md`
+- `scorer_by_claim.md`
+- `missingness.md`

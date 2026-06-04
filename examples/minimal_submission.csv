@@ -1,0 +1,7 @@
+registry_version,split,task_id,task_family,adapter,adapter_family,source_kind,source_file,seed,evidence_object,claim_type,target,scorer,predicate,threshold,budget,rank,margin,raw_value,selected_set,candidate_set,missing_reason,runtime_seconds,protocol
+claimtransfer_v0_public,public,bilinear_d100_n1024,bilinear,ExampleSparse,example_sparse,example,examples/minimal_submission.csv,0,prediction,prediction,low_mse,mse,mse_lt,0.05,,,,0.012,,,,0.4,example
+claimtransfer_v0_public,public,bilinear_d100_n1024,bilinear,ExampleSparse,example_sparse,example,examples/minimal_submission.csv,0,selected_support,support,"[0, 1, 2]",sparse_terms,contains_all,,,,,"[0, 1, 2]",,,0.4,example
+claimtransfer_v0_public,public,bilinear_d100_n1024,bilinear,ExampleSparse,example_sparse,example,examples/minimal_submission.csv,0,pair_terms,pair,"[(0, 1)]",sparse_terms,rank1,,,1,0.73,,,,,0.4,example
+claimtransfer_v0_public,public,weak_centered_d100_n1024,weak_centered,ExamplePredictor,example_predictor,example,examples/minimal_submission.csv,0,prediction,prediction,low_mse,mse,mse_lt,0.05,,,,0.018,,,,0.2,example
+claimtransfer_v0_public,public,weak_centered_d100_n1024,weak_centered,ExamplePredictor,example_predictor,example,examples/minimal_submission.csv,0,selected_support,support,"[0, 1, 2, 3]",feature_importance,contains_all,,,,,"[0, 1]",,,0.2,example
+claimtransfer_v0_public,public,weak_centered_d100_n1024,weak_centered,ExamplePredictor,example_predictor,example,examples/minimal_submission.csv,0,pair_scores,pair,"[(2, 3)]",feature_importance,rank1,,,17,-0.04,,,,,0.2,example

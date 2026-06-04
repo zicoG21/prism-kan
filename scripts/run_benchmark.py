@@ -62,6 +62,7 @@ def main() -> None:
     run([py, "scripts/build_claim_records.py"])
     run([py, "scripts/build_score_report.py"])
     run([py, "scripts/build_benchmark_manifest.py"])
+    run([py, "scripts/build_typed_dashboard.py"])
     run([py, "scripts/check_benchmark_artifact.py"])
 
     if args.mode == "hidden":
@@ -104,6 +105,7 @@ def main() -> None:
     print(f"Official claim records: {ROOT / 'claim_records/released_claim_records.csv'}")
     print(f"Official score report: {ROOT / 'score_reports/score_report.csv'}")
     print(f"Coverage table: {ROOT / 'score_reports/coverage_table.csv'}")
+    print(f"Typed dashboard: {ROOT / 'dashboards'}")
     print(f"Standard score report: {ROOT / args.out_dir}")
 
 

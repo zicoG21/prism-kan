@@ -11,6 +11,21 @@
 **/paper_figures/
 **/paper_figure_source_data.csv
 
+# ClaimTransfer generated benchmark outputs.
+/claim_records/released_adapter_outputs.csv
+/claim_records/released_claim_records.csv
+/claim_records/hidden_claim_records.csv
+/score_reports/benchmark_manifest.csv
+/score_reports/benchmark_manifest.md
+/score_reports/hidden_coverage_table.csv
+/score_reports/hidden_coverage_table.md
+/score_reports/hidden_score_report.csv
+/score_reports/hidden_score_report.md
+/score_reports/submission_score/
+/score_reports/example_*/
+/dashboards/
+/examples/minimal_submission_generated.csv
+
 # LaTeX build products.
 *.aux
 *.bbl
