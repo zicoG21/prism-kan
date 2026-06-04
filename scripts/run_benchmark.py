@@ -43,6 +43,9 @@ def main() -> None:
 
     py = sys.executable
     run([py, "scripts/print_artifact_env.py"])
+    run([py, "scripts/validate_task_cards.py"])
+    run([py, "scripts/build_claim_records.py"])
+    run([py, "scripts/build_score_report.py"])
     run([py, "scripts/run_standard_audit_protocol.py", "--out-dir", args.out_dir])
 
     if not args.skip_minisuite:
@@ -59,6 +62,10 @@ def main() -> None:
         )
 
     print("\nClaimTransfer-Bench quick check complete.")
+    print(f"Released adapter outputs: {ROOT / 'claim_records/released_adapter_outputs.csv'}")
+    print(f"Official claim records: {ROOT / 'claim_records/released_claim_records.csv'}")
+    print(f"Official score report: {ROOT / 'score_reports/score_report.csv'}")
+    print(f"Coverage table: {ROOT / 'score_reports/coverage_table.csv'}")
     print(f"Standard score report: {ROOT / args.out_dir}")
 
 

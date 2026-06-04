@@ -3,8 +3,8 @@
 #SBATCH --partition=spgpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=4
-#SBATCH --mem=24G
+#SBATCH --cpus-per-task=6
+#SBATCH --mem=40G
 #SBATCH --gres=gpu:1
 #SBATCH --time=1-00:00:00
 #SBATCH --output=logs/greatlakes/%x_%A_%a.out
@@ -34,12 +34,16 @@ mkdir -p logs/greatlakes
 
 PY="${PYTHON_BIN:-python}"
 
-export OMP_NUM_THREADS="${OMP_NUM_THREADS:-2}"
-export MKL_NUM_THREADS="${MKL_NUM_THREADS:-2}"
-export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-2}"
-export NUMEXPR_NUM_THREADS="${NUMEXPR_NUM_THREADS:-2}"
+export OMP_NUM_THREADS="${OMP_NUM_THREADS:-4}"
+export MKL_NUM_THREADS="${MKL_NUM_THREADS:-4}"
+export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-4}"
+export NUMEXPR_NUM_THREADS="${NUMEXPR_NUM_THREADS:-4}"
+
+batch_size="${BATCH_SIZE:-16384}"
+pair_chunk_size="${PAIR_CHUNK_SIZE:-768}"
 
 echo "[$(date -Is)] node=${SLURM_JOB_NODELIST:-unknown-node}"
+echo "[$(date -Is)] batch_size=${batch_size} pair_chunk_size=${pair_chunk_size}"
 nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader || true
 
 # label|function|samples|dimension|noise|update_grid|width|steps|proposal_qs|random_controls|endpoint_top_m|seeds
@@ -83,8 +87,8 @@ args=(
   --endpoint-top-m "$endpoint_top_m"
   --anova-points 24
   --anova-background 24
-  --pair-chunk-size 256
-  --batch-size 8192
+  --pair-chunk-size "$pair_chunk_size"
+  --batch-size "$batch_size"
   --score-true-pair-for-diagnostics
   --device cuda
   --out-dir "$out_dir"

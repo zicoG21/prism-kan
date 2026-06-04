@@ -27,22 +27,27 @@ ClaimTransfer-Bench is organized around four release objects:
 - `task_card`: formula id, covariate generator, dimensions/sample size, noise,
   train/test seed, true support, claim specification, official scorer, and declared
   pair/symbolic labels.
-- `workflow_adapter`: method id, hyperparameters, exposed evidence objects, and
-  extraction rules for support/endpoint/pair/symbolic claims.
-- `claim_record`: one row per seed and evidence object with task id, adapter id,
-  predicate, scorer, rank, margin, pass/fail, and protocol fields.
+- `workflow_adapter`: method id, hyperparameters, exposed raw evidence objects,
+  and extraction rules for support/endpoint/pair/symbolic claims.
+- `adapter_outputs`: raw evidence rows such as predictions, selected supports,
+  pair-score ranks or vectors, readout scores, retained supports, symbolic
+  expressions, and candidate sets.
+- `claim_record`: the official scorer output, one row per seed and evidence
+  object with task id, adapter id, predicate, scorer, rank, margin, pass/fail,
+  and protocol fields.
 - `score_report`: aggregate continuous evidence, derived predicate rates,
   confidence intervals, and handoff summaries.
 
-The checked-in scripts below rebuild reference `claim_record` summaries for the
-paper rows; long retraining jobs regenerate the raw records.
+The checked-in scripts below rebuild reference adapter-output rows, recompute
+official `claim_record` rows, and aggregate score/coverage reports for the
+paper rows; long retraining jobs regenerate the raw experiment CSVs.
 
 Repository layout:
 
 - `task_cards/`: machine-readable task-card examples and task-card rules.
 - `adapters/`: adapter contract for exposing native workflow outputs.
 - `scorers/`: scorer and predicate definitions.
-- `claim_records/`: row-level submission schema and example CSV rows.
+- `claim_records/`: row-level adapter-output and official claim-record schema.
 - `score_reports/`: aggregate report convention.
 - `scripts/run_benchmark.py`: quick reviewer runner for available summaries.
 
@@ -52,15 +57,21 @@ The benchmark is a row-level structural-claim contract.
 
 - **Input:** a fixed `task_card` with formula/covariate generator, seeds, known
   support, legal structural claims, and official scorers.
-- **Submission:** a workflow adapter that writes `claim_record.csv` rows.
+- **Submission:** a workflow adapter that exposes raw evidence objects.  The
+  workshop artifact materializes these as `released_adapter_outputs.csv`.
 - **Required row fields:** `task_id`, `adapter`, `seed`, `evidence_object`,
-  `claim_type`, `target`, `scorer`, `rank`, `margin`, `predicate`, `pass`, and
-  `protocol`.
-- **Scoring:** continuous ranks, margins, support sizes, and MSEs are primary;
+  `claim_type`, `target`, `scorer`, `rank`, `margin`, `predicate`, and
+  `protocol`, plus the relevant raw field (`raw_value`, `selected_set`,
+  `candidate_set`, or a scorer-specific rank/margin).
+- **Scoring:** the official scorer recomputes `pass/fail` from raw evidence
+  fields, then reports continuous ranks, margins, support sizes, and MSEs;
   binary predicates are derived summaries with confidence intervals.
 - **Aggregate report:** macro summaries are grouped by task card, claim type,
   and evidence object.  The benchmark does not collapse prediction, support,
   pair, and symbolic claims into one scalar leaderboard.
+- **Public/hidden split:** workshop v0 is a public diagnostic suite.  The same
+  contract supports held-out task cards and private seeds because submissions
+  expose raw adapter evidence and the official scorer recomputes claim records.
 - **Conflict rule:** if two claim specifications for the same formula are both
   meaningful, they are separate task cards, not post-hoc reinterpretations of a
   single result.
@@ -91,6 +102,10 @@ workflow adapter.
   endpoints pass.
 - Different specifications for the same formula should be represented as separate
   task cards, not as post-hoc reinterpretations of one result.
+
+The public v0 cards are intended for diagnosis and reproducibility.  A
+leaderboard-style version can keep the same schema while hiding a subset of task
+cards or seeds from adapter authors.
 
 ### Adapter Contract
 
@@ -134,9 +149,10 @@ predicates from it.  At minimum it should include:
 
 ### Submitting a New Adapter
 
-To add a workflow, implement an adapter that writes `claim_record` rows with the
-schema above.  The adapter should expose its native evidence object rather than
-forcing all methods into a single importance score.  For example, a sparse
+To add a workflow, implement an adapter that exposes raw evidence objects with
+the schema above.  The adapter should not decide whether its own structural
+claim passed.  The official scorer recomputes ranks, margins, predicates, and
+aggregate score reports.  For example, a sparse
 library adapter writes selected variables and pair-term coefficients; a GA2M
 adapter writes selected univariate/bivariate components; a symbolic-library
 adapter writes variables/operators present in the expression.  The benchmark
@@ -144,8 +160,10 @@ then scores those native objects against the task-card specification.
 
 ## Reviewer Quickstart
 
-The fastest check does not retrain pyKAN models.  It verifies the schema,
-Wilson intervals, and the mini-suite table from the checked-in CSV summaries:
+The fastest check does not retrain pyKAN models.  It validates task cards,
+materializes released adapter-output rows from available result CSVs, recomputes
+official claim records, builds the coverage table, and then rebuilds the
+paper-facing summary tables:
 
 ```bash
 python scripts/run_benchmark.py
@@ -155,6 +173,9 @@ The command above expands to:
 
 ```bash
 python scripts/print_artifact_env.py
+python scripts/validate_task_cards.py
+python scripts/build_claim_records.py
+python scripts/build_score_report.py
 python scripts/run_standard_audit_protocol.py \
   --out-dir results/workshop_review_tables/standard_audit_protocol
 python scripts/build_formal_minisuite_baseline_table.py
@@ -164,6 +185,11 @@ python scripts/build_cross_method_transfer_matrix.py \
 
 Expected outputs:
 
+- `claim_records/released_adapter_outputs.csv`
+- `claim_records/released_claim_records.csv`
+- `score_reports/score_report.csv`
+- `score_reports/coverage_table.csv`
+- `score_reports/task_card_validation.csv`
 - `results/workshop_review_tables/standard_audit_protocol/audit_protocol_counts_with_ci.csv`
 - `results/workshop_review_tables/standard_audit_protocol/audit_protocol_summary.md`
 - `results/workshop_review_tables/standard_audit_protocol/audit_protocol_schema.json`

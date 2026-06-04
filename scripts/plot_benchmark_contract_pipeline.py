@@ -132,9 +132,9 @@ def main() -> None:
         (
             0.522,
             "claim_record.csv",
-            "task_id, adapter, seed\nevidence object\nclaim + scorer\nrank, margin\npredicate, pass",
+            "official rows\ntask_id, adapter, seed\nevidence object\nrank, margin\npredicate, pass",
             COLORS["record"],
-            "submit",
+            "scored",
         ),
         (
             0.765,

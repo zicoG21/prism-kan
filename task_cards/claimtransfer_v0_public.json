@@ -1,0 +1,199 @@
+{
+  "version": "claimtransfer_v0_public",
+  "cards": [
+    {
+      "task_id": "bilinear_d100_n1024",
+      "formula": "x0*x1 + 0.5*x2",
+      "dimension": 100,
+      "samples": 1024,
+      "noise": 0.0,
+      "support": [0, 1, 2],
+      "claim_specification": {
+        "support_claims": [{"claim_type": "support", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 3}],
+        "endpoint_claims": [{"claim_type": "endpoints", "target": [0, 1], "predicate": "top_m_contains_all", "m": 3}],
+        "pair_claims": [{"claim_type": "pair", "target": [0, 1], "official_scorer": "functional_anova", "predicate": "rank1"}]
+      },
+      "stress_tags": ["positive_product_control"]
+    },
+    {
+      "task_id": "weak_centered_d100_n1024",
+      "formula": "sin(2*pi*x0) + x1^2 + 0.25*x2*x3",
+      "dimension": 100,
+      "samples": 1024,
+      "noise": 0.0,
+      "support": [0, 1, 2, 3],
+      "claim_specification": {
+        "support_claims": [{"claim_type": "support", "target": [0, 1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
+        "endpoint_claims": [{"claim_type": "endpoints", "target": [2, 3], "predicate": "top_m_contains_all", "m": 4}],
+        "pair_claims": [{"claim_type": "pair", "target": [2, 3], "official_scorer": "functional_anova", "predicate": "rank1"}]
+      },
+      "stress_tags": ["weak_marginal_signal", "nuisance_maximum"]
+    },
+    {
+      "task_id": "trig_product_d100_n1024",
+      "formula": "sin(pi*x0*x1) + 0.5*x2",
+      "dimension": 100,
+      "samples": 1024,
+      "noise": 0.0,
+      "support": [0, 1, 2],
+      "claim_specification": {
+        "support_claims": [{"claim_type": "support", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 3}],
+        "endpoint_claims": [{"claim_type": "endpoints", "target": [0, 1], "predicate": "top_m_contains_all", "m": 3}],
+        "pair_claims": [{"claim_type": "pair", "target": [0, 1], "official_scorer": "functional_anova", "predicate": "rank1"}]
+      },
+      "stress_tags": ["positive_product_control"]
+    },
+    {
+      "task_id": "rational_product_d100_n1024",
+      "formula": "x0*x1/(1+x2^2)",
+      "dimension": 100,
+      "samples": 1024,
+      "noise": 0.0,
+      "support": [0, 1, 2],
+      "claim_specification": {
+        "support_claims": [{"claim_type": "support", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 3}],
+        "endpoint_claims": [{"claim_type": "endpoints", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 3}],
+        "pair_claims": [{"claim_type": "pair", "target": [0, 1], "official_scorer": "functional_anova", "predicate": "rank1"}]
+      },
+      "stress_tags": ["rational_pair"]
+    },
+    {
+      "task_id": "division_mixed_d100_n1024",
+      "formula": "(x0+1.2)/(1.5+x1^2) + 0.3*x2*x3",
+      "dimension": 100,
+      "samples": 1024,
+      "noise": 0.0,
+      "support": [0, 1, 2, 3],
+      "claim_specification": {
+        "support_claims": [{"claim_type": "support", "target": [0, 1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
+        "endpoint_claims": [{"claim_type": "endpoints", "target": [0, 1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
+        "pair_claims": [
+          {"claim_type": "pair", "target": [0, 1], "official_scorer": "functional_anova", "predicate": "rank_at_budget", "budget": 2},
+          {"claim_type": "pair", "target": [2, 3], "official_scorer": "functional_anova", "predicate": "rank_at_budget", "budget": 2}
+        ]
+      },
+      "stress_tags": ["multi_pair", "rational_pair"]
+    },
+    {
+      "task_id": "mixed_sparse_d100_n1024",
+      "formula": "sin(2*pi*x0) + x1*x2/(1+x3^2)",
+      "dimension": 100,
+      "samples": 1024,
+      "noise": 0.0,
+      "support": [0, 1, 2, 3],
+      "claim_specification": {
+        "support_claims": [{"claim_type": "support", "target": [0, 1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
+        "endpoint_claims": [{"claim_type": "endpoints", "target": [1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
+        "pair_claims": [{"claim_type": "pair", "target": [1, 2], "official_scorer": "functional_anova", "predicate": "rank1"}]
+      },
+      "stress_tags": ["mixed_sparse", "readout_pruning_boundary"]
+    },
+    {
+      "task_id": "sqrt_energy_d100_n1024",
+      "formula": "sqrt(x0+1.2)*(x1+1.5)^2 + 0.25*x2",
+      "dimension": 100,
+      "samples": 1024,
+      "noise": 0.0,
+      "support": [0, 1, 2],
+      "claim_specification": {
+        "support_claims": [{"claim_type": "support", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 3}],
+        "endpoint_claims": [{"claim_type": "endpoints", "target": [0, 1], "predicate": "top_m_contains_all", "m": 3}],
+        "pair_claims": [{"claim_type": "pair", "target": [0, 1], "official_scorer": "functional_anova", "predicate": "rank1"}]
+      },
+      "stress_tags": ["positive_product_control"]
+    },
+    {
+      "task_id": "nested_trig_d100_n1024",
+      "formula": "sin(2*pi*(x0 + 0.5*x1*x2))",
+      "dimension": 100,
+      "samples": 1024,
+      "noise": 0.0,
+      "support": [0, 1, 2],
+      "claim_specification": {
+        "support_claims": [{"claim_type": "support", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 3}],
+        "endpoint_claims": [{"claim_type": "endpoints", "target": [1, 2], "predicate": "top_m_contains_all", "m": 3}],
+        "pair_claims": [{"claim_type": "pair", "target": [1, 2], "official_scorer": "scorer_stress", "predicate": "stress_card"}]
+      },
+      "stress_tags": ["nested_composition", "pairwise_stress"]
+    },
+    {
+      "task_id": "three_way_product_d100_n1024",
+      "formula": "x0*x1*x2 + 0.5*x3",
+      "dimension": 100,
+      "samples": 1024,
+      "noise": 0.0,
+      "support": [0, 1, 2, 3],
+      "claim_specification": {
+        "support_claims": [{"claim_type": "support", "target": [0, 1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
+        "endpoint_claims": [{"claim_type": "endpoints", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 4}],
+        "pair_claims": [{"claim_type": "pair", "target": [0, 1], "official_scorer": "scorer_stress", "predicate": "stress_card"}]
+      },
+      "stress_tags": ["three_way", "pairwise_stress"]
+    },
+    {
+      "task_id": "exp_product_d100_n1024",
+      "formula": "exp(0.5*x0*x1) + 0.2*x2",
+      "dimension": 100,
+      "samples": 1024,
+      "noise": 0.0,
+      "support": [0, 1, 2],
+      "claim_specification": {
+        "support_claims": [{"claim_type": "support", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 3}],
+        "pair_claims": [{"claim_type": "pair", "target": [0, 1], "official_scorer": "functional_anova", "predicate": "rank1"}]
+      },
+      "stress_tags": ["product_like"]
+    },
+    {
+      "task_id": "log_product_d100_n1024",
+      "formula": "log(2+x0*x1) + 0.25*x2^2",
+      "dimension": 100,
+      "samples": 1024,
+      "noise": 0.0,
+      "support": [0, 1, 2],
+      "claim_specification": {
+        "support_claims": [{"claim_type": "support", "target": [0, 1, 2], "predicate": "top_m_contains_all", "m": 3}],
+        "pair_claims": [{"claim_type": "pair", "target": [0, 1], "official_scorer": "functional_anova", "predicate": "rank1"}]
+      },
+      "stress_tags": ["product_like"]
+    },
+    {
+      "task_id": "semi_breast_cancer_core",
+      "formula": "weak_centered planted on breast_cancer covariates",
+      "dimension": 30,
+      "samples": 384,
+      "noise": 0.0,
+      "support": [0, 1, 2, 3],
+      "claim_specification": {
+        "support_claims": [{"claim_type": "support", "target": [0, 1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
+        "pair_claims": [{"claim_type": "pair", "target": [2, 3], "official_scorer": "functional_anova", "predicate": "rank1"}]
+      },
+      "stress_tags": ["semi_synthetic_covariates"]
+    },
+    {
+      "task_id": "semi_diabetes_core",
+      "formula": "weak_centered planted on diabetes covariates",
+      "dimension": 10,
+      "samples": 128,
+      "noise": 0.0,
+      "support": [0, 1, 2, 3],
+      "claim_specification": {
+        "support_claims": [{"claim_type": "support", "target": [0, 1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
+        "pair_claims": [{"claim_type": "pair", "target": [2, 3], "official_scorer": "functional_anova", "predicate": "rank1"}]
+      },
+      "stress_tags": ["semi_synthetic_covariates"]
+    },
+    {
+      "task_id": "semi_wine_core",
+      "formula": "weak_centered planted on wine covariates",
+      "dimension": 13,
+      "samples": 178,
+      "noise": 0.0,
+      "support": [0, 1, 2, 3],
+      "claim_specification": {
+        "support_claims": [{"claim_type": "support", "target": [0, 1, 2, 3], "predicate": "top_m_contains_all", "m": 4}],
+        "pair_claims": [{"claim_type": "pair", "target": [2, 3], "official_scorer": "functional_anova", "predicate": "rank1"}]
+      },
+      "stress_tags": ["semi_synthetic_covariates"]
+    }
+  ]
+}

@@ -3,8 +3,8 @@
 #SBATCH --partition=spgpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=4
-#SBATCH --mem=24G
+#SBATCH --cpus-per-task=6
+#SBATCH --mem=40G
 #SBATCH --gres=gpu:1
 #SBATCH --time=1-00:00:00
 #SBATCH --output=logs/greatlakes/%x_%A_%a.out
@@ -43,10 +43,14 @@ mkdir -p logs/greatlakes
 
 PY="${PYTHON_BIN:-python}"
 
-export OMP_NUM_THREADS="${OMP_NUM_THREADS:-2}"
-export MKL_NUM_THREADS="${MKL_NUM_THREADS:-2}"
-export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-2}"
-export NUMEXPR_NUM_THREADS="${NUMEXPR_NUM_THREADS:-2}"
+export OMP_NUM_THREADS="${OMP_NUM_THREADS:-4}"
+export MKL_NUM_THREADS="${MKL_NUM_THREADS:-4}"
+export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-4}"
+export NUMEXPR_NUM_THREADS="${NUMEXPR_NUM_THREADS:-4}"
+
+batch_size="${BATCH_SIZE:-16384}"
+pair_chunk_size="${PAIR_CHUNK_SIZE:-1024}"
+max_all_pairs="${MAX_ALL_PAIRS:-20000}"
 
 seed_base="${SEED_BASE:-0}"
 seed_count="${SEED_COUNT:-12}"
@@ -61,6 +65,7 @@ fi
 
 echo "[$(date -Is)] node=${SLURM_JOB_NODELIST:-unknown-node}"
 echo "[$(date -Is)] seeds=${seeds} label_suffix=${label_suffix} scorers=${scorers}"
+echo "[$(date -Is)] batch_size=${batch_size} pair_chunk_size=${pair_chunk_size} max_all_pairs=${max_all_pairs}"
 nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader || true
 
 # label|function|samples|dimension|noise|update_grid|width|steps|anova_points|anova_background|fd_points
@@ -99,11 +104,11 @@ args=(
   --scorers "$scorers"
   --anova-points "$anova_points"
   --anova-background "$anova_background"
-  --pair-chunk-size 512
+  --pair-chunk-size "$pair_chunk_size"
   --fd-points "$fd_points"
   --fd-h 0.01
-  --batch-size 8192
-  --max-all-pairs 15000
+  --batch-size "$batch_size"
+  --max-all-pairs "$max_all_pairs"
   --device cuda
   --out-dir "$out_dir"
 )
