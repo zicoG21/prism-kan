@@ -83,4 +83,4 @@
 | claimtransfer_v0_public | public | core_interaction_c05 | core_interaction_c05_d100_n1024 | tree_gate           | TreeGate-tree-gate                | prediction                              | prediction          | mse                               | mse_lt             | 60   | 60    | 0                 | 0         | 60     | 0.000     | 0.000      | 0.060       |             |               | 0.097            |
 | claimtransfer_v0_public | public | core_interaction_c05 | core_interaction_c05_d100_n1024 | tree_gate           | TreeGate-tree-gate                | verified_candidate_pairs                | pair                | candidate_functional_anova        | rank_at_budget     | 60   | 60    | 0                 | 0         | 60     | 0.000     | 0.000      | 0.060       | 84.000      |               |                  |
 
-Showing first 80 of 875 rows.
+Showing first 80 of 1135 rows.

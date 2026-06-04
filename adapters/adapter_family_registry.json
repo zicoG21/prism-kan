@@ -59,13 +59,12 @@
       "native_outputs": [
         "prediction_mse",
         "feature_importance",
-        "pair_scores",
-        "candidate_pair_set"
+        "pair_scores"
       ],
-      "licensed_claim_types": ["prediction", "support", "endpoints", "candidate_pair", "pair"],
+      "licensed_claim_types": ["prediction", "support", "endpoints", "pair"],
       "tuning_policy": "Tree count, depth, and pair-scoring rule are predeclared.",
       "budget_policy": "Candidate budget and verifier budget are recorded separately.",
-      "missing_field_policy": "Candidate rows do not imply verifier rows; absent verifier rows are explicit missing rows.",
+      "missing_field_policy": "Candidate-verifier rows are handled by the epim_treegate family; generic tree-interaction rows expose support/endpoints/pair scores.",
       "positive_control_requirement": "At least one product-like card with a candidate and verifier row.",
       "stress_card_requirement": "At least one high-dimensional nuisance or weak-centered card."
     },

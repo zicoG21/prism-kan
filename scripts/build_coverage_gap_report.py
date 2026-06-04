@@ -34,7 +34,10 @@ ADAPTER_FAMILY_ALIASES = {
     "sparse_spline_lasso": "sparse_library",
     "symbolic_lasso": "symbolic_library",
     "gbm_hstat": "tree_interaction",
-    "tree_gate": "tree_interaction",
+    # TreeGate exposes a candidate-generator plus verifier contract.  It is
+    # therefore the reference implementation for the EPIM/TreeGate-style
+    # candidate-verifier family rather than a generic tree-interaction scorer.
+    "tree_gate": "epim_treegate",
     "epim_pairverify": "epim_treegate",
 }
 

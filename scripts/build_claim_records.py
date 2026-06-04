@@ -199,11 +199,10 @@ def convert_stage_detail(path: Path, rows: list[dict[str, Any]]) -> None:
     df = pd.read_csv(path)
     for _, r in df.iterrows():
         function = str(r["function"])
-        meta = FORMULA_META.get(function, {})
-        tid = task_id(function, r)
+        tid, family, meta = meta_for_row(function, r)
         common = {
             "task_id": tid,
-            "task_family": meta.get("family", function),
+            "task_family": family,
             "adapter": "pyKAN",
             "adapter_family": "pyKAN",
             "source_kind": "seed_aligned_stage_record",
