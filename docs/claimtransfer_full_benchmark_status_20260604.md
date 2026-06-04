@@ -76,16 +76,16 @@ Current generated scale:
 - Release-contract validation table generated from the frozen alpha contract: 33 checks.
 - 6 validated adapter families.
 - Raw adapter-output validation table generated from the schema: 12 required fields checked.
-- 152,246 normalized adapter-output rows.
-- 152,246 official claim-record rows.
+- 153,398 normalized adapter-output rows.
+- 153,398 official claim-record rows.
 - Claim-record validation table generated from the schema: 9 required fields
   plus pass-value validity checked.
-- 784 aggregate score-report rows.
-- 279 coverage rows.
+- 874 aggregate score-report rows.
+- 291 coverage rows.
 - Score/coverage/gap/missingness report validation generated from reporting-policy checks: 36 checks.
 - Coverage-gap report generated from adapter-family contracts and public task
-  families: 464 expected cells, 229 covered and 235 missing.
-- 427 missingness-report rows.
+  families: 464 expected cells, 241 covered and 223 missing.
+- 469 missingness-report rows.
 - Full benchmark readiness report generated under
   `score_reports/full_benchmark_readiness.csv` with 18 P0/P1/P2 checks:
   P0 is complete for the alpha artifact; P1 has one data-dependent coverage
@@ -143,7 +143,7 @@ Still data-dependent:
 - rerun `scripts/run_benchmark.py --quick` after each merge.
 - confirm Hessian and TreeGate scorer rows after the remaining GL scorergram
   tasks finish.
-- current readiness blocker: 229 covered expected cells and 235 missing cells
+- current readiness blocker: 241 covered expected cells and 223 missing cells
   in `score_reports/coverage_gap_report.csv`; largest gaps are symbolic-library
   operator-recall rows plus GA2M/sparse/symbolic/tree cells on correlated,
   semi-synthetic, and scientific-expression task families.
@@ -194,7 +194,7 @@ Current properties:
 - no overfull boxes, undefined references, or citation warnings in the latest
   compile;
 - current artifact scale synchronized in the draft:
-  152,246 claim rows, 784 score rows, 279 coverage rows, 427 missingness rows,
+  153,398 claim rows, 874 score rows, 291 coverage rows, 469 missingness rows,
   56 manifest entries;
 - paper identity: official-scored benchmark contract, with pyKAN as the
   high-resolution case study and non-KAN rows as adapter-interface checks.

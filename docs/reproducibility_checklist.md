@@ -25,10 +25,10 @@ Validated adapter outputs: claim_records/released_adapter_outputs.csv
 rows: 152246
 required columns: 12
 Wrote claim_records/released_claim_records.csv (152246 claim rows)
-Wrote score_reports/score_report.csv (784 aggregate rows)
-Wrote score_reports/coverage_table.csv (279 coverage rows)
+Wrote score_reports/score_report.csv (874 aggregate rows)
+Wrote score_reports/coverage_table.csv (291 coverage rows)
 Wrote score_reports/coverage_gap_report.csv (464 expected cells)
-Wrote score_reports/missingness_report.csv (427 missingness rows)
+Wrote score_reports/missingness_report.csv (469 missingness rows)
 Validated claim records: claim_records/released_claim_records.csv
 required columns: 9
 Validated score reports.

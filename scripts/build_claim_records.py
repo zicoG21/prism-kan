@@ -60,6 +60,17 @@ SEMISYNTH_META: dict[str, dict[str, Any]] = {
 }
 
 
+def meta_for_row(function: str, row: pd.Series) -> tuple[str, str, dict[str, Any]]:
+    """Return task id/family metadata, with overrides for template-style rows."""
+    meta = dict(FORMULA_META.get(function, {"family": function, "support": [], "pairs": [], "endpoints": []}))
+    rho = as_float(row.get("nuisance_correlation", ""))
+    proxies = as_float(row.get("n_correlated_proxies", ""))
+    if not pd.isna(rho) and rho > 0 and not pd.isna(proxies) and proxies > 0:
+        meta["family"] = "correlated_covariates"
+        return "correlated_covariate_pair_hidden_template", "correlated_covariates", meta
+    return task_id(function, row), str(meta.get("family", function)), meta
+
+
 def parse_obj(value: object, default: Any = None) -> Any:
     if value is None or (isinstance(value, float) and pd.isna(value)):
         return default
@@ -210,12 +221,11 @@ def convert_cross_method(path: Path, rows: list[dict[str, Any]]) -> None:
     df = pd.read_csv(path)
     for _, r in df.iterrows():
         function = str(r["function"])
-        meta = FORMULA_META.get(function, {})
-        tid = task_id(function, r)
+        tid, family, meta = meta_for_row(function, r)
         method = str(r.get("method", "external"))
         common = {
             "task_id": tid,
-            "task_family": meta.get("family", function),
+            "task_family": family,
             "adapter": method,
             "adapter_family": method,
             "source_kind": "cross_method_transfer",
@@ -266,14 +276,13 @@ def convert_treegate(path: Path, rows: list[dict[str, Any]]) -> None:
         if str(r.get("status", "ok")) != "ok":
             continue
         function = str(r["function"])
-        meta = FORMULA_META.get(function, {})
-        tid = task_id(function, r)
+        tid, family, meta = meta_for_row(function, r)
         forest = str(r.get("forest_type", "tree"))
         gate = str(r.get("gate_score", "gate"))
         adapter = f"TreeGate-{forest}-{gate}"
         common = {
             "task_id": tid,
-            "task_family": meta.get("family", function),
+            "task_family": family,
             "adapter": adapter,
             "adapter_family": "tree_gate",
             "source_kind": "treegate",
@@ -295,12 +304,11 @@ def convert_scorergram(path: Path, rows: list[dict[str, Any]]) -> None:
         if str(r.get("status", "ok")) != "ok":
             continue
         function = str(r["function"])
-        meta = FORMULA_META.get(function, {})
-        tid = task_id(function, r)
+        tid, family, meta = meta_for_row(function, r)
         scorer = str(r.get("pair_scorer", "pair_scorer"))
         common = {
             "task_id": tid,
-            "task_family": meta.get("family", function),
+            "task_family": family,
             "adapter": "pyKAN-scorergram",
             "adapter_family": "pyKAN",
             "source_kind": "pair_scorer_claim_grammar",
@@ -319,12 +327,11 @@ def convert_epim_pairverify(path: Path, rows: list[dict[str, Any]]) -> None:
         if str(r.get("status", "ok")) != "ok":
             continue
         function = str(r["function"])
-        meta = FORMULA_META.get(function, {})
-        tid = task_id(function, r)
+        tid, family, meta = meta_for_row(function, r)
         q = r.get("proposal_q", "")
         common = {
             "task_id": tid,
-            "task_family": meta.get("family", function),
+            "task_family": family,
             "adapter": "EPIM-PairVerify",
             "adapter_family": "epim_pairverify",
             "source_kind": "epim_pairverify",
@@ -484,6 +491,117 @@ def convert_prune_symbolic(path: Path, rows: list[dict[str, Any]]) -> None:
         )
 
 
+def convert_pair_feature_lasso(path: Path, rows: list[dict[str, Any]]) -> None:
+    df = pd.read_csv(path)
+    for _, r in df.iterrows():
+        function = str(r["function"])
+        tid, family, meta = meta_for_row(function, r)
+        common = {
+            "task_id": tid,
+            "task_family": family,
+            "adapter": "pair_feature_lasso",
+            "adapter_family": "sparse_lasso",
+            "source_kind": "pair_feature_lasso",
+            "source_file": str(path),
+            "seed": int(r["seed"]),
+            "protocol": f"alpha={r.get('alpha', '')}:top_m={r.get('top_m', '')}",
+        }
+        pairs = meta.get("pairs", [])
+        endpoints = sorted({v for p in pairs for v in p}) or meta.get("endpoints", [])
+        add(
+            rows,
+            **common,
+            evidence_object="selected_variables",
+            claim_type="support",
+            target=target_str(meta.get("support", [])),
+            scorer="pair_feature_lasso",
+            predicate="contains_all",
+            selected_set=r.get("selected_support", r.get("selected_variables", "")),
+        )
+        add(
+            rows,
+            **common,
+            evidence_object="selected_variables",
+            claim_type="endpoints",
+            target=target_str(endpoints),
+            scorer="pair_feature_lasso",
+            predicate="binary_true",
+            raw_value=float(as_float(r.get("endpoint_recall_at_m", "")) >= 0.999),
+            selected_set=r.get("selected_variables", ""),
+        )
+        add(
+            rows,
+            **common,
+            evidence_object="selected_interactions",
+            claim_type="pair",
+            target=target_str(pairs),
+            scorer="pair_feature_lasso",
+            predicate="binary_true",
+            raw_value=r.get("pair_retained_at_m", r.get("top1_pair_accuracy", "")),
+            margin=as_float(r.get("true_pair_score_mean", "")) - as_float(r.get("top_pair_score", "")),
+            candidate_set=r.get("selected_interactions", ""),
+        )
+
+
+def convert_residual_hsic(path: Path, rows: list[dict[str, Any]]) -> None:
+    df = pd.read_csv(path)
+    for _, r in df.iterrows():
+        function = str(r["function"])
+        tid, family, meta = meta_for_row(function, r)
+        common = {
+            "task_id": tid,
+            "task_family": family,
+            "adapter": "residual_rff_hsic_pair_screen",
+            "adapter_family": "epim_pairverify",
+            "source_kind": "residual_rff_hsic_pair_screen",
+            "source_file": str(path),
+            "seed": int(r["seed"]),
+            "protocol": f"rff={r.get('rff_dim', '')}:top_pairs={r.get('top_pairs_for_support', '')}",
+            "runtime_seconds": r.get("runtime_sec", ""),
+        }
+        pairs = meta.get("pairs", [])
+        endpoints = sorted({v for p in pairs for v in p}) or meta.get("endpoints", [])
+        q = r.get("top_pairs_for_support", "")
+        add(
+            rows,
+            **common,
+            evidence_object="hsic_endpoint_proposal",
+            claim_type="endpoints",
+            target=target_str(endpoints),
+            scorer="residual_rff_hsic",
+            predicate="binary_true",
+            budget=q,
+            raw_value=float(as_float(r.get("endpoint_recall_at_top_pairs", "")) >= 0.999),
+            candidate_set=r.get("selected_interactions", ""),
+        )
+        add(
+            rows,
+            **common,
+            evidence_object="hsic_pair_proposal",
+            claim_type="candidate_pair",
+            target=target_str(pairs),
+            scorer="residual_rff_hsic",
+            predicate="binary_true",
+            budget=q,
+            raw_value=r.get("pair_retained_at_top_pairs", ""),
+            rank=r.get("true_interaction_rank_worst", ""),
+            candidate_set=r.get("selected_interactions", ""),
+        )
+        add(
+            rows,
+            **common,
+            evidence_object="hsic_pair_screen",
+            claim_type="pair",
+            target=target_str(pairs),
+            scorer="residual_rff_hsic",
+            predicate="rank_at_budget",
+            budget=len(pairs) or 1,
+            rank=r.get("true_interaction_rank_worst", ""),
+            margin=as_float(r.get("true_pair_score_mean", "")) - as_float(r.get("max_false_pair_score", "")),
+            candidate_set=r.get("selected_interactions", ""),
+        )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--results-root", default="results/revision")
@@ -511,6 +629,8 @@ def main() -> None:
         ("**/epim_pairverify_detail.csv", convert_epim_pairverify),
         ("**/semisynthetic_covariate_audit_detail.csv", convert_semisynthetic),
         ("**/pykan_prune_symbolic_detail.csv", convert_prune_symbolic),
+        ("**/pair_feature_lasso_detail.csv", convert_pair_feature_lasso),
+        ("**/residual_rff_hsic_pair_screen_detail.csv", convert_residual_hsic),
     ]
     for pattern, converter in patterns:
         for path in sorted(root.glob(pattern)):
