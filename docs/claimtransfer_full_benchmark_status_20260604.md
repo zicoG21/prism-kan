@@ -28,6 +28,8 @@ Updated: 2026-06-04
 - Typed dashboard builder: `scripts/build_typed_dashboard.py`
 - Coverage-gap report builder: `scripts/build_coverage_gap_report.py`
 - Coverage-gap priority summarizer: `scripts/summarize_coverage_gaps.py`
+- Coverage-gap action-plan builder:
+  `scripts/build_coverage_gap_action_plan.py`
 - Great Lakes result refresh helper:
   `scripts/refresh_from_greatlakes_results.py`
 - Great Lakes coverage-gap submit helper:
@@ -63,6 +65,7 @@ python3 scripts/build_score_report.py
 python3 scripts/validate_claim_records.py claim_records/released_claim_records.csv
 python3 scripts/validate_score_reports.py
 python3 scripts/summarize_coverage_gaps.py
+python3 scripts/build_coverage_gap_action_plan.py
 python3 scripts/build_full_benchmark_readiness_report.py
 python3 scripts/build_release_candidate_report.py
 python3 scripts/refresh_from_greatlakes_results.py --no-unpack
@@ -105,6 +108,9 @@ Current generated scale:
   readiness from P1 data blockers and the later public tag/server step.
 - Coverage-gap priority summary generated under
   `score_reports/coverage_gap_summary.csv` for GL/merge planning.
+- Coverage-gap action plan generated under
+  `score_reports/coverage_gap_action_plan.csv`; it maps missing cells to the
+  existing GL gap-fill scripts, pyKAN merge steps, or optional symbolic tracks.
 - Artifact manifest generated under `score_reports/benchmark_manifest.csv`
   with 59 official contract and report entries.
 
@@ -132,6 +138,8 @@ Complete for an alpha benchmark artifact:
 - typed dashboard views by adapter, task, evidence object, scorer, and claim type.
 - coverage-gap report showing which adapter-family/task-family/claim-type cells
   are covered or missing.
+- coverage-gap action plan mapping each remaining missing-cell group to a GL
+  submit command, merge step, or explicit manual-triage bucket.
 - score-report validation for required columns, Wilson intervals, unit
   intervals, and nonnegative counts.
 - official missingness report for omitted or non-scorable evidence objects.
@@ -172,6 +180,8 @@ Still data-dependent:
   them.
 - use `score_reports/coverage_gap_summary.csv` to choose the next GL/merge
   target by adapter family and claim type.
+- use `score_reports/coverage_gap_action_plan.csv` to check whether each gap is
+  already targeted by current GL scripts or still needs manual triage.
 - targeted gap-fill scripts now exist for missing public task families:
   `bash scripts/submit_claimtransfer_gapfill_gl.sh` submits CPU-only
   cross-method and TreeGate rows for exp/log/sqrt/trig/three-way,

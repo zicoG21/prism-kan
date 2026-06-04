@@ -50,6 +50,7 @@ Expected current scale:
 - `scripts/build_score_report.py`
 - `scripts/build_coverage_gap_report.py`
 - `scripts/summarize_coverage_gaps.py`
+- `scripts/build_coverage_gap_action_plan.py`
 - `scripts/build_full_benchmark_readiness_report.py`
 - `scripts/build_release_candidate_report.py`
 - `scripts/greatlakes_cross_method_gapfill_standard.sbatch`
@@ -74,6 +75,9 @@ Expected current scale:
 - `claim_records/released_claim_records.csv`
 - `claim_records/hidden_claim_records.csv`
 - `score_reports/benchmark_manifest.*`
+- `score_reports/coverage_gap_report.*`
+- `score_reports/coverage_gap_summary.*`
+- `score_reports/coverage_gap_action_plan.*`
 - `score_reports/release_candidate_report.*`
 - `score_reports/missingness_report.*`
 - `score_reports/hidden_*`
@@ -87,6 +91,7 @@ Expected current scale:
 
 - Confirm GL result packs are unpacked and indexed.
 - Rebuild released adapter outputs and official score reports.
+- Rebuild coverage-gap summary and action-plan reports.
 - Rebuild typed dashboards.
 - Rebuild the release-candidate gate report.
 - Run the clean checkout and release-bundle overlay checks.

@@ -38,6 +38,8 @@
 /score_reports/coverage_gap_report.md
 /score_reports/coverage_gap_summary.csv
 /score_reports/coverage_gap_summary.md
+/score_reports/coverage_gap_action_plan.csv
+/score_reports/coverage_gap_action_plan.md
 /score_reports/full_benchmark_readiness.csv
 /score_reports/full_benchmark_readiness.md
 /score_reports/release_candidate_report.csv

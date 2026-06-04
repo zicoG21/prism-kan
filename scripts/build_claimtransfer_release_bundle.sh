@@ -77,6 +77,7 @@ collect_official_docs() {
     scripts/build_score_report.py \
     scripts/build_coverage_gap_report.py \
     scripts/summarize_coverage_gaps.py \
+    scripts/build_coverage_gap_action_plan.py \
     scripts/build_full_benchmark_readiness_report.py \
     scripts/build_release_candidate_report.py \
     scripts/build_benchmark_manifest.py \
@@ -118,6 +119,7 @@ collect_official_docs() {
     score_reports/score_report.csv \
     score_reports/coverage_table.csv \
     score_reports/coverage_gap_summary.csv \
+    score_reports/coverage_gap_action_plan.csv \
     score_reports/missingness_report.csv \
     score_reports/full_benchmark_readiness.csv \
     score_reports/release_candidate_report.csv \

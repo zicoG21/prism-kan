@@ -89,6 +89,8 @@ def make_treegate_data(args: argparse.Namespace, function_name: str, seed: int) 
         noise=args.noise,
         seed=seed,
         standardize_target=True,
+        nuisance_correlation=args.nuisance_correlation,
+        n_correlated_proxies=args.n_correlated_proxies,
     )
 
 
@@ -360,6 +362,8 @@ def run_one(args: argparse.Namespace, function_name: str, seed: int) -> Dict:
         "test_samples": args.test_samples,
         "dimension": args.dimension,
         "noise": args.noise,
+        "nuisance_correlation": float(args.nuisance_correlation),
+        "n_correlated_proxies": int(args.n_correlated_proxies),
         "forest_type": args.forest_type,
         "gate_score": args.gate_score,
         "rf_trees": args.rf_trees,
@@ -399,7 +403,20 @@ def append_rows(path: Path, rows: List[Dict]) -> None:
 
 
 def summarize(df: pd.DataFrame) -> pd.DataFrame:
-    keys = ["function", "samples", "dimension", "noise", "forest_type", "gate_score", "gate_size", "direct_pair_budget", "verify_points", "rf_trees"]
+    keys = [
+        "function",
+        "samples",
+        "dimension",
+        "noise",
+        "nuisance_correlation",
+        "n_correlated_proxies",
+        "forest_type",
+        "gate_score",
+        "gate_size",
+        "direct_pair_budget",
+        "verify_points",
+        "rf_trees",
+    ]
     rows = []
     for key, g in df.groupby(keys, dropna=False):
         row = dict(zip(keys, key))
@@ -425,6 +442,8 @@ def main() -> None:
     parser.add_argument("--test-samples", type=int, default=2048)
     parser.add_argument("--dimension", type=int, default=100)
     parser.add_argument("--noise", type=float, default=0.0)
+    parser.add_argument("--nuisance-correlation", type=float, default=0.0)
+    parser.add_argument("--n-correlated-proxies", type=int, default=0)
     parser.add_argument("--semisynthetic-c", type=float, default=0.25)
     parser.add_argument("--seeds", type=str, default="0-9")
     parser.add_argument("--gate-size", type=int, default=20)

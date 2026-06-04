@@ -186,6 +186,8 @@ python scripts/refresh_from_greatlakes_results.py --no-unpack
 This rebuilds released adapter outputs from `results/revision`, regenerates the
 official score/coverage/readiness reports, and writes a before/after refresh
 summary under `score_reports/greatlakes_refresh_report.csv`.
+The companion action plan in `score_reports/coverage_gap_action_plan.csv` maps
+current missing cells to existing GL commands or explicit manual-triage gaps.
 
 ## P1: Needed for a Stronger Benchmark Paper
 
@@ -259,6 +261,8 @@ Current data-dependent blocker:
   experiments.
 - `score_reports/coverage_gap_summary.csv` groups these missing cells into
   adapter-family actions for GL/merge planning.
+- `score_reports/coverage_gap_action_plan.csv` maps missing cells to specific
+  GL commands, expected output roots, or manual-triage buckets.
 
 Current gap-fill queue:
 
@@ -269,10 +273,10 @@ bash scripts/submit_claimtransfer_gapfill_gl.sh
 This submits CPU-only cross-method rows for the missing exp/log/sqrt/trig,
 three-way, scientific-expression, correlated-covariate, and semi-synthetic
 real-covariate families plus TreeGate candidate/verifier rows for the missing
-formula, scientific, and semi-synthetic families.  It also submits a dependent
-score refresh that rebuilds the coverage gap and readiness reports on Great
-Lakes.  Symbolic operator-recall rows remain separate adapter/symbolic-track
-work, not GPU seed-sweep work.
+formula, scientific, correlated-covariate, and semi-synthetic families.  It
+also submits a dependent score refresh that rebuilds the coverage gap and
+readiness reports on Great Lakes.  Symbolic operator-recall rows remain
+separate adapter/symbolic-track work, not GPU seed-sweep work.
 
 ### 10. Strengthen Symbolic Evaluation Layer
 
