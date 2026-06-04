@@ -4,7 +4,10 @@
 from __future__ import annotations
 
 import argparse
+import warnings
 from pathlib import Path
+
+warnings.filterwarnings("ignore", category=UserWarning)
 
 import pandas as pd
 
@@ -24,6 +27,9 @@ REQUIRED_FILES = [
     "scripts/build_benchmark_manifest.py",
     "scripts/run_benchmark.py",
     "scripts/score_submission.py",
+    "scripts/build_claimtransfer_release_bundle.sh",
+    "scripts/build_hidden_private_bundle.py",
+    "scripts/check_release_bundle.sh",
     "score_reports/task_card_validation.csv",
     "score_reports/score_report.csv",
     "score_reports/coverage_table.csv",
@@ -37,9 +43,9 @@ def csv_rows(path: Path) -> int:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--min-claim-rows", type=int, default=1)
-    parser.add_argument("--min-score-rows", type=int, default=1)
-    parser.add_argument("--min-coverage-rows", type=int, default=1)
+    parser.add_argument("--min-claim-rows", type=int, default=100000)
+    parser.add_argument("--min-score-rows", type=int, default=600)
+    parser.add_argument("--min-coverage-rows", type=int, default=200)
     args = parser.parse_args()
 
     missing = [p for p in REQUIRED_FILES if not (ROOT / p).exists()]

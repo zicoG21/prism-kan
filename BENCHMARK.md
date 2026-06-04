@@ -7,7 +7,7 @@ recompute claim records, score reports, coverage tables, and artifact manifests.
 ## Quick Check
 
 ```bash
-python scripts/run_benchmark.py --mode quick
+python scripts/run_benchmark.py --quick
 ```
 
 This validates task cards, rebuilds released adapter-output rows, recomputes
@@ -30,6 +30,12 @@ This runs the quick check and packs task cards, schemas, released adapter
 outputs, official claim records, score reports, typed dashboards, examples,
 benchmark documentation, and the critical scoring scripts under
 `artifacts/release/`.
+
+Verify the packed bundle from a temporary directory:
+
+```bash
+bash scripts/check_release_bundle.sh
+```
 
 ## Core Contract
 
@@ -75,7 +81,7 @@ python scripts/score_submission.py examples/minimal_submission.csv --out-dir sco
 Use hidden/offline mode for private evaluation:
 
 ```bash
-python scripts/run_benchmark.py --mode hidden --hidden-input path/to/private_submission.csv
+python scripts/run_benchmark.py --hidden --hidden-input path/to/private_submission.csv
 ```
 
 Generate a maintainer-side private hidden bundle:

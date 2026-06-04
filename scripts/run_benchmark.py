@@ -39,6 +39,13 @@ def main() -> None:
             "scores a supplied hidden adapter-output file if provided."
         ),
     )
+    for mode_name in ("quick", "public", "full", "hidden"):
+        parser.add_argument(
+            f"--{mode_name}",
+            dest=f"mode_{mode_name}",
+            action="store_true",
+            help=f"Shortcut for --mode {mode_name}.",
+        )
     parser.add_argument(
         "--out-dir",
         default="results/workshop_review_tables/standard_audit_protocol",
@@ -68,6 +75,15 @@ def main() -> None:
         ),
     )
     args = parser.parse_args()
+    shortcut_modes = [
+        mode_name
+        for mode_name in ("quick", "public", "full", "hidden")
+        if getattr(args, f"mode_{mode_name}")
+    ]
+    if len(shortcut_modes) > 1:
+        parser.error("Use at most one mode shortcut.")
+    if shortcut_modes:
+        args.mode = shortcut_modes[0]
 
     py = sys.executable
     run([py, "scripts/print_artifact_env.py"])
@@ -85,7 +101,18 @@ def main() -> None:
     run([py, "scripts/build_score_report.py"])
     run([py, "scripts/build_benchmark_manifest.py"])
     run([py, "scripts/build_typed_dashboard.py"])
-    run([py, "scripts/check_benchmark_artifact.py"])
+    run(
+        [
+            py,
+            "scripts/check_benchmark_artifact.py",
+            "--min-claim-rows",
+            "100000",
+            "--min-score-rows",
+            "600",
+            "--min-coverage-rows",
+            "200",
+        ]
+    )
 
     if args.mode == "hidden":
         if args.hidden_input:
