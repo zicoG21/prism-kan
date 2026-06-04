@@ -71,6 +71,16 @@ def main() -> None:
     run(
         [
             py,
+            "scripts/validate_adapter_outputs.py",
+            str(submission),
+            "--out",
+            str(out_dir / "adapter_output_validation.csv"),
+        ]
+    )
+
+    run(
+        [
+            py,
             "scripts/build_score_report.py",
             "--input",
             str(submission),

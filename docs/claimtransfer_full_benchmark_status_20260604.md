@@ -12,6 +12,7 @@ Updated: 2026-06-04
 - Adapter-family registry: `adapters/adapter_family_registry.json`
 - Submission metadata schema: `adapters/submission_metadata_schema.json`
 - Claim-record schema: `claim_records/claim_record_schema.json`
+- Adapter-output validator: `scripts/validate_adapter_outputs.py`
 - Offline submission scorer: `scripts/score_submission.py`
 - Artifact manifest builder: `scripts/build_benchmark_manifest.py`
 - Authoring protocol: `docs/task_card_authoring_protocol.md`
@@ -37,6 +38,7 @@ The following commands were run successfully:
 python3 scripts/validate_task_cards.py
 python3 scripts/validate_adapter_registry.py
 python3 scripts/validate_submission_metadata.py examples/minimal_submission_metadata.json
+python3 scripts/validate_adapter_outputs.py claim_records/released_adapter_outputs.csv
 python3 scripts/build_claim_records.py
 python3 scripts/build_score_report.py
 python3 scripts/run_benchmark.py --quick
@@ -54,13 +56,14 @@ Current generated scale:
 
 - 21 validated task cards/templates.
 - 6 validated adapter families.
+- Raw adapter-output validation table generated from the schema: 12 required fields checked.
 - 117,114 normalized adapter-output rows.
 - 117,114 official claim-record rows.
 - 694 aggregate score-report rows.
 - 255 coverage rows.
 - 377 missingness-report rows.
 - Artifact manifest generated under `score_reports/benchmark_manifest.csv`
-  with 43 official contract and report entries.
+  with 44 official contract and report entries.
 
 ## P0 Status
 
@@ -145,6 +148,6 @@ Current properties:
   compile;
 - current artifact scale synchronized in the draft:
   117,114 claim rows, 694 score rows, 255 coverage rows, 377 missingness rows,
-  43 manifest entries;
+  44 manifest entries;
 - paper identity: official-scored benchmark contract, with pyKAN as the
   high-resolution case study and non-KAN rows as adapter-interface checks.

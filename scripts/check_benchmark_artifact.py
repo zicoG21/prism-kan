@@ -25,6 +25,7 @@ REQUIRED_FILES = [
     "claim_records/claim_record_schema.json",
     "scripts/validate_task_cards.py",
     "scripts/validate_adapter_registry.py",
+    "scripts/validate_adapter_outputs.py",
     "scripts/validate_submission_metadata.py",
     "scripts/build_claim_records.py",
     "scripts/build_score_report.py",
@@ -36,6 +37,7 @@ REQUIRED_FILES = [
     "scripts/check_release_bundle.sh",
     "score_reports/task_card_validation.csv",
     "score_reports/adapter_family_validation.csv",
+    "score_reports/adapter_output_validation.csv",
     "score_reports/score_report.csv",
     "score_reports/coverage_table.csv",
     "score_reports/missingness_report.csv",
@@ -62,6 +64,7 @@ def main() -> None:
     checks = {
         "task_card_validation": csv_rows(ROOT / "score_reports/task_card_validation.csv"),
         "adapter_family_validation": csv_rows(ROOT / "score_reports/adapter_family_validation.csv"),
+        "adapter_output_validation": csv_rows(ROOT / "score_reports/adapter_output_validation.csv"),
         "score_report": csv_rows(ROOT / "score_reports/score_report.csv"),
         "coverage_table": csv_rows(ROOT / "score_reports/coverage_table.csv"),
         "missingness_report": csv_rows(ROOT / "score_reports/missingness_report.csv"),

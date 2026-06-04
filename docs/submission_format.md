@@ -64,6 +64,11 @@ Submit a JSON metadata file with:
 The schema is `adapters/submission_metadata_schema.json`; a minimal example is
 `examples/minimal_submission_metadata.json`.
 
+The adapter-output CSV itself is checked by
+`scripts/validate_adapter_outputs.py`.  That validator requires the normalized
+raw-evidence fields and rejects trusted official-result columns such as `pass`,
+`successes`, `pass_rate`, and Wilson intervals.
+
 ## Official Scoring
 
 Run:

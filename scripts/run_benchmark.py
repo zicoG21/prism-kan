@@ -97,6 +97,7 @@ def main() -> None:
             "+ using bundled claim_records/released_adapter_outputs.csv",
             flush=True,
         )
+    run([py, "scripts/validate_adapter_outputs.py", str(released_outputs)])
     run([py, "scripts/build_score_report.py"])
     run([py, "scripts/build_benchmark_manifest.py"])
     run([py, "scripts/build_typed_dashboard.py"])

@@ -60,6 +60,7 @@ bash scripts/check_release_overlay_checkout.sh
 ```bash
 python scripts/validate_adapter_registry.py
 python scripts/validate_submission_metadata.py examples/minimal_submission_metadata.json
+python scripts/validate_adapter_outputs.py claim_records/released_adapter_outputs.csv
 python scripts/build_claim_records.py
 python scripts/build_score_report.py
 python scripts/check_benchmark_artifact.py
