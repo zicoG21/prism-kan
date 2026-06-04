@@ -239,7 +239,11 @@ Potential GL jobs:
 
 Potential GL jobs:
 
-- `greatlakes_cross_method_transfer_baselines_extended.sbatch`
+- `scripts/submit_claimtransfer_gapfill_gl.sh`
+- `greatlakes_cross_method_gapfill_standard.sbatch`
+- `greatlakes_treegate_gapfill_standard.sbatch`
+- `greatlakes_cross_method_transfer_baselines_extended.sbatch` only for fresh
+  seed blocks after the gap-fill rows are present
 - score-refresh standard job after merge.
 
 Current data-dependent blocker:
@@ -251,6 +255,20 @@ Current data-dependent blocker:
   targets before expanding new experiments.
 - `score_reports/coverage_gap_summary.csv` groups these missing cells into
   adapter-family actions for GL/merge planning.
+
+Current gap-fill queue:
+
+```bash
+bash scripts/submit_claimtransfer_gapfill_gl.sh
+```
+
+This submits CPU-only cross-method rows for the missing exp/log/sqrt/trig,
+three-way, scientific-expression, and correlated-covariate families plus
+TreeGate candidate/verifier rows for the missing formula and scientific
+families.  It also submits a dependent score refresh that rebuilds the coverage
+gap and readiness reports on Great Lakes.  Semi-synthetic non-KAN rows and
+symbolic operator-recall rows remain separate adapter/symbolic-track work, not
+GPU seed-sweep work.
 
 ### 10. Strengthen Symbolic Evaluation Layer
 
@@ -354,10 +372,13 @@ Current local support:
 
 ### High Value
 
-- Hidden/public claim-card completion on A40.
-- Scorer-grammar completion with Hessian and TreeGate verifier rows.
-- Cross-method extended standard jobs.
-- Score-refresh jobs after every merge.
+- Coverage-gap CPU standard queue:
+  `bash scripts/submit_claimtransfer_gapfill_gl.sh`.
+- Remaining hidden/public claim-card completion on A40 only when it fills a
+  public/hidden split or robustness cell not already present.
+- Remaining scorer-grammar completion with Hessian only for missing scorer
+  rows; do not repeat finished seed blocks.
+- Score-refresh jobs after every merge or GL pull.
 
 ### Medium Value
 
@@ -371,6 +392,8 @@ Current local support:
 - More pyKAN seeds for already saturated rows.
 - Extra width/grid sweeps without a specific claim-grammar purpose.
 - New plots before score reports are stable.
+- Re-running broad `scorergram` or `claimcard` arrays when the missing cells are
+  actually cross-method, semi-synthetic, or symbolic-expression coverage gaps.
 
 ## Recommended Next Milestones
 

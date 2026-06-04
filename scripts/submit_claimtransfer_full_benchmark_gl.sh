@@ -45,6 +45,7 @@ STANDARD_ACCOUNT="${STANDARD_ACCOUNT:-jaabell0}"
 SUBMIT_GPU="${SUBMIT_GPU:-1}"
 SUBMIT_SPGPU="${SUBMIT_SPGPU:-1}"
 SUBMIT_STANDARD="${SUBMIT_STANDARD:-1}"
+SUBMIT_GAPFILL="${SUBMIT_GAPFILL:-1}"
 SUBMIT_SCORE_REFRESH="${SUBMIT_SCORE_REFRESH:-1}"
 USE_A40_PACKED="${USE_A40_PACKED:-0}"
 
@@ -52,7 +53,7 @@ echo "[$(date -Is)] ClaimTransfer full benchmark submit"
 echo "[$(date -Is)] account=${ACCOUNT}"
 echo "[$(date -Is)] standard_account=${STANDARD_ACCOUNT}"
 echo "[$(date -Is)] python=${PY}"
-echo "[$(date -Is)] submit_gpu=${SUBMIT_GPU} submit_spgpu=${SUBMIT_SPGPU} submit_standard=${SUBMIT_STANDARD} submit_score_refresh=${SUBMIT_SCORE_REFRESH} use_a40_packed=${USE_A40_PACKED}"
+echo "[$(date -Is)] submit_gpu=${SUBMIT_GPU} submit_spgpu=${SUBMIT_SPGPU} submit_standard=${SUBMIT_STANDARD} submit_gapfill=${SUBMIT_GAPFILL} submit_score_refresh=${SUBMIT_SCORE_REFRESH} use_a40_packed=${USE_A40_PACKED}"
 
 submit() {
   echo
@@ -105,6 +106,18 @@ if [[ "${SUBMIT_STANDARD}" == "1" ]]; then
   submit sbatch --account="${STANDARD_ACCOUNT}" --array=0-23 \
     --export=ALL,PYTHON_BIN="${PY}" \
     scripts/greatlakes_treegate_pair_screen_extended_standard.sbatch
+fi
+
+if [[ "${SUBMIT_GAPFILL}" == "1" ]]; then
+  # CPU-only coverage-gap rows for public task families absent from the broad
+  # extended queues.
+  submit sbatch --account="${STANDARD_ACCOUNT}" \
+    --export=ALL,PYTHON_BIN="${PY}",SEED_START="${GAP_XFER_SEED_START:-160}",SEED_STOP="${GAP_XFER_SEED_STOP:-189}",GA2M_SEED_STOP="${GAP_XFER_GA2M_SEED_STOP:-179}",SYMBOLIC_SEED_STOP="${GAP_XFER_SYMBOLIC_SEED_STOP:-179}" \
+    scripts/greatlakes_cross_method_gapfill_standard.sbatch
+
+  submit sbatch --account="${STANDARD_ACCOUNT}" \
+    --export=ALL,PYTHON_BIN="${PY}" \
+    scripts/greatlakes_treegate_gapfill_standard.sbatch
 fi
 
 if [[ "${SUBMIT_SCORE_REFRESH}" == "1" ]]; then

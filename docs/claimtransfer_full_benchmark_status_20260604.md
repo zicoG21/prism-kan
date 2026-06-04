@@ -30,6 +30,11 @@ Updated: 2026-06-04
 - Coverage-gap priority summarizer: `scripts/summarize_coverage_gaps.py`
 - Great Lakes result refresh helper:
   `scripts/refresh_from_greatlakes_results.py`
+- Great Lakes coverage-gap submit helper:
+  `scripts/submit_claimtransfer_gapfill_gl.sh`
+- Great Lakes gap-fill jobs:
+  `scripts/greatlakes_cross_method_gapfill_standard.sbatch` and
+  `scripts/greatlakes_treegate_gapfill_standard.sbatch`
 - Release bundle builder: `scripts/build_claimtransfer_release_bundle.sh`
 - Release bundle smoke test: `scripts/check_release_bundle.sh`
 - Clean-checkout release-overlay smoke test:
@@ -96,6 +101,12 @@ Current generated scale:
 - Artifact manifest generated under `score_reports/benchmark_manifest.csv`
   with 56 official contract and report entries.
 
+Workshop-paper status:
+
+- the workshop audit/protocol PDF is treated as temporarily frozen;
+- full-benchmark work should not change the workshop story unless a future
+  paper pass explicitly reopens it.
+
 ## P0 Status
 
 Complete for an alpha benchmark artifact:
@@ -149,6 +160,12 @@ Still data-dependent:
   semi-synthetic, and scientific-expression task families.
 - use `score_reports/coverage_gap_summary.csv` to choose the next GL/merge
   target by adapter family and claim type.
+- targeted gap-fill scripts now exist for missing public task families:
+  `bash scripts/submit_claimtransfer_gapfill_gl.sh` submits CPU-only
+  cross-method and TreeGate rows for exp/log/sqrt/trig/three-way,
+  scientific-expression, and correlated-covariate gaps, with a dependent
+  official score refresh.  This is preferred over re-running broad scorergram
+  arrays when the missing cells are adapter-family coverage gaps.
 
 ## P2 Status
 

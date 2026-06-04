@@ -48,6 +48,9 @@ Expected current scale:
 - `scripts/build_coverage_gap_report.py`
 - `scripts/summarize_coverage_gaps.py`
 - `scripts/build_full_benchmark_readiness_report.py`
+- `scripts/greatlakes_cross_method_gapfill_standard.sbatch`
+- `scripts/greatlakes_treegate_gapfill_standard.sbatch`
+- `scripts/submit_claimtransfer_gapfill_gl.sh`
 - `scripts/score_submission.py`
 - `scripts/run_benchmark.py`
 - `scripts/refresh_from_greatlakes_results.py`

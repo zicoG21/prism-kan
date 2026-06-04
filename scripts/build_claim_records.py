@@ -33,6 +33,10 @@ FORMULA_META: dict[str, dict[str, Any]] = {
     "formula_three_way_product": {"family": "three_way_product", "support": [0, 1, 2, 3], "pairs": [(0, 1)], "endpoints": [0, 1, 2]},
     "formula_exp_product": {"family": "exp_product", "support": [0, 1, 2], "pairs": [(0, 1)], "endpoints": [0, 1]},
     "formula_log_product": {"family": "log_product", "support": [0, 1, 2], "pairs": [(0, 1)], "endpoints": [0, 1]},
+    "feynman_energy": {"family": "scientific_expression", "support": [0, 1], "pairs": [(0, 1)], "endpoints": [0, 1]},
+    "feynman_gravity": {"family": "scientific_expression", "support": [0, 1, 2], "pairs": [(0, 1), (0, 2), (1, 2)], "endpoints": [0, 1, 2]},
+    "feynman_coulomb": {"family": "scientific_expression", "support": [0, 1, 2], "pairs": [(0, 1), (0, 2), (1, 2)], "endpoints": [0, 1, 2]},
+    "feynman_damped_wave": {"family": "scientific_expression", "support": [0, 1, 2], "pairs": [(0, 1), (0, 2)], "endpoints": [0, 1, 2]},
 }
 
 SEMISYNTH_META: dict[str, dict[str, Any]] = {

@@ -33,7 +33,12 @@ echo "[$(date -Is)] refreshing ClaimTransfer official reports"
 "$PY" scripts/validate_task_cards.py
 "$PY" scripts/build_claim_records.py
 "$PY" scripts/build_score_report.py
+"$PY" scripts/validate_claim_records.py
+"$PY" scripts/build_coverage_gap_report.py
+"$PY" scripts/summarize_coverage_gaps.py
 "$PY" scripts/build_benchmark_manifest.py
+"$PY" scripts/build_full_benchmark_readiness_report.py
+"$PY" scripts/build_typed_dashboard.py
 "$PY" scripts/check_benchmark_artifact.py
 
 if [[ "${BUILD_FIGURE_SUMMARIES:-1}" == "1" ]]; then
@@ -47,5 +52,7 @@ ls -lh \
   claim_records/released_claim_records.csv \
   score_reports/score_report.csv \
   score_reports/coverage_table.csv \
+  score_reports/coverage_gap_summary.csv \
+  score_reports/full_benchmark_readiness.csv \
   score_reports/task_card_validation.csv
 echo "[$(date -Is)] done ClaimTransfer official report refresh"

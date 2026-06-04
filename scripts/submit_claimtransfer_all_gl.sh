@@ -22,6 +22,7 @@ set -euo pipefail
 #   SUBMIT_JAABELL_GPU=0 bash scripts/submit_claimtransfer_all_gl.sh
 #   SUBMIT_ENGIN1_SPGPU=0 bash scripts/submit_claimtransfer_all_gl.sh
 #   SUBMIT_FRESH_SEEDS=1 SUBMIT_OPTIONAL=1 bash scripts/submit_claimtransfer_all_gl.sh
+#   SUBMIT_GAPFILL=0 bash scripts/submit_claimtransfer_all_gl.sh
 #   SUBMIT_SCORE_REFRESH=0 bash scripts/submit_claimtransfer_all_gl.sh
 
 cd "${SLURM_SUBMIT_DIR:-$PWD}"
@@ -38,6 +39,7 @@ SUBMIT_JAABELL_SPGPU="${SUBMIT_JAABELL_SPGPU:-$SUBMIT_FRESH_SEEDS}"
 SUBMIT_ENGIN_GPU="${SUBMIT_ENGIN_GPU:-$SUBMIT_FRESH_SEEDS}"
 SUBMIT_ENGIN_SPGPU="${SUBMIT_ENGIN_SPGPU:-$SUBMIT_FRESH_SEEDS}"
 SUBMIT_STANDARD="${SUBMIT_STANDARD:-1}"
+SUBMIT_GAPFILL="${SUBMIT_GAPFILL:-1}"
 SUBMIT_OPTIONAL="${SUBMIT_OPTIONAL:-0}"
 SUBMIT_SCORE_REFRESH="${SUBMIT_SCORE_REFRESH:-1}"
 
@@ -47,7 +49,7 @@ A40_PAIR_CHUNK_SIZE="${A40_PAIR_CHUNK_SIZE:-1500}"
 echo "[$(date -Is)] ClaimTransfer all-GL submit"
 echo "[$(date -Is)] python=${PY}"
 echo "[$(date -Is)] jaabell=${JAABELL_ACCOUNT} engin=${ENGIN_ACCOUNT} standard=${STANDARD_ACCOUNT}"
-echo "[$(date -Is)] toggles: fresh_seeds=${SUBMIT_FRESH_SEEDS} jaabell_gpu=${SUBMIT_JAABELL_GPU} jaabell_spgpu=${SUBMIT_JAABELL_SPGPU} engin_gpu=${SUBMIT_ENGIN_GPU} engin_spgpu=${SUBMIT_ENGIN_SPGPU} standard=${SUBMIT_STANDARD} optional=${SUBMIT_OPTIONAL} refresh=${SUBMIT_SCORE_REFRESH}"
+echo "[$(date -Is)] toggles: fresh_seeds=${SUBMIT_FRESH_SEEDS} jaabell_gpu=${SUBMIT_JAABELL_GPU} jaabell_spgpu=${SUBMIT_JAABELL_SPGPU} engin_gpu=${SUBMIT_ENGIN_GPU} engin_spgpu=${SUBMIT_ENGIN_SPGPU} standard=${SUBMIT_STANDARD} gapfill=${SUBMIT_GAPFILL} optional=${SUBMIT_OPTIONAL} refresh=${SUBMIT_SCORE_REFRESH}"
 
 JOB_IDS=()
 
@@ -124,6 +126,19 @@ if [[ "${SUBMIT_STANDARD}" == "1" ]]; then
   submit sbatch --account="${STANDARD_ACCOUNT}" --array=0-23 \
     --export=ALL,PYTHON_BIN="${PY}" \
     scripts/greatlakes_treegate_pair_screen_extended_standard.sbatch
+fi
+
+if [[ "${SUBMIT_GAPFILL}" == "1" ]]; then
+  # Targeted coverage-gap rows for task families not covered by the broad
+  # extended queues.  These are CPU-only and should be preferred over repeating
+  # finished scorergram/claimcard seed blocks.
+  submit sbatch --account="${STANDARD_ACCOUNT}" \
+    --export=ALL,PYTHON_BIN="${PY}",SEED_START="${GAP_XFER_SEED_START:-160}",SEED_STOP="${GAP_XFER_SEED_STOP:-189}",GA2M_SEED_STOP="${GAP_XFER_GA2M_SEED_STOP:-179}",SYMBOLIC_SEED_STOP="${GAP_XFER_SYMBOLIC_SEED_STOP:-179}" \
+    scripts/greatlakes_cross_method_gapfill_standard.sbatch
+
+  submit sbatch --account="${STANDARD_ACCOUNT}" \
+    --export=ALL,PYTHON_BIN="${PY}" \
+    scripts/greatlakes_treegate_gapfill_standard.sbatch
 fi
 
 if [[ "${SUBMIT_OPTIONAL}" == "1" ]]; then
