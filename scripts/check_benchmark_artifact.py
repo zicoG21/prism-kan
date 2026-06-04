@@ -50,6 +50,7 @@ REQUIRED_FILES = [
     "score_reports/coverage_table.csv",
     "score_reports/coverage_gap_report.csv",
     "score_reports/missingness_report.csv",
+    "score_reports/full_benchmark_readiness.csv",
     "score_reports/benchmark_manifest.csv",
 ]
 
@@ -82,6 +83,7 @@ def main() -> None:
         "coverage_table": csv_rows(ROOT / "score_reports/coverage_table.csv"),
         "coverage_gap_report": csv_rows(ROOT / "score_reports/coverage_gap_report.csv"),
         "missingness_report": csv_rows(ROOT / "score_reports/missingness_report.csv"),
+        "full_benchmark_readiness": csv_rows(ROOT / "score_reports/full_benchmark_readiness.csv"),
         "benchmark_manifest": csv_rows(ROOT / "score_reports/benchmark_manifest.csv"),
     }
     if checks["score_report"] < args.min_score_rows:
@@ -92,6 +94,8 @@ def main() -> None:
         raise SystemExit(f"coverage_gap_report too small: {checks['coverage_gap_report']}")
     if checks["missingness_report"] < args.min_missingness_rows:
         raise SystemExit(f"missingness_report too small: {checks['missingness_report']}")
+    if checks["full_benchmark_readiness"] < 10:
+        raise SystemExit(f"full_benchmark_readiness too small: {checks['full_benchmark_readiness']}")
 
     claim_records = ROOT / "claim_records/released_claim_records.csv"
     if claim_records.exists():

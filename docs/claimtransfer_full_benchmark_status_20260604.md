@@ -27,6 +27,7 @@ Updated: 2026-06-04
 - Minimal adapter example: `examples/minimal_adapter.py`
 - Typed dashboard builder: `scripts/build_typed_dashboard.py`
 - Coverage-gap report builder: `scripts/build_coverage_gap_report.py`
+- Coverage-gap priority summarizer: `scripts/summarize_coverage_gaps.py`
 - Release bundle builder: `scripts/build_claimtransfer_release_bundle.sh`
 - Release bundle smoke test: `scripts/check_release_bundle.sh`
 - Clean-checkout release-overlay smoke test:
@@ -34,6 +35,8 @@ Updated: 2026-06-04
 - Hidden/private bundle generator: `scripts/build_hidden_private_bundle.py`
 - Hidden/private leakage validator: `scripts/validate_hidden_bundle.py`
 - Release-contract validator: `scripts/validate_release_contract.py`
+- Full benchmark readiness report:
+  `scripts/build_full_benchmark_readiness_report.py`
 - Benchmark paper draft: `manuscripts/foundation_benchmark_dev/main.tex`
 
 ## Completed Verification
@@ -50,6 +53,8 @@ python3 scripts/build_claim_records.py
 python3 scripts/build_score_report.py
 python3 scripts/validate_claim_records.py claim_records/released_claim_records.csv
 python3 scripts/validate_score_reports.py
+python3 scripts/summarize_coverage_gaps.py
+python3 scripts/build_full_benchmark_readiness_report.py
 python3 scripts/run_benchmark.py --quick
 python3 scripts/run_benchmark.py --hidden
 python3 scripts/run_benchmark.py --hidden --hidden-input claim_records/released_adapter_outputs.csv
@@ -78,8 +83,15 @@ Current generated scale:
 - Coverage-gap report generated from adapter-family contracts and public task
   families: 464 expected cells, 205 covered and 259 missing.
 - 377 missingness-report rows.
+- Full benchmark readiness report generated under
+  `score_reports/full_benchmark_readiness.csv` with 18 P0/P1/P2 checks:
+  P0 is complete for the alpha artifact; P1 has one data-dependent coverage
+  blocker; P2 offline scaffolding is complete with public release/tag marked as
+  future work.
+- Coverage-gap priority summary generated under
+  `score_reports/coverage_gap_summary.csv` for GL/merge planning.
 - Artifact manifest generated under `score_reports/benchmark_manifest.csv`
-  with 50 official contract and report entries.
+  with 54 official contract and report entries.
 
 ## P0 Status
 
@@ -99,6 +111,7 @@ Complete for an alpha benchmark artifact:
 - score-report validation for required columns, Wilson intervals, unit
   intervals, and nonnegative counts.
 - official missingness report for omitted or non-scorable evidence objects.
+- readiness report showing 10/10 P0 checks complete.
 - reviewer-facing release bundle under `artifacts/release/`.
 
 ## P1 Status
@@ -127,6 +140,12 @@ Still data-dependent:
 - rerun `scripts/run_benchmark.py --quick` after each merge.
 - confirm Hessian and TreeGate scorer rows after the remaining GL scorergram
   tasks finish.
+- current readiness blocker: 205 covered expected cells and 259 missing cells
+  in `score_reports/coverage_gap_report.csv`; largest gaps are symbolic-library
+  symbolic-status/operator/complexity rows plus sparse-library support/pair
+  rows.
+- use `score_reports/coverage_gap_summary.csv` to choose the next GL/merge
+  target by adapter family and claim type.
 
 ## P2 Status
 
@@ -147,6 +166,8 @@ Implemented as offline benchmark scaffolding:
 - clean release-bundle smoke test from a temporary directory without
   `results/revision`.
 - clean source-checkout plus release-bundle overlay smoke test.
+- readiness report showing offline submission, hidden/private bundle, and
+  release packaging checks complete.
 
 Still future work for a public benchmark release:
 
@@ -171,6 +192,6 @@ Current properties:
   compile;
 - current artifact scale synchronized in the draft:
   117,114 claim rows, 694 score rows, 255 coverage rows, 377 missingness rows,
-  50 manifest entries;
+  54 manifest entries;
 - paper identity: official-scored benchmark contract, with pyKAN as the
   high-resolution case study and non-KAN rows as adapter-interface checks.

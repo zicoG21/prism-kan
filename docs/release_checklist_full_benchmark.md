@@ -9,6 +9,7 @@ Run from a fresh clone or temporary checkout:
 
 ```bash
 python scripts/run_benchmark.py --quick
+python scripts/build_full_benchmark_readiness_report.py
 python scripts/check_benchmark_artifact.py --min-claim-rows 100000 --min-score-rows 600 --min-coverage-rows 200 --min-missingness-rows 200
 python examples/minimal_adapter.py --out examples/minimal_submission_generated.csv
 python scripts/score_submission.py examples/minimal_submission.csv --out-dir score_reports/example_minimal
@@ -24,6 +25,7 @@ Expected current scale:
 - at least 200 coverage rows.
 - at least 200 coverage-gap rows.
 - at least 200 missingness-report rows.
+- 18 readiness rows spanning P0, P1, and P2.
 
 ## Files That Should Be Versioned
 
@@ -43,6 +45,8 @@ Expected current scale:
 - `scripts/build_claim_records.py`
 - `scripts/build_score_report.py`
 - `scripts/build_coverage_gap_report.py`
+- `scripts/summarize_coverage_gaps.py`
+- `scripts/build_full_benchmark_readiness_report.py`
 - `scripts/score_submission.py`
 - `scripts/run_benchmark.py`
 - `scripts/build_typed_dashboard.py`

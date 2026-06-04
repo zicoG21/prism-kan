@@ -159,6 +159,15 @@ python scripts/run_benchmark.py --quick
 
 should complete on a reviewer machine without GPU.
 
+Current alpha readiness check:
+
+```bash
+python scripts/build_full_benchmark_readiness_report.py
+```
+
+generates `score_reports/full_benchmark_readiness.csv`; as of 2026-06-04 the
+report marks all P0 checks complete for the local alpha artifact.
+
 ## P1: Needed for a Stronger Benchmark Paper
 
 ### 7. Expand and Stabilize Adapter Families
@@ -216,6 +225,15 @@ Potential GL jobs:
 
 - `greatlakes_cross_method_transfer_baselines_extended.sbatch`
 - score-refresh standard job after merge.
+
+Current data-dependent blocker:
+
+- `score_reports/coverage_gap_report.csv` reports 205 covered expected cells and
+  259 missing cells; the largest gaps are symbolic-library expression/status
+  rows and sparse-library support/pair rows.  Treat these as the first GL/data
+  targets before expanding new experiments.
+- `score_reports/coverage_gap_summary.csv` groups these missing cells into
+  adapter-family actions for GL/merge planning.
 
 ### 10. Strengthen Symbolic Evaluation Layer
 
