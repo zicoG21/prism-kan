@@ -68,6 +68,7 @@ collect_official_docs() {
     scripts/validate_task_cards.py \
     scripts/validate_adapter_registry.py \
     scripts/validate_adapter_outputs.py \
+    scripts/validate_claim_records.py \
     scripts/validate_submission_metadata.py \
     scripts/build_claim_records.py \
     scripts/build_score_report.py \

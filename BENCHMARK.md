@@ -63,6 +63,7 @@ python scripts/validate_submission_metadata.py examples/minimal_submission_metad
 python scripts/validate_adapter_outputs.py claim_records/released_adapter_outputs.csv
 python scripts/build_claim_records.py
 python scripts/build_score_report.py
+python scripts/validate_claim_records.py claim_records/released_claim_records.csv
 python scripts/check_benchmark_artifact.py
 ```
 

@@ -97,6 +97,15 @@ def main() -> None:
     run(
         [
             py,
+            "scripts/validate_claim_records.py",
+            str(out_dir / "claim_records.csv"),
+            "--out",
+            str(out_dir / "claim_record_validation.csv"),
+        ]
+    )
+    run(
+        [
+            py,
             "scripts/build_typed_dashboard.py",
             "--score-report",
             str(out_dir / "score_report.csv"),

@@ -99,6 +99,7 @@ def main() -> None:
         )
     run([py, "scripts/validate_adapter_outputs.py", str(released_outputs)])
     run([py, "scripts/build_score_report.py"])
+    run([py, "scripts/validate_claim_records.py"])
     run([py, "scripts/build_coverage_gap_report.py"])
     run([py, "scripts/build_benchmark_manifest.py"])
     run([py, "scripts/build_typed_dashboard.py"])

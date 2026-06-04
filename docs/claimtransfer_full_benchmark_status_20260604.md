@@ -13,6 +13,7 @@ Updated: 2026-06-04
 - Submission metadata schema: `adapters/submission_metadata_schema.json`
 - Claim-record schema: `claim_records/claim_record_schema.json`
 - Adapter-output validator: `scripts/validate_adapter_outputs.py`
+- Claim-record validator: `scripts/validate_claim_records.py`
 - Offline submission scorer: `scripts/score_submission.py`
 - Artifact manifest builder: `scripts/build_benchmark_manifest.py`
 - Authoring protocol: `docs/task_card_authoring_protocol.md`
@@ -43,6 +44,7 @@ python3 scripts/validate_submission_metadata.py examples/minimal_submission_meta
 python3 scripts/validate_adapter_outputs.py claim_records/released_adapter_outputs.csv
 python3 scripts/build_claim_records.py
 python3 scripts/build_score_report.py
+python3 scripts/validate_claim_records.py claim_records/released_claim_records.csv
 python3 scripts/run_benchmark.py --quick
 python3 scripts/run_benchmark.py --hidden
 python3 scripts/run_benchmark.py --hidden --hidden-input claim_records/released_adapter_outputs.csv
@@ -62,13 +64,15 @@ Current generated scale:
 - Raw adapter-output validation table generated from the schema: 12 required fields checked.
 - 117,114 normalized adapter-output rows.
 - 117,114 official claim-record rows.
+- Claim-record validation table generated from the schema: 9 required fields
+  plus pass-value validity checked.
 - 694 aggregate score-report rows.
 - 255 coverage rows.
 - Coverage-gap report generated from adapter-family contracts and public task
   families: 464 expected cells, 205 covered and 259 missing.
 - 377 missingness-report rows.
 - Artifact manifest generated under `score_reports/benchmark_manifest.csv`
-  with 47 official contract and report entries.
+  with 48 official contract and report entries.
 
 ## P0 Status
 
@@ -77,6 +81,7 @@ Complete for an alpha benchmark artifact:
 - task-card schema and validation;
 - raw adapter outputs separated from official claim records;
 - official pass/fail recomputed by scorer script;
+- official claim-record schema validation after scoring;
 - split and registry fields carried into score and coverage reports;
 - quick/public/hidden runner modes;
 - offline scoring harness.
@@ -157,6 +162,6 @@ Current properties:
   compile;
 - current artifact scale synchronized in the draft:
   117,114 claim rows, 694 score rows, 255 coverage rows, 377 missingness rows,
-  47 manifest entries;
+  48 manifest entries;
 - paper identity: official-scored benchmark contract, with pyKAN as the
   high-resolution case study and non-KAN rows as adapter-interface checks.

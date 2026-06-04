@@ -27,7 +27,9 @@ Wrote score_reports/score_report.csv (694 aggregate rows)
 Wrote score_reports/coverage_table.csv (255 coverage rows)
 Wrote score_reports/coverage_gap_report.csv (464 expected cells)
 Wrote score_reports/missingness_report.csv (377 missingness rows)
-Wrote .../score_reports/benchmark_manifest.csv (47 files)
+Validated claim records: claim_records/released_claim_records.csv
+required columns: 9
+Wrote .../score_reports/benchmark_manifest.csv (48 files)
 ClaimTransfer benchmark artifact check passed.
 ```
 

@@ -19,6 +19,8 @@
 /score_reports/benchmark_manifest.md
 /score_reports/adapter_output_validation.csv
 /score_reports/adapter_output_validation.md
+/score_reports/claim_record_validation.csv
+/score_reports/claim_record_validation.md
 /score_reports/missingness_report.csv
 /score_reports/missingness_report.md
 /score_reports/adapter_family_validation.csv
