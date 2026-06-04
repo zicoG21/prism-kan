@@ -28,6 +28,8 @@ Updated: 2026-06-04
 - Typed dashboard builder: `scripts/build_typed_dashboard.py`
 - Coverage-gap report builder: `scripts/build_coverage_gap_report.py`
 - Coverage-gap priority summarizer: `scripts/summarize_coverage_gaps.py`
+- Great Lakes result refresh helper:
+  `scripts/refresh_from_greatlakes_results.py`
 - Release bundle builder: `scripts/build_claimtransfer_release_bundle.sh`
 - Release bundle smoke test: `scripts/check_release_bundle.sh`
 - Clean-checkout release-overlay smoke test:
@@ -55,6 +57,7 @@ python3 scripts/validate_claim_records.py claim_records/released_claim_records.c
 python3 scripts/validate_score_reports.py
 python3 scripts/summarize_coverage_gaps.py
 python3 scripts/build_full_benchmark_readiness_report.py
+python3 scripts/refresh_from_greatlakes_results.py --no-unpack
 python3 scripts/run_benchmark.py --quick
 python3 scripts/run_benchmark.py --hidden
 python3 scripts/run_benchmark.py --hidden --hidden-input claim_records/released_adapter_outputs.csv
@@ -73,16 +76,16 @@ Current generated scale:
 - Release-contract validation table generated from the frozen alpha contract: 33 checks.
 - 6 validated adapter families.
 - Raw adapter-output validation table generated from the schema: 12 required fields checked.
-- 117,114 normalized adapter-output rows.
-- 117,114 official claim-record rows.
+- 152,246 normalized adapter-output rows.
+- 152,246 official claim-record rows.
 - Claim-record validation table generated from the schema: 9 required fields
   plus pass-value validity checked.
-- 694 aggregate score-report rows.
-- 255 coverage rows.
+- 784 aggregate score-report rows.
+- 279 coverage rows.
 - Score/coverage/gap/missingness report validation generated from reporting-policy checks: 36 checks.
 - Coverage-gap report generated from adapter-family contracts and public task
-  families: 464 expected cells, 205 covered and 259 missing.
-- 377 missingness-report rows.
+  families: 464 expected cells, 229 covered and 235 missing.
+- 427 missingness-report rows.
 - Full benchmark readiness report generated under
   `score_reports/full_benchmark_readiness.csv` with 18 P0/P1/P2 checks:
   P0 is complete for the alpha artifact; P1 has one data-dependent coverage
@@ -91,7 +94,7 @@ Current generated scale:
 - Coverage-gap priority summary generated under
   `score_reports/coverage_gap_summary.csv` for GL/merge planning.
 - Artifact manifest generated under `score_reports/benchmark_manifest.csv`
-  with 54 official contract and report entries.
+  with 56 official contract and report entries.
 
 ## P0 Status
 
@@ -140,10 +143,10 @@ Still data-dependent:
 - rerun `scripts/run_benchmark.py --quick` after each merge.
 - confirm Hessian and TreeGate scorer rows after the remaining GL scorergram
   tasks finish.
-- current readiness blocker: 205 covered expected cells and 259 missing cells
+- current readiness blocker: 229 covered expected cells and 235 missing cells
   in `score_reports/coverage_gap_report.csv`; largest gaps are symbolic-library
-  symbolic-status/operator/complexity rows plus sparse-library support/pair
-  rows.
+  operator-recall rows plus GA2M/sparse/symbolic/tree cells on correlated,
+  semi-synthetic, and scientific-expression task families.
 - use `score_reports/coverage_gap_summary.csv` to choose the next GL/merge
   target by adapter family and claim type.
 
@@ -191,7 +194,7 @@ Current properties:
 - no overfull boxes, undefined references, or citation warnings in the latest
   compile;
 - current artifact scale synchronized in the draft:
-  117,114 claim rows, 694 score rows, 255 coverage rows, 377 missingness rows,
-  54 manifest entries;
+  152,246 claim rows, 784 score rows, 279 coverage rows, 427 missingness rows,
+  56 manifest entries;
 - paper identity: official-scored benchmark contract, with pyKAN as the
   high-resolution case study and non-KAN rows as adapter-interface checks.

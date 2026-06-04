@@ -168,6 +168,22 @@ python scripts/build_full_benchmark_readiness_report.py
 generates `score_reports/full_benchmark_readiness.csv`; as of 2026-06-04 the
 report marks all P0 checks complete for the local alpha artifact.
 
+Great Lakes merge/refresh path:
+
+```bash
+python scripts/refresh_from_greatlakes_results.py --latest
+```
+
+or, if the results are already unpacked:
+
+```bash
+python scripts/refresh_from_greatlakes_results.py --no-unpack
+```
+
+This rebuilds released adapter outputs from `results/revision`, regenerates the
+official score/coverage/readiness reports, and writes a before/after refresh
+summary under `score_reports/greatlakes_refresh_report.csv`.
+
 ## P1: Needed for a Stronger Benchmark Paper
 
 ### 7. Expand and Stabilize Adapter Families
@@ -228,9 +244,10 @@ Potential GL jobs:
 
 Current data-dependent blocker:
 
-- `score_reports/coverage_gap_report.csv` reports 205 covered expected cells and
-  259 missing cells; the largest gaps are symbolic-library expression/status
-  rows and sparse-library support/pair rows.  Treat these as the first GL/data
+- `score_reports/coverage_gap_report.csv` reports 229 covered expected cells and
+  235 missing cells; the largest gaps are symbolic-library operator-recall rows
+  plus GA2M/sparse/symbolic/tree cells for correlated, semi-synthetic, and
+  scientific-expression task families.  Treat these as the first GL/data
   targets before expanding new experiments.
 - `score_reports/coverage_gap_summary.csv` groups these missing cells into
   adapter-family actions for GL/merge planning.

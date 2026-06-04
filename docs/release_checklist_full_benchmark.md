@@ -10,6 +10,7 @@ Run from a fresh clone or temporary checkout:
 ```bash
 python scripts/run_benchmark.py --quick
 python scripts/build_full_benchmark_readiness_report.py
+python scripts/refresh_from_greatlakes_results.py --no-unpack
 python scripts/check_benchmark_artifact.py --min-claim-rows 100000 --min-score-rows 600 --min-coverage-rows 200 --min-missingness-rows 200
 python examples/minimal_adapter.py --out examples/minimal_submission_generated.csv
 python scripts/score_submission.py examples/minimal_submission.csv --out-dir score_reports/example_minimal
@@ -49,6 +50,7 @@ Expected current scale:
 - `scripts/build_full_benchmark_readiness_report.py`
 - `scripts/score_submission.py`
 - `scripts/run_benchmark.py`
+- `scripts/refresh_from_greatlakes_results.py`
 - `scripts/build_typed_dashboard.py`
 - `scripts/build_claimtransfer_release_bundle.sh`
 - `scripts/check_release_bundle.sh`

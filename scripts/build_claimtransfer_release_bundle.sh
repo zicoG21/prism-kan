@@ -88,6 +88,7 @@ collect_official_docs() {
     scripts/check_release_overlay_checkout.sh \
     scripts/print_artifact_env.py \
     scripts/build_claimtransfer_release_bundle.sh \
+    scripts/refresh_from_greatlakes_results.py \
     examples/minimal_adapter.py \
     examples/minimal_submission_metadata.json
   do

@@ -35,6 +35,30 @@ FORMULA_META: dict[str, dict[str, Any]] = {
     "formula_log_product": {"family": "log_product", "support": [0, 1, 2], "pairs": [(0, 1)], "endpoints": [0, 1]},
 }
 
+SEMISYNTH_META: dict[str, dict[str, Any]] = {
+    "breast_cancer": {
+        "family": "semi_breast_cancer",
+        "task_id": "semi_breast_cancer_core",
+        "support": [0, 1, 2, 3],
+        "pairs": [(2, 3)],
+        "endpoints": [2, 3],
+    },
+    "diabetes": {
+        "family": "semi_diabetes",
+        "task_id": "semi_diabetes_core",
+        "support": [0, 1, 2, 3],
+        "pairs": [(2, 3)],
+        "endpoints": [2, 3],
+    },
+    "wine": {
+        "family": "semi_wine",
+        "task_id": "semi_wine_core",
+        "support": [0, 1, 2, 3],
+        "pairs": [(2, 3)],
+        "endpoints": [2, 3],
+    },
+}
+
 
 def parse_obj(value: object, default: Any = None) -> Any:
     if value is None or (isinstance(value, float) and pd.isna(value)):
@@ -46,6 +70,39 @@ def parse_obj(value: object, default: Any = None) -> Any:
         return ast.literal_eval(text)
     except Exception:
         return default if default is not None else text
+
+
+def as_float(value: object) -> float:
+    try:
+        if value == "":
+            return float("nan")
+        return float(value)
+    except Exception:
+        return float("nan")
+
+
+def flatten_ints(value: object) -> set[int]:
+    parsed = parse_obj(value, default=None)
+    out: set[int] = set()
+    if parsed is None:
+        return out
+    if isinstance(parsed, dict):
+        parsed = parsed.values()
+    if isinstance(parsed, (list, tuple, set)):
+        for item in parsed:
+            if isinstance(item, (list, tuple, set)):
+                out.update(flatten_ints(list(item)))
+            else:
+                try:
+                    out.add(int(item))
+                except Exception:
+                    pass
+    else:
+        try:
+            out.add(int(parsed))
+        except Exception:
+            pass
+    return out
 
 
 def norm_pair(pair: Any) -> tuple[int, int] | None:
@@ -171,6 +228,36 @@ def convert_cross_method(path: Path, rows: list[dict[str, Any]]) -> None:
         add(rows, **common, evidence_object="endpoint_selection", claim_type="endpoints", target=target_str(meta.get("endpoints", [])), scorer=method, predicate="binary_true", raw_value=r.get("endpoint_success", ""))
         budget = r.get("pair_budget", len(meta.get("pairs", [])) or 1)
         add(rows, **common, evidence_object=str(r.get("evidence_object", "pair_scores")), claim_type="pair", target=target_str(meta.get("pairs", [])), scorer=method, predicate="rank_at_budget", budget=budget, rank=r.get("true_pair_rank_worst", r.get("true_pair_rank_best", "")), margin=r.get("true_pair_margin_min", ""))
+        if method == "symbolic_lasso":
+            has_symbolic_terms = bool(flatten_ints(r.get("selected_support", ""))) or bool(parse_obj(r.get("selected_pairs", ""), []))
+            complexity = as_float(r.get("num_symbolic_main_features", "")) + as_float(
+                r.get("num_symbolic_pair_features", "")
+            )
+            add(
+                rows,
+                **common,
+                evidence_object=str(r.get("evidence_object", "fixed_symbolic_library")),
+                claim_type="symbolic_status",
+                target="library_expression",
+                scorer=method,
+                predicate="binary_true",
+                raw_value=float(has_symbolic_terms),
+                selected_set=r.get("selected_support", ""),
+                candidate_set=r.get("selected_pairs", ""),
+            )
+            add(
+                rows,
+                **common,
+                evidence_object=str(r.get("evidence_object", "fixed_symbolic_library")),
+                claim_type="symbolic_complexity",
+                target="max_complexity",
+                scorer=method,
+                predicate="complexity_le",
+                threshold=12,
+                raw_value=complexity,
+                selected_set=r.get("selected_support", ""),
+                candidate_set=r.get("selected_pairs", ""),
+            )
 
 
 def convert_treegate(path: Path, rows: list[dict[str, Any]]) -> None:
@@ -255,6 +342,148 @@ def convert_epim_pairverify(path: Path, rows: list[dict[str, Any]]) -> None:
         add(rows, **common, evidence_object="pairverify_probe", claim_type="pair", target=target_str(pairs), scorer="candidate_functional_anova_oracle", predicate="binary_true", budget=q, raw_value=r.get("verified_top_is_true_pair", ""), rank=r.get("verified_true_pair_rank", ""), margin=r.get("verified_true_minus_max_candidate_false", ""), candidate_set=r.get("epim_top_pairs", ""))
 
 
+def convert_semisynthetic(path: Path, rows: list[dict[str, Any]]) -> None:
+    df = pd.read_csv(path)
+    for _, r in df.iterrows():
+        dataset = str(r.get("dataset", "")).strip()
+        meta = SEMISYNTH_META.get(dataset)
+        if meta is None:
+            continue
+        method = str(r.get("method", "semisynthetic_screen"))
+        common = {
+            "task_id": meta["task_id"],
+            "task_family": meta["family"],
+            "adapter": f"pyKAN-semisynthetic-{method}",
+            "adapter_family": "pyKAN",
+            "source_kind": "semisynthetic_covariate_audit",
+            "source_file": str(path),
+            "seed": int(r["outer_seed"]),
+            "protocol": f"{dataset}:{method}:top{r.get('top_m', '')}",
+            "runtime_seconds": r.get("runtime_sec", ""),
+        }
+        pairs = meta["pairs"]
+        endpoints = meta["endpoints"]
+        support = meta["support"]
+        add(
+            rows,
+            **common,
+            evidence_object="prediction",
+            claim_type="prediction",
+            target="low_mse",
+            scorer="mse",
+            predicate="mse_lt",
+            threshold=0.05,
+            raw_value=r.get("probe_test_mse_min", r.get("probe_test_mse_mean", "")),
+        )
+        add(
+            rows,
+            **common,
+            evidence_object="semisynthetic_screen",
+            claim_type="support",
+            target=target_str(support),
+            scorer=method,
+            predicate="contains_all",
+            selected_set=r.get("selected_screen_features", r.get("top_selection_variables", "")),
+        )
+        add(
+            rows,
+            **common,
+            evidence_object="semisynthetic_screen",
+            claim_type="endpoints",
+            target=target_str(endpoints),
+            scorer=method,
+            predicate="binary_true",
+            raw_value=r.get("screen_contains_all_interaction_endpoints", ""),
+            selected_set=r.get("top_selection_variables", ""),
+        )
+        add(
+            rows,
+            **common,
+            evidence_object="residual_pair_screen",
+            claim_type="pair",
+            target=target_str(pairs),
+            scorer="residual_functional_anova",
+            predicate="rank_at_budget",
+            budget=len(pairs) or 1,
+            rank=r.get("residual_true_pair_rank_worst", ""),
+            margin=(
+                as_float(r.get("residual_true_pair_score_mean", ""))
+                - as_float(r.get("residual_max_false_pair_score", ""))
+                if "residual_true_pair_score_mean" in r and "residual_max_false_pair_score" in r
+                else ""
+            ),
+        )
+
+
+def convert_prune_symbolic(path: Path, rows: list[dict[str, Any]]) -> None:
+    df = pd.read_csv(path)
+    for _, r in df.iterrows():
+        function = str(r["function"])
+        meta = FORMULA_META.get(function, {})
+        if not meta:
+            continue
+        tid = task_id(function, r)
+        workflow = str(r.get("workflow", "prune"))
+        threshold = r.get("threshold", "")
+        common = {
+            "task_id": tid,
+            "task_family": meta.get("family", function),
+            "adapter": "pyKAN-prune-symbolic",
+            "adapter_family": "pyKAN",
+            "source_kind": "pykan_prune_symbolic",
+            "source_file": str(path),
+            "seed": int(r["seed"]),
+            "protocol": f"{workflow}:threshold={threshold}",
+        }
+        pairs = meta.get("pairs", [])
+        endpoints = sorted({v for p in pairs for v in p}) or meta.get("endpoints", [])
+        support = meta.get("support", [])
+        add(
+            rows,
+            **common,
+            evidence_object="prediction",
+            claim_type="prediction",
+            target="low_mse",
+            scorer="mse",
+            predicate="mse_lt",
+            threshold=0.05,
+            raw_value=r.get("full_mse", ""),
+        )
+        add(
+            rows,
+            **common,
+            evidence_object=workflow,
+            claim_type="support",
+            target=target_str(support),
+            scorer="prune_input",
+            predicate="contains_all",
+            selected_set=r.get("selected_inputs", ""),
+        )
+        add(
+            rows,
+            **common,
+            evidence_object=workflow,
+            claim_type="endpoints",
+            target=target_str(endpoints),
+            scorer="prune_input",
+            predicate="binary_true",
+            raw_value=r.get("endpoint_contains", ""),
+            rank=r.get("endpoint_rank_feature", ""),
+            selected_set=r.get("selected_inputs", ""),
+        )
+        add(
+            rows,
+            **common,
+            evidence_object="symbolic",
+            claim_type="symbolic_status",
+            target="syntactic_expression",
+            scorer="pyKAN_symbolic",
+            predicate="binary_true",
+            raw_value=r.get("symbolic_formula_ok", ""),
+            selected_set=r.get("selected_inputs", ""),
+        )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--results-root", default="results/revision")
@@ -280,6 +509,8 @@ def main() -> None:
         ("**/treegate_pair_screen_detail.csv", convert_treegate),
         ("**/pair_scorer_claim_grammar_detail.csv", convert_scorergram),
         ("**/epim_pairverify_detail.csv", convert_epim_pairverify),
+        ("**/semisynthetic_covariate_audit_detail.csv", convert_semisynthetic),
+        ("**/pykan_prune_symbolic_detail.csv", convert_prune_symbolic),
     ]
     for pattern, converter in patterns:
         for path in sorted(root.glob(pattern)):
