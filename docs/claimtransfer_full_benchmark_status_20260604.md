@@ -113,6 +113,9 @@ Workshop-paper status:
 Complete for an alpha benchmark artifact:
 
 - task-card schema and validation;
+- task-card governance checks for unique claim ids, recognized claim grammar,
+  scorer/predicate declarations, support/endpoint/pair target consistency, and
+  threshold/budget validity;
 - raw adapter outputs separated from official claim records;
 - official pass/fail recomputed by scorer script;
 - official claim-record schema validation after scoring;

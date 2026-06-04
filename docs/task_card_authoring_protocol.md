@@ -61,6 +61,17 @@ Validate cards with:
 python scripts/validate_task_cards.py
 ```
 
+The validator enforces:
+
+- unique `task_id` values inside each registry;
+- unique `claim_id` values inside each registry;
+- recognized claim buckets and claim types;
+- recognized official scorers and predicates;
+- support, endpoint, and pair targets inside the declared dimension;
+- endpoint and pair targets as subsets of the declared support;
+- numeric thresholds for thresholded symbolic/expression predicates;
+- positive integer budgets for `top_m_contains_all`.
+
 ## Example Interpretations
 
 - Product card: declare support, endpoints, and one product-like pair claim.
