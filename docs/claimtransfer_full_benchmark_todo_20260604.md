@@ -230,6 +230,22 @@ benchmark should add expression-level optional claims:
 Keep these as separate symbolic claim types, not replacements for support/pair
 claims.
 
+Current implemented scaffold:
+
+- task-card templates for expression-level symbolic claims;
+- adapter-output schema fields for expression, operators, complexity,
+  coefficient error, extrapolation error, and unit consistency;
+- official predicates for operator recall, expression complexity, coefficient
+  error, extrapolation MSE, and exact expression matching;
+- minimal adapter rows exercising operator-recall and complexity claims.
+
+Still needed for a mature symbolic track:
+
+- real symbolic-regression adapters beyond the minimal example;
+- expression-tree equivalence and simplification-aware matching;
+- benchmark cards where expression-level claims are a primary track rather than
+  a template/smoke test.
+
 ### 11. Add Task-Authoring Rules and Governance
 
 - Write rules for:

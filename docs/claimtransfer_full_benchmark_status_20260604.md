@@ -78,7 +78,8 @@ Implemented as benchmark infrastructure:
 - scorer families documented;
 - scorer sensitivity represented as scorer-indexed records;
 - cross-method rows integrated into released adapter outputs when present;
-- optional symbolic expression claim predicates added;
+- optional symbolic expression claim predicates implemented in the official
+  scorer and exercised by the minimal adapter;
 - task authoring and versioning rules documented.
 - adapter fairness and compute-budget policy documented;
 - hidden/offline evaluation protocol documented;
