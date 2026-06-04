@@ -1,0 +1,46 @@
+{
+  "release_id": "claimtransfer_full_alpha_20260604",
+  "release_stage": "alpha",
+  "schema_version": "claimtransfer_benchmark_release_v1",
+  "task_registries": [
+    {
+      "path": "task_cards/claimtransfer_v0_public.json",
+      "version": "claimtransfer_v0_public",
+      "split": "public"
+    },
+    {
+      "path": "task_cards/claimtransfer_v0_hidden_template.json",
+      "version": "claimtransfer_v0_hidden_template",
+      "split": "hidden_template"
+    },
+    {
+      "path": "task_cards/claimtransfer_v1_scientific_templates.json",
+      "version": "claimtransfer_v1_scientific_templates",
+      "split": "hidden_template"
+    }
+  ],
+  "schemas": [
+    "task_cards/task_card_schema.json",
+    "adapters/adapter_output_schema.json",
+    "adapters/adapter_family_registry.json",
+    "adapters/submission_metadata_schema.json",
+    "claim_records/claim_record_schema.json"
+  ],
+  "official_validators": [
+    "scripts/validate_task_cards.py",
+    "scripts/validate_adapter_registry.py",
+    "scripts/validate_adapter_outputs.py",
+    "scripts/validate_claim_records.py",
+    "scripts/validate_score_reports.py",
+    "scripts/validate_submission_metadata.py",
+    "scripts/validate_hidden_bundle.py"
+  ],
+  "official_reports": [
+    "claim_records/released_claim_records.csv",
+    "score_reports/score_report.csv",
+    "score_reports/coverage_table.csv",
+    "score_reports/coverage_gap_report.csv",
+    "score_reports/missingness_report.csv",
+    "score_reports/benchmark_manifest.csv"
+  ]
+}

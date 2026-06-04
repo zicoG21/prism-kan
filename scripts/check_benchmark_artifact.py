@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED_FILES = [
     "task_cards/task_card_schema.json",
+    "benchmark_release.json",
     "task_cards/claimtransfer_v0_public.json",
     "task_cards/claimtransfer_v0_hidden_template.json",
     "task_cards/claimtransfer_v1_scientific_templates.json",
@@ -24,6 +25,7 @@ REQUIRED_FILES = [
     "adapters/submission_metadata_schema.json",
     "claim_records/claim_record_schema.json",
     "scripts/validate_task_cards.py",
+    "scripts/validate_release_contract.py",
     "scripts/validate_adapter_registry.py",
     "scripts/validate_adapter_outputs.py",
     "scripts/validate_claim_records.py",
@@ -39,6 +41,7 @@ REQUIRED_FILES = [
     "scripts/build_hidden_private_bundle.py",
     "scripts/check_release_bundle.sh",
     "score_reports/task_card_validation.csv",
+    "score_reports/release_contract_validation.csv",
     "score_reports/adapter_family_validation.csv",
     "score_reports/adapter_output_validation.csv",
     "score_reports/claim_record_validation.csv",
@@ -70,6 +73,7 @@ def main() -> None:
 
     checks = {
         "task_card_validation": csv_rows(ROOT / "score_reports/task_card_validation.csv"),
+        "release_contract_validation": csv_rows(ROOT / "score_reports/release_contract_validation.csv"),
         "adapter_family_validation": csv_rows(ROOT / "score_reports/adapter_family_validation.csv"),
         "adapter_output_validation": csv_rows(ROOT / "score_reports/adapter_output_validation.csv"),
         "claim_record_validation": csv_rows(ROOT / "score_reports/claim_record_validation.csv"),

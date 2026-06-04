@@ -4,6 +4,7 @@ Updated: 2026-06-04
 
 ## Completed Core Contract
 
+- Release contract: `benchmark_release.json`
 - Task-card schema: `task_cards/task_card_schema.json`
 - Public registry: `task_cards/claimtransfer_v0_public.json`
 - Hidden-template registry: `task_cards/claimtransfer_v0_hidden_template.json`
@@ -32,6 +33,7 @@ Updated: 2026-06-04
   `scripts/check_release_overlay_checkout.sh`
 - Hidden/private bundle generator: `scripts/build_hidden_private_bundle.py`
 - Hidden/private leakage validator: `scripts/validate_hidden_bundle.py`
+- Release-contract validator: `scripts/validate_release_contract.py`
 - Benchmark paper draft: `manuscripts/foundation_benchmark_dev/main.tex`
 
 ## Completed Verification
@@ -39,6 +41,7 @@ Updated: 2026-06-04
 The following commands were run successfully:
 
 ```bash
+python3 scripts/validate_release_contract.py
 python3 scripts/validate_task_cards.py
 python3 scripts/validate_adapter_registry.py
 python3 scripts/validate_submission_metadata.py examples/minimal_submission_metadata.json
@@ -62,6 +65,7 @@ bash scripts/check_release_overlay_checkout.sh
 Current generated scale:
 
 - 21 validated task cards/templates.
+- Release-contract validation table generated from the frozen alpha contract: 33 checks.
 - 6 validated adapter families.
 - Raw adapter-output validation table generated from the schema: 12 required fields checked.
 - 117,114 normalized adapter-output rows.
@@ -75,7 +79,7 @@ Current generated scale:
   families: 464 expected cells, 205 covered and 259 missing.
 - 377 missingness-report rows.
 - Artifact manifest generated under `score_reports/benchmark_manifest.csv`
-  with 49 official contract and report entries.
+  with 50 official contract and report entries.
 
 ## P0 Status
 
@@ -167,6 +171,6 @@ Current properties:
   compile;
 - current artifact scale synchronized in the draft:
   117,114 claim rows, 694 score rows, 255 coverage rows, 377 missingness rows,
-  49 manifest entries;
+  50 manifest entries;
 - paper identity: official-scored benchmark contract, with pyKAN as the
   high-resolution case study and non-KAN rows as adapter-interface checks.

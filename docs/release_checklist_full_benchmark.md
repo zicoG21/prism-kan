@@ -28,11 +28,13 @@ Expected current scale:
 ## Files That Should Be Versioned
 
 - `task_cards/*.json`
+- `benchmark_release.json`
 - `adapters/adapter_output_schema.json`
 - `adapters/adapter_family_registry.json`
 - `adapters/submission_metadata_schema.json`
 - `claim_records/claim_record_schema.json`
 - `claim_records/example_claim_record.csv`
+- `scripts/validate_release_contract.py`
 - `scripts/validate_adapter_registry.py`
 - `scripts/validate_adapter_outputs.py`
 - `scripts/validate_claim_records.py`

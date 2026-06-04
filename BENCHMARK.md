@@ -46,6 +46,7 @@ bash scripts/check_release_overlay_checkout.sh
 
 ## Core Contract
 
+- Release contract: `benchmark_release.json`
 - Task-card schema: `task_cards/task_card_schema.json`
 - Public diagnostic registry: `task_cards/claimtransfer_v0_public.json`
 - Hidden-template registry: `task_cards/claimtransfer_v0_hidden_template.json`
@@ -58,6 +59,7 @@ bash scripts/check_release_overlay_checkout.sh
 ## Official Scoring
 
 ```bash
+python scripts/validate_release_contract.py
 python scripts/validate_adapter_registry.py
 python scripts/validate_submission_metadata.py examples/minimal_submission_metadata.json
 python scripts/validate_adapter_outputs.py claim_records/released_adapter_outputs.csv

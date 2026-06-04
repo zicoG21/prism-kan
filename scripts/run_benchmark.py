@@ -87,6 +87,7 @@ def main() -> None:
 
     py = sys.executable
     run([py, "scripts/print_artifact_env.py"])
+    run([py, "scripts/validate_release_contract.py"])
     run([py, "scripts/validate_task_cards.py"])
     run([py, "scripts/validate_adapter_registry.py"])
     released_outputs = ROOT / "claim_records" / "released_adapter_outputs.csv"

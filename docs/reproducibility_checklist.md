@@ -18,6 +18,8 @@ python scripts/run_benchmark.py --quick
 Expected output includes:
 
 ```text
+Validated release contract: benchmark_release.json
+checks: 33
 Validated 21 task cards.
 Validated adapter outputs: claim_records/released_adapter_outputs.csv
 rows: 117114
@@ -31,7 +33,7 @@ Validated claim records: claim_records/released_claim_records.csv
 required columns: 9
 Validated score reports.
 checks: 36
-Wrote .../score_reports/benchmark_manifest.csv (49 files)
+Wrote .../score_reports/benchmark_manifest.csv (50 files)
 ClaimTransfer benchmark artifact check passed.
 ```
 

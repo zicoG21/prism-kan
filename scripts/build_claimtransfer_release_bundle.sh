@@ -62,9 +62,11 @@ collect_official_docs() {
   collect_official_docs
   for f in \
     BENCHMARK.md \
+    benchmark_release.json \
     README_WORKSHOP.md \
     requirements.txt \
     scripts/run_benchmark.py \
+    scripts/validate_release_contract.py \
     scripts/validate_task_cards.py \
     scripts/validate_adapter_registry.py \
     scripts/validate_adapter_outputs.py \
