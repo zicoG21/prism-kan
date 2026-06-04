@@ -27,7 +27,7 @@ Expected current scale:
 - at least 200 coverage rows.
 - at least 200 coverage-gap rows.
 - at least 200 missingness-report rows.
-- 19 readiness rows spanning P0, P1, and P2.
+- 20 readiness rows spanning P0, P1, and P2.
 - 9 release-candidate gate rows separating alpha packaging, data coverage
   blockers, and future public tag/server work.
 

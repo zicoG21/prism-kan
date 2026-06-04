@@ -99,7 +99,7 @@ Current generated scale:
   missing.
 - 469 missingness-report rows.
 - Full benchmark readiness report generated under
-  `score_reports/full_benchmark_readiness.csv` with 19 P0/P1/P2 checks:
+  `score_reports/full_benchmark_readiness.csv` with 20 P0/P1/P2 checks:
   P0 is complete for the alpha artifact; P1 has one data-dependent coverage
   blocker; P2 offline scaffolding is complete with public release/tag marked as
   future work.
@@ -112,7 +112,7 @@ Current generated scale:
   `score_reports/coverage_gap_action_plan.csv`; it maps missing cells to the
   existing GL gap-fill scripts, pyKAN merge steps, or optional symbolic tracks.
 - Artifact manifest generated under `score_reports/benchmark_manifest.csv`
-  with 59 official contract and report entries.
+  with 61 official contract and report entries.
 
 Workshop-paper status:
 

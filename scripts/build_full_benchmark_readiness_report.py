@@ -84,6 +84,24 @@ def coverage_gap_summary(path: Path) -> tuple[int, int, str]:
     return covered, missing, summary
 
 
+def coverage_action_plan_summary(path: Path, missing_cells: int) -> tuple[bool, str]:
+    if not path.exists():
+        return False, "coverage gap action plan missing"
+    df = pd.read_csv(path)
+    required = {"action_id", "priority", "targeted_missing_cells", "command"}
+    missing_cols = sorted(required - set(df.columns))
+    if missing_cols:
+        return False, f"coverage gap action plan missing columns: {', '.join(missing_cols)}"
+    targeted = int(df["targeted_missing_cells"].fillna(0).sum())
+    unassigned_p1 = int(((df["action_id"] == "unassigned_gap") & (df["priority"] == "P1")).sum())
+    status = targeted == int(missing_cells) and unassigned_p1 == 0
+    evidence = (
+        f"{len(df)} action rows target {targeted}/{missing_cells} missing cells; "
+        f"P1 unassigned_gap rows={unassigned_p1}"
+    )
+    return status, evidence
+
+
 def unique_values(path: Path, column: str) -> set[str]:
     if not path.exists():
         return set()
@@ -105,6 +123,9 @@ def build_checks() -> list[Check]:
     adapters = unique_values(ROOT / "score_reports/score_report.csv", "adapter_family")
     covered_cells, missing_cells, missing_summary = coverage_gap_summary(
         ROOT / "score_reports/coverage_gap_report.csv"
+    )
+    action_plan_ok, action_plan_evidence = coverage_action_plan_summary(
+        ROOT / "score_reports/coverage_gap_action_plan.csv", missing_cells
     )
 
     checks: list[Check] = []
@@ -175,6 +196,13 @@ def build_checks() -> list[Check]:
                 ok_or_blocked(missing_cells == 0, "blocked_on_data"),
                 f"{covered_cells} covered expected cells; {missing_cells} missing. Largest gaps: {missing_summary}",
                 "use score_reports/coverage_gap_report.csv to prioritize GL jobs; rerun quick path after merge",
+            ),
+            Check(
+                "P1",
+                "coverage gap action plan",
+                ok_or_blocked(action_plan_ok, "blocked"),
+                action_plan_evidence,
+                "rerun scripts/build_coverage_gap_action_plan.py and add action rules for any unassigned P1 gaps",
             ),
             Check(
                 "P1",
