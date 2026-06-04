@@ -78,6 +78,16 @@ Use hidden/offline mode for private evaluation:
 python scripts/run_benchmark.py --mode hidden --hidden-input path/to/private_submission.csv
 ```
 
+Generate a maintainer-side private hidden bundle:
+
+```bash
+python scripts/build_hidden_private_bundle.py
+```
+
+The participant view withholds formulas, labels, pair targets, and private seed
+blocks; the private scoring registry and seed manifest should stay outside the
+public repository until evaluation closes.
+
 ## Reporting Policy
 
 ClaimTransfer does not merge prediction, support, endpoint, pair, pruning, and

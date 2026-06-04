@@ -72,6 +72,7 @@ collect_official_docs() {
     scripts/build_typed_dashboard.py \
     scripts/check_benchmark_artifact.py \
     scripts/score_submission.py \
+    scripts/build_hidden_private_bundle.py \
     scripts/print_artifact_env.py \
     scripts/build_claimtransfer_release_bundle.sh
   do
