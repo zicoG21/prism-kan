@@ -248,11 +248,12 @@ Potential GL jobs:
 
 Current data-dependent blocker:
 
-- `score_reports/coverage_gap_report.csv` reports 241 covered expected cells and
-  223 missing cells; the largest gaps are symbolic-library operator-recall rows
-  plus GA2M/sparse/symbolic/tree cells for correlated, semi-synthetic, and
-  scientific-expression task families.  Treat these as the first GL/data
-  targets before expanding new experiments.
+- `score_reports/coverage_gap_report.csv` reports 211 covered expected cells and
+  141 missing cells under the claim-grammar-aware expected-cell grid.  The
+  largest gaps are GA2M/sparse/symbolic/tree cells for correlated,
+  semi-synthetic, scientific-expression, exp-product, and log-product task
+  families.  Treat these as the first GL/data targets before expanding new
+  experiments.
 - `score_reports/coverage_gap_summary.csv` groups these missing cells into
   adapter-family actions for GL/merge planning.
 

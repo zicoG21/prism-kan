@@ -2,9 +2,16 @@
 """Build a ClaimTransfer coverage-gap report.
 
 The ordinary coverage table reports observed rows.  This script adds the
-benchmark-planning view: for each canonical adapter family, public task family,
-and licensed claim type, it records whether the released outputs currently
-cover that cell.
+benchmark-planning view: for each canonical adapter family, task family, and
+legal claim type, it records whether the released outputs currently cover that
+cell.
+
+Expected cells are claim-grammar aware by default.  A task family is expected
+to cover only the structural claim types declared by its task card, plus the
+prediction adequacy gate.  Candidate-pair rows are expected only for adapters
+that expose candidate pairs on task families with legal pair claims.  This keeps
+the benchmark contract from silently turning optional expression-level claims
+into requirements for every support/pair diagnostic card.
 """
 
 from __future__ import annotations
@@ -32,8 +39,30 @@ ADAPTER_FAMILY_ALIASES = {
 }
 
 
-def load_public_task_families() -> list[str]:
-    families: set[str] = set()
+def claim_types_from_card(card: dict[str, Any]) -> set[str]:
+    claim_types: set[str] = {"prediction"}
+    spec = card.get("claim_specification", {})
+    if not isinstance(spec, dict):
+        return claim_types
+    for value in spec.values():
+        claims: list[Any]
+        if isinstance(value, list):
+            claims = value
+        elif isinstance(value, dict):
+            claims = [value]
+        else:
+            continue
+        for claim in claims:
+            if not isinstance(claim, dict):
+                continue
+            claim_type = str(claim.get("claim_type", "")).strip()
+            if claim_type:
+                claim_types.add(claim_type)
+    return claim_types
+
+
+def load_public_task_family_claim_types() -> dict[str, set[str]]:
+    families: dict[str, set[str]] = {}
     for name in ["claimtransfer_v0_public.json", "claimtransfer_v1_scientific_templates.json"]:
         path = ROOT / "task_cards" / name
         if not path.exists():
@@ -42,8 +71,8 @@ def load_public_task_families() -> list[str]:
         for card in data.get("cards", []):
             family = str(card.get("task_family", "")).strip()
             if family:
-                families.add(family)
-    return sorted(families)
+                families.setdefault(family, set()).update(claim_types_from_card(card))
+    return families
 
 
 def load_adapter_contracts() -> list[dict[str, Any]]:
@@ -78,6 +107,15 @@ def main() -> None:
     parser.add_argument("--coverage", default="score_reports/coverage_table.csv")
     parser.add_argument("--out", default="score_reports/coverage_gap_report.csv")
     parser.add_argument("--min-trials", type=int, default=1)
+    parser.add_argument(
+        "--expectation-mode",
+        choices=["claim_grammar", "registry_product"],
+        default="claim_grammar",
+        help=(
+            "claim_grammar expects only task-card legal claim types; "
+            "registry_product uses the legacy adapter x task x licensed-claim grid."
+        ),
+    )
     args = parser.parse_args()
 
     coverage_path = ROOT / args.coverage
@@ -107,11 +145,18 @@ def main() -> None:
     }
 
     rows = []
-    task_families = load_public_task_families()
+    task_family_claim_types = load_public_task_family_claim_types()
     for contract in load_adapter_contracts():
         adapter_family = str(contract.get("adapter_family", ""))
-        for task_family in task_families:
-            for claim_type in contract.get("licensed_claim_types", []):
+        licensed = {str(c) for c in contract.get("licensed_claim_types", [])}
+        for task_family, legal_claims in sorted(task_family_claim_types.items()):
+            if args.expectation_mode == "registry_product":
+                expected_claims = set(licensed)
+            else:
+                expected_claims = set(legal_claims) & licensed
+                if "pair" in legal_claims and "candidate_pair" in licensed:
+                    expected_claims.add("candidate_pair")
+            for claim_type in sorted(expected_claims):
                 key = (adapter_family, task_family, str(claim_type))
                 got = observed.get(key)
                 if got is None:

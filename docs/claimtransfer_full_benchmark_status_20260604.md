@@ -88,8 +88,9 @@ Current generated scale:
 - 874 aggregate score-report rows.
 - 291 coverage rows.
 - Score/coverage/gap/missingness report validation generated from reporting-policy checks: 36 checks.
-- Coverage-gap report generated from adapter-family contracts and public task
-  families: 464 expected cells, 241 covered and 223 missing.
+- Claim-grammar-aware coverage-gap report generated from adapter-family
+  contracts and public task families: 352 expected cells, 211 covered and 141
+  missing.
 - 469 missingness-report rows.
 - Full benchmark readiness report generated under
   `score_reports/full_benchmark_readiness.csv` with 18 P0/P1/P2 checks:
@@ -154,10 +155,12 @@ Still data-dependent:
 - rerun `scripts/run_benchmark.py --quick` after each merge.
 - confirm Hessian and TreeGate scorer rows after the remaining GL scorergram
   tasks finish.
-- current readiness blocker: 241 covered expected cells and 223 missing cells
-  in `score_reports/coverage_gap_report.csv`; largest gaps are symbolic-library
-  operator-recall rows plus GA2M/sparse/symbolic/tree cells on correlated,
-  semi-synthetic, and scientific-expression task families.
+- current readiness blocker: 211 covered expected cells and 141 missing cells
+  in `score_reports/coverage_gap_report.csv`; largest gaps are
+  GA2M/sparse/symbolic/tree cells on correlated, semi-synthetic,
+  scientific-expression, exp-product, and log-product task families.  Optional
+  expression-level claims are expected only where the task-card grammar declares
+  them.
 - use `score_reports/coverage_gap_summary.csv` to choose the next GL/merge
   target by adapter family and claim type.
 - targeted gap-fill scripts now exist for missing public task families:
