@@ -26,6 +26,11 @@ set -euo pipefail
 #
 #   A40_BATCH_SIZE=24576 A40_PAIR_CHUNK_SIZE=2048 \
 #     bash scripts/submit_claimtransfer_full_benchmark_gl.sh
+#
+# For small pyKAN jobs on A40, packed mode usually uses the device better:
+#
+#   USE_A40_PACKED=1 SUBMIT_GPU=0 SUBMIT_STANDARD=0 \
+#     bash scripts/submit_claimtransfer_full_benchmark_gl.sh
 
 cd "${SLURM_SUBMIT_DIR:-$PWD}"
 mkdir -p logs/greatlakes
@@ -37,11 +42,12 @@ SUBMIT_GPU="${SUBMIT_GPU:-1}"
 SUBMIT_SPGPU="${SUBMIT_SPGPU:-1}"
 SUBMIT_STANDARD="${SUBMIT_STANDARD:-1}"
 SUBMIT_SCORE_REFRESH="${SUBMIT_SCORE_REFRESH:-1}"
+USE_A40_PACKED="${USE_A40_PACKED:-0}"
 
 echo "[$(date -Is)] ClaimTransfer full benchmark submit"
 echo "[$(date -Is)] account=${ACCOUNT}"
 echo "[$(date -Is)] python=${PY}"
-echo "[$(date -Is)] submit_gpu=${SUBMIT_GPU} submit_spgpu=${SUBMIT_SPGPU} submit_standard=${SUBMIT_STANDARD} submit_score_refresh=${SUBMIT_SCORE_REFRESH}"
+echo "[$(date -Is)] submit_gpu=${SUBMIT_GPU} submit_spgpu=${SUBMIT_SPGPU} submit_standard=${SUBMIT_STANDARD} submit_score_refresh=${SUBMIT_SCORE_REFRESH} use_a40_packed=${USE_A40_PACKED}"
 
 submit() {
   echo
@@ -59,9 +65,15 @@ fi
 if [[ "${SUBMIT_SPGPU}" == "1" ]]; then
   # A40/spgpu fresh private-seed claim cards.  Command-line partition overrides
   # the script's default gpu partition.
-  submit sbatch --account="${ACCOUNT}" --partition=spgpu --array=0-11 \
-    --export=ALL,PYTHON_BIN="${PY}",SEED_BASE="${A40_SEED_BASE:-2300}",SEED_COUNT="${A40_SEED_COUNT:-12}",LABEL_SUFFIX="${A40_LABEL_SUFFIX:-s2300_2311_a40}",BATCH_SIZE="${A40_BATCH_SIZE:-16384}",PAIR_CHUNK_SIZE="${A40_PAIR_CHUNK_SIZE:-1500}" \
-    scripts/greatlakes_claimtransfer_hidden_claimcards_cuda.sbatch
+  if [[ "${USE_A40_PACKED}" == "1" ]]; then
+    submit sbatch --account="${ACCOUNT}" --array=0-11 \
+      --export=ALL,PYTHON_BIN="${PY}",SEED_BASE="${A40_SEED_BASE:-3000}",PACK_FACTOR="${A40_PACK_FACTOR:-4}",SEEDS_PER_LANE="${A40_SEEDS_PER_LANE:-4}",LABEL_SUFFIX="${A40_LABEL_SUFFIX:-s3000_pack4}",BATCH_SIZE="${A40_PACKED_BATCH_SIZE:-12288}",PAIR_CHUNK_SIZE="${A40_PACKED_PAIR_CHUNK_SIZE:-1000}" \
+      scripts/greatlakes_claimtransfer_hidden_claimcards_a40_packed.sbatch
+  else
+    submit sbatch --account="${ACCOUNT}" --partition=spgpu --array=0-11 \
+      --export=ALL,PYTHON_BIN="${PY}",SEED_BASE="${A40_SEED_BASE:-2300}",SEED_COUNT="${A40_SEED_COUNT:-12}",LABEL_SUFFIX="${A40_LABEL_SUFFIX:-s2300_2311_a40}",BATCH_SIZE="${A40_BATCH_SIZE:-16384}",PAIR_CHUNK_SIZE="${A40_PAIR_CHUNK_SIZE:-1500}" \
+      scripts/greatlakes_claimtransfer_hidden_claimcards_cuda.sbatch
+  fi
 
   # Scorer-indexed grammar with Hessian included.  This is slow but directly
   # addresses the "scorer arbitrary" benchmark concern.
