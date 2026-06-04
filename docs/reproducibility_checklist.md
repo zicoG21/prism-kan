@@ -22,18 +22,18 @@ Validated release contract: benchmark_release.json
 checks: 33
 Validated 21 task cards.
 Validated adapter outputs: claim_records/released_adapter_outputs.csv
-rows: 153398
+rows: 159514
 required columns: 12
-Wrote claim_records/released_claim_records.csv (153398 claim rows)
-Wrote score_reports/score_report.csv (874 aggregate rows)
+Wrote claim_records/released_claim_records.csv (159514 claim rows)
+Wrote score_reports/score_report.csv (875 aggregate rows)
 Wrote score_reports/coverage_table.csv (291 coverage rows)
 Wrote score_reports/coverage_gap_report.csv (352 expected cells)
-Wrote score_reports/missingness_report.csv (469 missingness rows)
+Wrote score_reports/missingness_report.csv (470 missingness rows)
 Validated claim records: claim_records/released_claim_records.csv
 required columns: 9
 Validated score reports.
 checks: 36
-Wrote .../score_reports/benchmark_manifest.csv (56 files)
+Wrote .../score_reports/benchmark_manifest.csv (61 files)
 ClaimTransfer benchmark artifact check passed.
 ```
 

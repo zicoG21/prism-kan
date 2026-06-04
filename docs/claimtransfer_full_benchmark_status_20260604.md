@@ -87,17 +87,17 @@ Current generated scale:
 - Release-contract validation table generated from the frozen alpha contract: 33 checks.
 - 6 validated adapter families.
 - Raw adapter-output validation table generated from the schema: 12 required fields checked.
-- 153,398 normalized adapter-output rows.
-- 153,398 official claim-record rows.
+- 159,514 normalized adapter-output rows.
+- 159,514 official claim-record rows.
 - Claim-record validation table generated from the schema: 9 required fields
   plus pass-value validity checked.
-- 874 aggregate score-report rows.
+- 875 aggregate score-report rows.
 - 291 coverage rows.
 - Score/coverage/gap/missingness report validation generated from reporting-policy checks: 36 checks.
 - Claim-grammar-aware coverage-gap report generated from adapter-family
   contracts and public task families: 352 expected cells, 211 covered and 141
   missing.
-- 469 missingness-report rows.
+- 470 missingness-report rows.
 - Full benchmark readiness report generated under
   `score_reports/full_benchmark_readiness.csv` with 20 P0/P1/P2 checks:
   P0 is complete for the alpha artifact; P1 has one data-dependent coverage
@@ -236,7 +236,7 @@ Current properties:
 - no overfull boxes, undefined references, or citation warnings in the latest
   compile;
 - current artifact scale synchronized in the draft:
-  153,398 claim rows, 874 score rows, 291 coverage rows, 469 missingness rows,
-  56 manifest entries;
+  159,514 claim rows, 875 score rows, 291 coverage rows, 470 missingness rows,
+  61 manifest entries;
 - paper identity: official-scored benchmark contract, with pyKAN as the
   high-resolution case study and non-KAN rows as adapter-interface checks.
