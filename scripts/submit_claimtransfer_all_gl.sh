@@ -21,7 +21,7 @@ set -euo pipefail
 #
 #   SUBMIT_JAABELL_GPU=0 bash scripts/submit_claimtransfer_all_gl.sh
 #   SUBMIT_ENGIN1_SPGPU=0 bash scripts/submit_claimtransfer_all_gl.sh
-#   SUBMIT_OPTIONAL=0 bash scripts/submit_claimtransfer_all_gl.sh
+#   SUBMIT_FRESH_SEEDS=1 SUBMIT_OPTIONAL=1 bash scripts/submit_claimtransfer_all_gl.sh
 #   SUBMIT_SCORE_REFRESH=0 bash scripts/submit_claimtransfer_all_gl.sh
 
 cd "${SLURM_SUBMIT_DIR:-$PWD}"
@@ -32,12 +32,13 @@ JAABELL_ACCOUNT="${JAABELL_ACCOUNT:-jaabell0}"
 ENGIN_ACCOUNT="${ENGIN_ACCOUNT:-engin1}"
 STANDARD_ACCOUNT="${STANDARD_ACCOUNT:-jaabell0}"
 
-SUBMIT_JAABELL_GPU="${SUBMIT_JAABELL_GPU:-1}"
-SUBMIT_JAABELL_SPGPU="${SUBMIT_JAABELL_SPGPU:-1}"
-SUBMIT_ENGIN_GPU="${SUBMIT_ENGIN_GPU:-1}"
-SUBMIT_ENGIN_SPGPU="${SUBMIT_ENGIN_SPGPU:-1}"
+SUBMIT_FRESH_SEEDS="${SUBMIT_FRESH_SEEDS:-0}"
+SUBMIT_JAABELL_GPU="${SUBMIT_JAABELL_GPU:-$SUBMIT_FRESH_SEEDS}"
+SUBMIT_JAABELL_SPGPU="${SUBMIT_JAABELL_SPGPU:-$SUBMIT_FRESH_SEEDS}"
+SUBMIT_ENGIN_GPU="${SUBMIT_ENGIN_GPU:-$SUBMIT_FRESH_SEEDS}"
+SUBMIT_ENGIN_SPGPU="${SUBMIT_ENGIN_SPGPU:-$SUBMIT_FRESH_SEEDS}"
 SUBMIT_STANDARD="${SUBMIT_STANDARD:-1}"
-SUBMIT_OPTIONAL="${SUBMIT_OPTIONAL:-1}"
+SUBMIT_OPTIONAL="${SUBMIT_OPTIONAL:-0}"
 SUBMIT_SCORE_REFRESH="${SUBMIT_SCORE_REFRESH:-1}"
 
 A40_BATCH_SIZE="${A40_BATCH_SIZE:-16384}"
@@ -46,7 +47,7 @@ A40_PAIR_CHUNK_SIZE="${A40_PAIR_CHUNK_SIZE:-1500}"
 echo "[$(date -Is)] ClaimTransfer all-GL submit"
 echo "[$(date -Is)] python=${PY}"
 echo "[$(date -Is)] jaabell=${JAABELL_ACCOUNT} engin=${ENGIN_ACCOUNT} standard=${STANDARD_ACCOUNT}"
-echo "[$(date -Is)] toggles: jaabell_gpu=${SUBMIT_JAABELL_GPU} jaabell_spgpu=${SUBMIT_JAABELL_SPGPU} engin_gpu=${SUBMIT_ENGIN_GPU} engin_spgpu=${SUBMIT_ENGIN_SPGPU} standard=${SUBMIT_STANDARD} optional=${SUBMIT_OPTIONAL} refresh=${SUBMIT_SCORE_REFRESH}"
+echo "[$(date -Is)] toggles: fresh_seeds=${SUBMIT_FRESH_SEEDS} jaabell_gpu=${SUBMIT_JAABELL_GPU} jaabell_spgpu=${SUBMIT_JAABELL_SPGPU} engin_gpu=${SUBMIT_ENGIN_GPU} engin_spgpu=${SUBMIT_ENGIN_SPGPU} standard=${SUBMIT_STANDARD} optional=${SUBMIT_OPTIONAL} refresh=${SUBMIT_SCORE_REFRESH}"
 
 JOB_IDS=()
 
