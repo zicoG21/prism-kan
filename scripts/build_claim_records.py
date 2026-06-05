@@ -217,16 +217,20 @@ def convert_stage_detail(path: Path, rows: list[dict[str, Any]]) -> None:
             "source_kind": "seed_aligned_stage_record",
             "source_file": str(path),
             "seed": int(r["seed"]),
-            "protocol": str(r.get("setting", "")),
+            "protocol": (
+                f"{r.get('setting', '')}:top_m={r.get('top_m', 4)}:"
+                f"prune={r.get('prune_threshold', '')}:refit_steps={r.get('refit_steps', '')}"
+            ),
         }
+        top_m = r.get("top_m", 4)
         pairs = norm_pairs(r.get("true_pair"), meta.get("pairs", []))
         support = parse_obj(r.get("true_variables"), meta.get("support", []))
         endpoints = sorted({v for p in pairs for v in p}) or meta.get("endpoints", [])
 
         add(rows, **common, evidence_object="prediction", claim_type="prediction", target="low_mse", scorer="mse", predicate="mse_lt", threshold=0.05, raw_value=r.get("test_mse", ""))
         add(rows, **common, evidence_object="full_function", claim_type="pair", target=target_str(pairs), scorer="functional_anova", predicate="rank1", rank=r.get("full_pair_rank", ""), margin=r.get("full_pair_margin", ""))
-        add(rows, **common, evidence_object="exposed_readout", claim_type="endpoints", target=target_str(endpoints), scorer="KAN-FE", predicate="top_m_contains_all", budget=4, rank=r.get("readout_worst_endpoint_rank", ""), margin=r.get("readout_endpoint_margin", ""))
-        add(rows, **common, evidence_object="selected_support", claim_type="support", target=target_str(support), scorer="KAN-FE", predicate="contains_all", selected_set=r.get("selected_support", ""))
+        add(rows, **common, evidence_object="exposed_readout", claim_type="endpoints", target=target_str(endpoints), scorer="KAN-FE", predicate="top_m_contains_all", budget=top_m, rank=r.get("readout_worst_endpoint_rank", ""), margin=r.get("readout_endpoint_margin", ""))
+        add(rows, **common, evidence_object="selected_support", claim_type="support", target=target_str(support), scorer="KAN-FE", predicate="contains_all", budget=top_m, selected_set=r.get("selected_support", ""))
         add(rows, **common, evidence_object="support_refit", claim_type="pair", target=target_str(pairs), scorer="functional_anova", predicate="rank1", rank=r.get("refit_pair_rank", ""), margin=r.get("refit_pair_margin", ""))
         if "prune_endpoint_contains" in r:
             add(rows, **common, evidence_object="pruning", claim_type="endpoints", target=target_str(endpoints), scorer="prune_input", predicate="binary_true", raw_value=r.get("prune_endpoint_contains", ""), selected_set=r.get("prune_selected_inputs", ""))
