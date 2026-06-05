@@ -15,6 +15,12 @@
 /claim_records/released_adapter_outputs.csv
 /claim_records/released_claim_records.csv
 /claim_records/hidden_claim_records.csv
+/score_reports/coverage_table.csv
+/score_reports/coverage_table.md
+/score_reports/score_report.csv
+/score_reports/score_report.md
+/score_reports/task_card_validation.csv
+/score_reports/task_card_validation.md
 /score_reports/benchmark_manifest.csv
 /score_reports/benchmark_manifest.md
 /score_reports/release_contract_validation.csv
