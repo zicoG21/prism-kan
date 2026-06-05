@@ -72,9 +72,18 @@ def meta_for_row(function: str, row: pd.Series) -> tuple[str, str, dict[str, Any
         if meta is not None:
             return str(meta["task_id"]), str(meta["family"]), dict(meta)
     meta = dict(FORMULA_META.get(function, {"family": function, "support": [], "pairs": [], "endpoints": []}))
+    setting_text = " ".join(
+        str(row.get(col, ""))
+        for col in ["setting", "protocol", "task_id", "task_family", "label"]
+        if col in row
+    ).lower()
     rho = as_float(row.get("nuisance_correlation", ""))
     proxies = as_float(row.get("n_correlated_proxies", ""))
-    if not pd.isna(rho) and rho > 0 and not pd.isna(proxies) and proxies > 0:
+    if (
+        "correlated_covariates" in setting_text
+        or "correlated-covariate" in setting_text
+        or (not pd.isna(rho) and rho > 0 and not pd.isna(proxies) and proxies > 0)
+    ):
         meta["family"] = "correlated_covariates"
         return "correlated_covariate_pair_hidden_template", "correlated_covariates", meta
     return task_id(function, row), str(meta.get("family", function)), meta

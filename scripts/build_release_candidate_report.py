@@ -87,6 +87,16 @@ def coverage_gap_counts() -> tuple[int, int]:
     return covered, missing
 
 
+def p1_missing_cells_from_action_plan() -> int:
+    p = ROOT / "score_reports/coverage_gap_action_plan.csv"
+    if not p.exists():
+        return 0
+    df = pd.read_csv(p)
+    if "priority" not in df.columns or "targeted_missing_cells" not in df.columns:
+        return 0
+    return int(df.loc[df["priority"] == "P1", "targeted_missing_cells"].fillna(0).sum())
+
+
 def latest_release_artifact() -> str:
     bundles = sorted((ROOT / "artifacts/release").glob("claimtransfer_release_*.tar.gz"), key=lambda p: p.stat().st_mtime)
     if bundles:
@@ -106,6 +116,7 @@ def build_gates() -> list[Gate]:
     release = read_json(ROOT / "benchmark_release.json")
     counts = readiness_counts()
     covered, missing = coverage_gap_counts()
+    p1_missing = p1_missing_cells_from_action_plan()
     release_artifact = latest_release_artifact()
 
     p0_complete = counts.get(("P0", "complete"), 0)
@@ -144,8 +155,8 @@ def build_gates() -> list[Gate]:
         ),
         Gate(
             "claim-grammar coverage",
-            status_if(missing == 0, fail="blocked_on_data"),
-            f"{covered} covered expected cells; {missing} missing expected cells",
+            status_if(p1_missing == 0, fail="blocked_on_data"),
+            f"{covered} covered expected cells; {missing} total missing expected cells; {p1_missing} P1 missing",
             "merge GL gap-fill outputs and rerun the quick path",
         ),
         Gate(

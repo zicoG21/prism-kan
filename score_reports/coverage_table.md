@@ -83,4 +83,4 @@
 | claimtransfer_v0_public | public | ga2m_spline     | semi_breast_cancer    | support        | 20         | 20        | 1           | 0                 | 12        | 20     | 0.600     | 0.387      | 0.781       |             |               |
 | claimtransfer_v0_public | public | ga2m_spline     | semi_diabetes         | endpoints      | 20         | 20        | 1           | 0                 | 20        | 20     | 1.000     | 0.839      | 1.000       |             |               |
 
-Showing first 80 of 530 rows.
+Showing first 80 of 540 rows.

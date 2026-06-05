@@ -22,13 +22,13 @@ Validated release contract: benchmark_release.json
 checks: 33
 Validated 21 task cards.
 Validated adapter outputs: claim_records/released_adapter_outputs.csv
-rows: 166964
+rows: 168056
 required columns: 12
-Wrote claim_records/released_claim_records.csv (166964 claim rows)
-Wrote score_reports/score_report.csv (1135 aggregate rows)
-Wrote score_reports/coverage_table.csv (530 coverage rows)
+Wrote claim_records/released_claim_records.csv (168056 claim rows)
+Wrote score_reports/score_report.csv (1149 aggregate rows)
+Wrote score_reports/coverage_table.csv (540 coverage rows)
 Wrote score_reports/coverage_gap_report.csv (337 expected cells)
-Wrote score_reports/missingness_report.csv (730 missingness rows)
+Wrote score_reports/missingness_report.csv (744 missingness rows)
 Validated claim records: claim_records/released_claim_records.csv
 required columns: 9
 Validated score reports.

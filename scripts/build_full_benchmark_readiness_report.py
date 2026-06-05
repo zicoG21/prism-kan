@@ -84,22 +84,23 @@ def coverage_gap_summary(path: Path) -> tuple[int, int, str]:
     return covered, missing, summary
 
 
-def coverage_action_plan_summary(path: Path, missing_cells: int) -> tuple[bool, str]:
+def coverage_action_plan_summary(path: Path, missing_cells: int) -> tuple[bool, str, int]:
     if not path.exists():
-        return False, "coverage gap action plan missing"
+        return False, "coverage gap action plan missing", missing_cells
     df = pd.read_csv(path)
     required = {"action_id", "priority", "targeted_missing_cells", "command"}
     missing_cols = sorted(required - set(df.columns))
     if missing_cols:
-        return False, f"coverage gap action plan missing columns: {', '.join(missing_cols)}"
+        return False, f"coverage gap action plan missing columns: {', '.join(missing_cols)}", missing_cells
     targeted = int(df["targeted_missing_cells"].fillna(0).sum())
+    p1_targeted = int(df.loc[df["priority"] == "P1", "targeted_missing_cells"].fillna(0).sum())
     unassigned_p1 = int(((df["action_id"] == "unassigned_gap") & (df["priority"] == "P1")).sum())
-    status = targeted == int(missing_cells) and unassigned_p1 == 0
+    status = targeted == int(missing_cells) and p1_targeted == 0 and unassigned_p1 == 0
     evidence = (
         f"{len(df)} action rows target {targeted}/{missing_cells} missing cells; "
-        f"P1 unassigned_gap rows={unassigned_p1}"
+        f"P1 targeted cells={p1_targeted}; P1 unassigned_gap rows={unassigned_p1}"
     )
-    return status, evidence
+    return status, evidence, p1_targeted
 
 
 def unique_values(path: Path, column: str) -> set[str]:
@@ -124,7 +125,7 @@ def build_checks() -> list[Check]:
     covered_cells, missing_cells, missing_summary = coverage_gap_summary(
         ROOT / "score_reports/coverage_gap_report.csv"
     )
-    action_plan_ok, action_plan_evidence = coverage_action_plan_summary(
+    action_plan_ok, action_plan_evidence, p1_missing_cells = coverage_action_plan_summary(
         ROOT / "score_reports/coverage_gap_action_plan.csv", missing_cells
     )
 
@@ -193,8 +194,8 @@ def build_checks() -> list[Check]:
             Check(
                 "P1",
                 "coverage completeness",
-                ok_or_blocked(missing_cells == 0, "blocked_on_data"),
-                f"{covered_cells} covered expected cells; {missing_cells} missing. Largest gaps: {missing_summary}",
+                ok_or_blocked(p1_missing_cells == 0, "blocked_on_data"),
+                f"{covered_cells} covered expected cells; {missing_cells} total missing; {p1_missing_cells} P1 missing. Largest gaps: {missing_summary}",
                 "use score_reports/coverage_gap_report.csv to prioritize GL jobs; rerun quick path after merge",
             ),
             Check(

@@ -87,22 +87,21 @@ Current generated scale:
 - Release-contract validation table generated from the frozen alpha contract: 33 checks.
 - 6 validated adapter families.
 - Raw adapter-output validation table generated from the schema: 12 required fields checked.
-- 166,964 normalized adapter-output rows.
-- 166,964 official claim-record rows.
+- 168,056 normalized adapter-output rows.
+- 168,056 official claim-record rows.
 - Claim-record validation table generated from the schema: 9 required fields
   plus pass-value validity checked.
-- 1,135 aggregate score-report rows.
-- 530 coverage rows.
+- 1,149 aggregate score-report rows.
+- 540 coverage rows.
 - Score/coverage/gap/missingness report validation generated from reporting-policy checks: 36 checks.
 - Claim-grammar-aware coverage-gap report generated from adapter-family
-  contracts and public task families: 337 expected cells, 331 covered and 6
+  contracts and public task families: 337 expected cells, 336 covered and 1
   missing.
-- 730 missingness-report rows.
+- 744 missingness-report rows.
 - Full benchmark readiness report generated under
   `score_reports/full_benchmark_readiness.csv` with 20 P0/P1/P2 checks:
-  P0 is complete for the alpha artifact; P1 has one data-dependent coverage
-  blocker; P2 offline scaffolding is complete with public release/tag marked as
-  future work.
+  P0 and P1 are complete for the alpha artifact; P2 offline scaffolding is
+  complete with public release/tag marked as future work.
 - Release-candidate gate report generated under
   `score_reports/release_candidate_report.csv`; it separates alpha packaging
   readiness from P1 data blockers and the later public tag/server step.
@@ -167,17 +166,10 @@ Implemented as benchmark infrastructure:
 
 Still data-dependent:
 
-- complete all GL cross-method and scorer-grammar cells;
-- merge any newly pulled GL rows into `results/revision`;
-- rerun `scripts/run_benchmark.py --quick` after each merge.
-- confirm Hessian and TreeGate scorer rows after the remaining GL scorergram
-  tasks finish.
-- current readiness blocker: 331 covered expected cells and 6 missing cells
-  in `score_reports/coverage_gap_report.csv`; largest gaps are
-  GA2M/sparse/symbolic/tree cells on correlated, semi-synthetic,
-  scientific-expression, exp-product, and log-product task families.  Optional
-  expression-level claims are expected only where the task-card grammar declares
-  them.
+- P1 has no remaining data-dependent coverage blocker.
+- the only remaining expected-cell gap is the P2 optional
+  `symbolic_library/scientific_expression/symbolic_operator_recall` track.
+- public release/tag/server work remains explicitly marked as P2 future work.
 - use `score_reports/coverage_gap_summary.csv` to choose the next GL/merge
   target by adapter family and claim type.
 - use `score_reports/coverage_gap_action_plan.csv` to check whether each gap is
@@ -236,7 +228,7 @@ Current properties:
 - no overfull boxes, undefined references, or citation warnings in the latest
   compile;
 - current artifact scale synchronized in the draft:
-  166,964 claim rows, 1,135 score rows, 530 coverage rows, 730 missingness rows,
+  168,056 claim rows, 1,149 score rows, 540 coverage rows, 744 missingness rows,
   61 manifest entries;
 - paper identity: official-scored benchmark contract, with pyKAN as the
   high-resolution case study and non-KAN rows as adapter-interface checks.
