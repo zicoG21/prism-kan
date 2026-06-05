@@ -95,8 +95,14 @@ def main() -> None:
         raise SystemExit(f"coverage_table too small: {checks['coverage_table']}")
     if checks["coverage_gap_report"] < args.min_gap_rows:
         raise SystemExit(f"coverage_gap_report too small: {checks['coverage_gap_report']}")
-    if checks["coverage_gap_action_plan"] < 1:
-        raise SystemExit("coverage_gap_action_plan is empty")
+    gap = pd.read_csv(ROOT / "score_reports/coverage_gap_report.csv", low_memory=False)
+    if "coverage_status" in gap.columns:
+        uncovered = int((gap["coverage_status"] != "covered").sum())
+    else:
+        uncovered = 0
+    if uncovered > 0 and checks["coverage_gap_action_plan"] < 1:
+        raise SystemExit("coverage_gap_action_plan is empty despite uncovered coverage cells")
+    checks["uncovered_coverage_cells"] = uncovered
     if checks["missingness_report"] < args.min_missingness_rows:
         raise SystemExit(f"missingness_report too small: {checks['missingness_report']}")
     if checks["full_benchmark_readiness"] < 10:

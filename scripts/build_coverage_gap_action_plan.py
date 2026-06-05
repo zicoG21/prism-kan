@@ -213,9 +213,25 @@ def main() -> None:
             }
         )
 
-    out_df = pd.DataFrame(rows).sort_values(
-        ["priority", "targeted_missing_cells", "action_id"], ascending=[True, False, True]
-    )
+    if rows:
+        out_df = pd.DataFrame(rows).sort_values(
+            ["priority", "targeted_missing_cells", "action_id"], ascending=[True, False, True]
+        )
+    else:
+        out_df = pd.DataFrame(
+            columns=[
+                "action_id",
+                "action_type",
+                "priority",
+                "targeted_missing_cells",
+                "adapter_families",
+                "task_families",
+                "claim_types",
+                "command",
+                "expected_output_roots",
+                "note",
+            ]
+        )
     out = ROOT / args.out
     out.parent.mkdir(parents=True, exist_ok=True)
     out_df.to_csv(out, index=False)

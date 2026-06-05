@@ -66,9 +66,20 @@ def main() -> None:
                 ),
             }
         )
-    out_df = pd.DataFrame(rows).sort_values(
-        ["missing_cells", "canonical_adapter_family", "claim_type"], ascending=[False, True, True]
-    )
+    if rows:
+        out_df = pd.DataFrame(rows).sort_values(
+            ["missing_cells", "canonical_adapter_family", "claim_type"], ascending=[False, True, True]
+        )
+    else:
+        out_df = pd.DataFrame(
+            columns=[
+                "canonical_adapter_family",
+                "claim_type",
+                "missing_cells",
+                "task_families",
+                "suggested_action",
+            ]
+        )
 
     out = ROOT / args.out
     out.parent.mkdir(parents=True, exist_ok=True)
