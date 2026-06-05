@@ -53,6 +53,23 @@ def git_commit() -> str:
         return "unknown"
 
 
+def git_tag_exists(tag: str) -> bool:
+    if not tag:
+        return False
+    try:
+        result = subprocess.run(
+            ["git", "tag", "--list", tag],
+            cwd=ROOT,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+    except OSError:
+        return False
+    return tag in {line.strip() for line in result.stdout.splitlines()}
+
+
 def task_card_count() -> int:
     total = 0
     for path in (ROOT / "task_cards").glob("*.json"):
@@ -112,12 +129,22 @@ def status_if(condition: bool, success: str = "complete", fail: str = "blocked")
     return success if condition else fail
 
 
+def release_tag_status(release_tag_exists: bool, release_artifact: str) -> str:
+    if release_tag_exists and release_artifact:
+        return "complete"
+    if release_artifact:
+        return "alpha_complete"
+    return "blocked"
+
+
 def build_gates() -> list[Gate]:
     release = read_json(ROOT / "benchmark_release.json")
     counts = readiness_counts()
     covered, missing = coverage_gap_counts()
     p1_missing = p1_missing_cells_from_action_plan()
     release_artifact = latest_release_artifact()
+    release_tag = str(release.get("release_id", ""))
+    release_tag_exists = git_tag_exists(release_tag)
 
     p0_complete = counts.get(("P0", "complete"), 0)
     p1_blockers = sum(counts.get(("P1", status), 0) for status in ["blocked", "blocked_on_data", "partial"])
@@ -179,9 +206,9 @@ def build_gates() -> list[Gate]:
         ),
         Gate(
             "public tag/server",
-            "future_work",
-            "no public git tag or hosted submission server is required for the local alpha candidate",
-            "after P1 coverage is complete, tag the frozen registry and publish the bundle",
+            release_tag_status(release_tag_exists, release_artifact),
+            f"release_id={release_tag or 'missing'}; git tag exists={release_tag_exists}; hosted submission server remains future work",
+            "create/push the release tag after the frozen alpha bundle is verified",
         ),
     ]
     return gates

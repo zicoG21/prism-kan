@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
@@ -43,6 +44,23 @@ def read_json(path: str) -> dict:
     if not p.exists():
         return {}
     return json.loads(p.read_text(encoding="utf-8"))
+
+
+def git_tag_exists(tag: str) -> bool:
+    if not tag:
+        return False
+    try:
+        result = subprocess.run(
+            ["git", "tag", "--list", tag],
+            cwd=ROOT,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+    except OSError:
+        return False
+    return tag in {line.strip() for line in result.stdout.splitlines()}
 
 
 def validation_status(path: str, min_rows: int = 1) -> tuple[str, str]:
@@ -225,6 +243,9 @@ def build_checks() -> list[Check]:
     hidden_private = file_exists("artifacts/private_hidden/claimtransfer_v0_hidden_private_scoring.json")
     release_bundle_exists = any((ROOT / "artifacts/release").glob("claimtransfer_release_*.tar.gz"))
     release_candidate_rows = csv_rows(ROOT / "score_reports/release_candidate_report.csv")
+    release = read_json("benchmark_release.json")
+    release_tag = str(release.get("release_id", ""))
+    release_tag_exists = git_tag_exists(release_tag)
 
     checks.extend(
         [
@@ -259,9 +280,9 @@ def build_checks() -> list[Check]:
             Check(
                 "P2",
                 "public benchmark release",
-                "future_work",
-                "no public tag or hosted submission server is expected yet; release-candidate gates track pre-tag readiness",
-                "resolve P1 coverage blockers, freeze registry version, publish release bundle, then tag",
+                ok_or_blocked(release_tag_exists and release_bundle_exists, "alpha_complete"),
+                f"release_id={release_tag or 'missing'}; git tag exists={release_tag_exists}; release bundle exists={release_bundle_exists}; hosted submission server remains future work",
+                "tag the frozen alpha release after release-candidate and overlay checks pass",
             ),
         ]
     )
