@@ -40,6 +40,48 @@
       "stress_card_requirement": "At least one weak-centered or division/rational card."
     },
     {
+      "adapter_family": "support_screen",
+      "native_outputs": [
+        "prediction_mse",
+        "feature_scores",
+        "selected_variables"
+      ],
+      "licensed_claim_types": ["prediction", "support", "endpoints"],
+      "task_family_scope": [
+        "standard_feynman_style",
+        "standard_pair_product",
+        "standard_srbench_log",
+        "standard_srbench_polynomial",
+        "standard_srbench_trig"
+      ],
+      "tuning_policy": "Screening threshold or top-k budget is fixed before scoring.",
+      "budget_policy": "Feature budget and scoring rule are recorded in protocol.",
+      "missing_field_policy": "Support screens do not license pair or symbolic rows unless they expose pair scores or expressions.",
+      "positive_control_requirement": "At least one card where the declared support is recoverable by the screen.",
+      "stress_card_requirement": "At least one card where support recovery and prediction adequacy can disagree."
+    },
+    {
+      "adapter_family": "pair_screen",
+      "native_outputs": [
+        "pair_scores",
+        "candidate_pair_set",
+        "candidate_endpoint_scores"
+      ],
+      "licensed_claim_types": ["support", "endpoints", "pair"],
+      "task_family_scope": [
+        "standard_feynman_style",
+        "standard_pair_product",
+        "standard_srbench_log",
+        "standard_srbench_polynomial",
+        "standard_srbench_trig"
+      ],
+      "tuning_policy": "Pair scoring rule and candidate budget are fixed before scoring.",
+      "budget_policy": "Pair budget and endpoint aggregation rule are recorded in protocol.",
+      "missing_field_policy": "Pair-screen rows do not license prediction or symbolic claims unless those raw objects are submitted.",
+      "positive_control_requirement": "At least one product-like card with a declared pair.",
+      "stress_card_requirement": "At least one nested, three-way, or low-signal card where pair-screen evidence can disagree with an official fitted-function scorer."
+    },
+    {
       "adapter_family": "ga2m_additive",
       "native_outputs": [
         "prediction_mse",

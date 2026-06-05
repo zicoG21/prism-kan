@@ -152,7 +152,11 @@ def main() -> None:
     for contract in load_adapter_contracts():
         adapter_family = str(contract.get("adapter_family", ""))
         licensed = {str(c) for c in contract.get("licensed_claim_types", [])}
+        task_scope = contract.get("task_family_scope")
+        scoped_families = set(map(str, task_scope)) if isinstance(task_scope, list) else None
         for task_family, legal_claims in sorted(task_family_claim_types.items()):
+            if scoped_families is not None and task_family not in scoped_families:
+                continue
             if args.expectation_mode == "registry_product":
                 expected_claims = set(licensed)
             else:

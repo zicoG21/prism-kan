@@ -689,6 +689,13 @@ def convert_residual_hsic(path: Path, rows: list[dict[str, Any]]) -> None:
         )
 
 
+def convert_normalized_adapter_outputs(path: Path, rows: list[dict[str, Any]]) -> None:
+    """Pass through already-normalized ClaimTransfer adapter-output rows."""
+    df = pd.read_csv(path)
+    for _, r in df.iterrows():
+        add(rows, **{col: r.get(col, "") for col in df.columns})
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--results-root", default="results/revision")
@@ -719,6 +726,8 @@ def main() -> None:
         ("**/pykan_prune_symbolic_detail.csv", convert_prune_symbolic),
         ("**/pair_feature_lasso_detail.csv", convert_pair_feature_lasso),
         ("**/residual_rff_hsic_pair_screen_detail.csv", convert_residual_hsic),
+        ("**/standard_formula_adapter_outputs.csv", convert_normalized_adapter_outputs),
+        ("**/gplearn_standard_formula_adapter_outputs.csv", convert_normalized_adapter_outputs),
     ]
     for pattern, converter in patterns:
         for path in sorted(root.glob(pattern)):
@@ -728,8 +737,19 @@ def main() -> None:
     out.parent.mkdir(parents=True, exist_ok=True)
     df = pd.DataFrame(rows)
     if not df.empty:
-        df["split"] = args.split
-        df["registry_version"] = args.registry_version
+        if "split" not in df.columns:
+            df["split"] = args.split
+        else:
+            split_text = df["split"].astype(str)
+            df.loc[df["split"].isna() | split_text.str.strip().eq(""), "split"] = args.split
+        if "registry_version" not in df.columns:
+            df["registry_version"] = args.registry_version
+        else:
+            registry_text = df["registry_version"].astype(str)
+            df.loc[
+                df["registry_version"].isna() | registry_text.str.strip().eq(""),
+                "registry_version",
+            ] = args.registry_version
     df.to_csv(out, index=False)
     print(f"Wrote {out} ({len(df)} raw evidence rows)")
     if not df.empty:

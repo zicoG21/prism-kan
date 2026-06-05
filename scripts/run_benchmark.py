@@ -74,6 +74,23 @@ def main() -> None:
             "By default the runner uses bundled released outputs when results/revision is absent."
         ),
     )
+    parser.add_argument(
+        "--include-standard-formulas",
+        action="store_true",
+        help=(
+            "Generate the v1 standard-formula task-card wrapper and run the "
+            "lightweight NumPy adapter sweep before rebuilding official reports."
+        ),
+    )
+    parser.add_argument(
+        "--include-gplearn-standard",
+        action="store_true",
+        help=(
+            "Run the optional gplearn symbolic-regression baseline on the "
+            "standard-formula wrapper before rebuilding official reports. "
+            "Requires scikit-learn and gplearn."
+        ),
+    )
     args = parser.parse_args()
     shortcut_modes = [
         mode_name
@@ -88,6 +105,14 @@ def main() -> None:
     py = sys.executable
     run([py, "scripts/print_artifact_env.py"])
     run([py, "scripts/validate_release_contract.py"])
+    if args.include_standard_formulas:
+        run([py, "scripts/generate_standard_formula_task_cards.py"])
+        run([py, "scripts/run_standard_formula_adapter_sweep.py"])
+        args.rebuild_adapter_outputs = True
+    if args.include_gplearn_standard:
+        run([py, "scripts/generate_standard_formula_task_cards.py"])
+        run([py, "scripts/run_gplearn_standard_formula_baseline.py"])
+        args.rebuild_adapter_outputs = True
     run([py, "scripts/validate_task_cards.py"])
     run([py, "scripts/validate_adapter_registry.py"])
     released_outputs = ROOT / "claim_records" / "released_adapter_outputs.csv"
@@ -104,6 +129,7 @@ def main() -> None:
     run([py, "scripts/build_coverage_gap_report.py"])
     run([py, "scripts/summarize_coverage_gaps.py"])
     run([py, "scripts/build_coverage_gap_action_plan.py"])
+    run([py, "scripts/build_overclaim_risk_report.py"])
     run([py, "scripts/validate_score_reports.py"])
     run([py, "scripts/build_benchmark_manifest.py"])
     run([py, "scripts/build_full_benchmark_readiness_report.py"])

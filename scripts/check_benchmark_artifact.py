@@ -38,6 +38,8 @@ REQUIRED_FILES = [
     "scripts/build_benchmark_manifest.py",
     "scripts/run_benchmark.py",
     "scripts/score_submission.py",
+    "scripts/run_gplearn_standard_formula_baseline.py",
+    "scripts/greatlakes_gplearn_standard_formula.sbatch",
     "scripts/build_claimtransfer_release_bundle.sh",
     "scripts/build_hidden_private_bundle.py",
     "scripts/check_release_bundle.sh",
@@ -51,6 +53,8 @@ REQUIRED_FILES = [
     "score_reports/coverage_table.csv",
     "score_reports/coverage_gap_report.csv",
     "score_reports/coverage_gap_action_plan.csv",
+    "score_reports/overclaim_risk_report.csv",
+    "score_reports/overclaim_risk_by_adapter.csv",
     "score_reports/missingness_report.csv",
     "score_reports/full_benchmark_readiness.csv",
     "score_reports/benchmark_manifest.csv",
@@ -85,6 +89,8 @@ def main() -> None:
         "coverage_table": csv_rows(ROOT / "score_reports/coverage_table.csv"),
         "coverage_gap_report": csv_rows(ROOT / "score_reports/coverage_gap_report.csv"),
         "coverage_gap_action_plan": csv_rows(ROOT / "score_reports/coverage_gap_action_plan.csv"),
+        "overclaim_risk_report": csv_rows(ROOT / "score_reports/overclaim_risk_report.csv"),
+        "overclaim_risk_by_adapter": csv_rows(ROOT / "score_reports/overclaim_risk_by_adapter.csv"),
         "missingness_report": csv_rows(ROOT / "score_reports/missingness_report.csv"),
         "full_benchmark_readiness": csv_rows(ROOT / "score_reports/full_benchmark_readiness.csv"),
         "benchmark_manifest": csv_rows(ROOT / "score_reports/benchmark_manifest.csv"),
@@ -103,6 +109,8 @@ def main() -> None:
     if uncovered > 0 and checks["coverage_gap_action_plan"] < 1:
         raise SystemExit("coverage_gap_action_plan is empty despite uncovered coverage cells")
     checks["uncovered_coverage_cells"] = uncovered
+    if checks["overclaim_risk_report"] < 5:
+        raise SystemExit(f"overclaim_risk_report too small: {checks['overclaim_risk_report']}")
     if checks["missingness_report"] < args.min_missingness_rows:
         raise SystemExit(f"missingness_report too small: {checks['missingness_report']}")
     if checks["full_benchmark_readiness"] < 10:
