@@ -47,13 +47,14 @@ SUBMIT_SPGPU="${SUBMIT_SPGPU:-1}"
 SUBMIT_STANDARD="${SUBMIT_STANDARD:-1}"
 SUBMIT_GAPFILL="${SUBMIT_GAPFILL:-1}"
 SUBMIT_SCORE_REFRESH="${SUBMIT_SCORE_REFRESH:-1}"
+SUBMIT_SYMBOLIC_EXPRESSION="${SUBMIT_SYMBOLIC_EXPRESSION:-1}"
 USE_A40_PACKED="${USE_A40_PACKED:-0}"
 
 echo "[$(date -Is)] ClaimTransfer full benchmark submit"
 echo "[$(date -Is)] account=${ACCOUNT}"
 echo "[$(date -Is)] standard_account=${STANDARD_ACCOUNT}"
 echo "[$(date -Is)] python=${PY}"
-echo "[$(date -Is)] submit_gpu=${SUBMIT_GPU} submit_spgpu=${SUBMIT_SPGPU} submit_standard=${SUBMIT_STANDARD} submit_gapfill=${SUBMIT_GAPFILL} submit_score_refresh=${SUBMIT_SCORE_REFRESH} use_a40_packed=${USE_A40_PACKED}"
+echo "[$(date -Is)] submit_gpu=${SUBMIT_GPU} submit_spgpu=${SUBMIT_SPGPU} submit_standard=${SUBMIT_STANDARD} submit_gapfill=${SUBMIT_GAPFILL} submit_score_refresh=${SUBMIT_SCORE_REFRESH} submit_symbolic_expression=${SUBMIT_SYMBOLIC_EXPRESSION} use_a40_packed=${USE_A40_PACKED}"
 
 submit() {
   echo
@@ -99,6 +100,12 @@ fi
 if [[ "${SUBMIT_STANDARD}" == "1" ]]; then
   # CPU-only cross-adapter coverage and TreeGate candidate screens.  These do
   # not consume GPU quota.
+  if [[ "${SUBMIT_SYMBOLIC_EXPRESSION}" == "1" ]]; then
+    submit sbatch --account="${STANDARD_ACCOUNT}" --array=0-3 \
+      --export=ALL,PYTHON_BIN="${PY}" \
+      scripts/greatlakes_symbolic_expression_operator_recall_standard.sbatch
+  fi
+
   submit sbatch --account="${STANDARD_ACCOUNT}" \
     --export=ALL,PYTHON_BIN="${PY}",SEED_START="${XFER_SEED_START:-70}",SEED_STOP="${XFER_SEED_STOP:-99}",GA2M_SEED_STOP="${XFER_GA2M_SEED_STOP:-89}",SYMBOLIC_SEED_STOP="${XFER_SYMBOLIC_SEED_STOP:-89}" \
     scripts/greatlakes_cross_method_transfer_baselines_extended.sbatch

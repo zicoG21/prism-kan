@@ -124,9 +124,16 @@ RULES = [
         adapter_families={"symbolic_library"},
         task_families={"scientific_expression"},
         claim_types={"symbolic_operator_recall", "symbolic_complexity"},
-        command="future symbolic-regression adapter sweep; not required for P1 support/pair coverage",
-        expected_output_roots="results/revision/symbolic_expression_*",
-        note="Expression-level symbolic claims are optional unless promoted to a primary benchmark track.",
+        command=(
+            "sbatch --account=$ACCOUNT --array=0-3 "
+            "--export=ALL,PYTHON_BIN=$PWD/.venv/bin/python "
+            "scripts/greatlakes_symbolic_expression_operator_recall_standard.sbatch"
+        ),
+        expected_output_roots="results/revision/symbolic_expression_operator_recall",
+        note=(
+            "Expression-level symbolic claims are optional unless promoted to a primary benchmark track; "
+            "this diagnostic sweep exercises the official operator-recall scorer."
+        ),
     ),
 ]
 

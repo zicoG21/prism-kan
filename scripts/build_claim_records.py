@@ -287,6 +287,76 @@ def convert_cross_method(path: Path, rows: list[dict[str, Any]]) -> None:
             )
 
 
+def convert_symbolic_expression(path: Path, rows: list[dict[str, Any]]) -> None:
+    df = pd.read_csv(path)
+    for _, r in df.iterrows():
+        task_id_value = str(r.get("task_id", "feynman_style_energy_hidden_template") or "feynman_style_energy_hidden_template")
+        function = str(r.get("function", "feynman_energy") or "feynman_energy")
+        tid, family, _meta = meta_for_row(function, r)
+        if task_id_value:
+            tid = task_id_value
+        family = str(r.get("task_family", family) or family)
+        adapter = str(r.get("adapter", "symbolic_library_diagnostic") or "symbolic_library_diagnostic")
+        common = {
+            "task_id": tid,
+            "task_family": family,
+            "adapter": adapter,
+            "adapter_family": str(r.get("adapter_family", "symbolic_library") or "symbolic_library"),
+            "source_kind": "symbolic_expression_operator_recall",
+            "source_file": str(path),
+            "seed": int(r.get("seed", 0) or 0),
+            "protocol": str(r.get("protocol", "fixed_symbolic_expression_library") or "fixed_symbolic_expression_library"),
+        }
+        target_ops = str(r.get("target_operators", "plus,multiply,power") or "plus,multiply,power")
+        observed_ops = str(r.get("observed_operators", "") or "")
+        expression = str(r.get("expression", "") or "")
+        complexity = r.get("expression_complexity", "")
+        support = r.get("selected_support", "")
+        pair_terms = r.get("selected_pairs", "")
+        status_raw = r.get("symbolic_status", "")
+        if status_raw == "":
+            status_raw = float(bool(expression))
+
+        add(
+            rows,
+            **common,
+            evidence_object=str(r.get("evidence_object", "symbolic_expression") or "symbolic_expression"),
+            claim_type="symbolic_operator_recall",
+            target=target_ops,
+            scorer=str(r.get("scorer", "symbolic_expression_quality") or "symbolic_expression_quality"),
+            predicate="operator_recall_ge",
+            threshold=r.get("operator_recall_threshold", 0.95),
+            raw_value=r.get("operator_recall", ""),
+            selected_set=observed_ops,
+            candidate_set=pair_terms,
+        )
+        add(
+            rows,
+            **common,
+            evidence_object=str(r.get("evidence_object", "symbolic_expression") or "symbolic_expression"),
+            claim_type="symbolic_complexity",
+            target="max_complexity",
+            scorer=str(r.get("scorer", "symbolic_expression_quality") or "symbolic_expression_quality"),
+            predicate="complexity_le",
+            threshold=r.get("complexity_threshold", 12),
+            raw_value=complexity,
+            selected_set=support,
+            candidate_set=pair_terms,
+        )
+        add(
+            rows,
+            **common,
+            evidence_object=str(r.get("evidence_object", "symbolic_expression") or "symbolic_expression"),
+            claim_type="symbolic_status",
+            target="expression_returned",
+            scorer=str(r.get("scorer", "symbolic_expression_quality") or "symbolic_expression_quality"),
+            predicate="binary_true",
+            raw_value=status_raw,
+            selected_set=support,
+            candidate_set=pair_terms,
+        )
+
+
 def convert_treegate(path: Path, rows: list[dict[str, Any]]) -> None:
     df = pd.read_csv(path)
     for _, r in df.iterrows():
@@ -640,6 +710,7 @@ def main() -> None:
 
     patterns = [
         ("**/seed_aligned_stage_records_detail.csv", convert_stage_detail),
+        ("**/symbolic_expression_detail.csv", convert_symbolic_expression),
         ("**/cross_method_transfer_detail.csv", convert_cross_method),
         ("**/treegate_pair_screen_detail.csv", convert_treegate),
         ("**/pair_scorer_claim_grammar_detail.csv", convert_scorergram),
