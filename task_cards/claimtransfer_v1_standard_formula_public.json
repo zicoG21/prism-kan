@@ -930,6 +930,1940 @@
         "score_report",
         "coverage_table"
       ]
+    },
+    {
+      "task_id": "std_additive_no_pair_d8_n2048",
+      "task_family": "standard_negative_control",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "x0 + x1^2 + sin(x2)",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "dimension": 8,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1,
+        2
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_additive_no_pair_d8_n2048:support:top_m_contains_all:[0, 1, 2]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 3
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_additive_no_pair_d8_n2048:symbolic_operator_recall:operator_recall_ge:plus,power,sin",
+            "claim_type": "symbolic_operator_recall",
+            "target": "plus,power,sin",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_additive_no_pair_d8_n2048:symbolic_complexity:complexity_le:9",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 9.0
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "additive_only",
+        "negative_pair_control"
+      ],
+      "audit_purpose": "additive-only negative control; prediction/support claims must not imply pair recovery",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_additive_exp_log_d8_n2048",
+      "task_family": "standard_negative_control",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "exp(0.3*x0) + log(x1^2 + 1) + x2",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "dimension": 8,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1,
+        2
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_additive_exp_log_d8_n2048:support:top_m_contains_all:[0, 1, 2]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 3
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_additive_exp_log_d8_n2048:symbolic_operator_recall:operator_recall_ge:plus,exp,log,power,multiply",
+            "claim_type": "symbolic_operator_recall",
+            "target": "plus,exp,log,power,multiply",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_additive_exp_log_d8_n2048:symbolic_complexity:complexity_le:12",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 12.0
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "additive_only",
+        "operator_mix"
+      ],
+      "audit_purpose": "operator-rich additive card; symbolic/operator claims without pair claims",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_two_products_d8_n2048",
+      "task_family": "standard_pair_product",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "x0*x1 + x2*x3 + 0.2*x4",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "dimension": 8,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_two_products_d8_n2048:support:top_m_contains_all:[0, 1, 2, 3, 4]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 5
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_two_products_d8_n2048:symbolic_operator_recall:operator_recall_ge:plus,multiply",
+            "claim_type": "symbolic_operator_recall",
+            "target": "plus,multiply",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_two_products_d8_n2048:symbolic_complexity:complexity_le:10",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 10.0
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_id": "std_two_products_d8_n2048:endpoints:top_m_contains_all:[0, 1, 2, 3]",
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 5
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "std_two_products_d8_n2048:pair:rank1:[0, 1]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          },
+          {
+            "claim_id": "std_two_products_d8_n2048:pair:rank1:[2, 3]",
+            "claim_type": "pair",
+            "target": [
+              2,
+              3
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "multi_pair_product",
+        "positive_product_control"
+      ],
+      "audit_purpose": "two independent products; pair claims require all declared pair rows",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_trig_product_d8_n2048",
+      "task_family": "standard_pair_product",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "sin(x0)*x1 + cos(x2)",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "dimension": 8,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1,
+        2
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_trig_product_d8_n2048:support:top_m_contains_all:[0, 1, 2]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 3
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_trig_product_d8_n2048:symbolic_operator_recall:operator_recall_ge:plus,multiply,sin,cos",
+            "claim_type": "symbolic_operator_recall",
+            "target": "plus,multiply,sin,cos",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_trig_product_d8_n2048:symbolic_complexity:complexity_le:9",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 9.0
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_id": "std_trig_product_d8_n2048:endpoints:top_m_contains_all:[0, 1]",
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 3
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "std_trig_product_d8_n2048:pair:rank1:[0, 1]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "trig_product",
+        "pair_claim"
+      ],
+      "audit_purpose": "trigonometric product card; prediction and pair evidence can split",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_rational_plus_product_d8_n2048",
+      "task_family": "standard_rational_pair",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "x0/(1 + x1^2) + x2*x3",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "dimension": 8,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_rational_plus_product_d8_n2048:support:top_m_contains_all:[0, 1, 2, 3]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 4
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_rational_plus_product_d8_n2048:symbolic_operator_recall:operator_recall_ge:plus,divide,power,multiply",
+            "claim_type": "symbolic_operator_recall",
+            "target": "plus,divide,power,multiply",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_rational_plus_product_d8_n2048:symbolic_complexity:complexity_le:11",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 11.0
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_id": "std_rational_plus_product_d8_n2048:endpoints:top_m_contains_all:[0, 1, 2, 3]",
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 4
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "std_rational_plus_product_d8_n2048:pair:rank1:[0, 1]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          },
+          {
+            "claim_id": "std_rational_plus_product_d8_n2048:pair:rank1:[2, 3]",
+            "claim_type": "pair",
+            "target": [
+              2,
+              3
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "rational_pair_claims",
+        "multi_pair"
+      ],
+      "audit_purpose": "rational plus product; support, partial-pair, and all-pair claims are separated",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_exp_product_d8_n2048",
+      "task_family": "standard_compositional_pair",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "exp(0.2*x0*x1) + x2",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "dimension": 8,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1,
+        2
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_exp_product_d8_n2048:support:top_m_contains_all:[0, 1, 2]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 3
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_exp_product_d8_n2048:symbolic_operator_recall:operator_recall_ge:plus,exp,multiply",
+            "claim_type": "symbolic_operator_recall",
+            "target": "plus,exp,multiply",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_exp_product_d8_n2048:symbolic_complexity:complexity_le:9",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 9.0
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_id": "std_exp_product_d8_n2048:endpoints:top_m_contains_all:[0, 1]",
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 3
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "std_exp_product_d8_n2048:pair:rank1:[0, 1]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "composition_pair_stress",
+        "exp_product"
+      ],
+      "audit_purpose": "exponential product; expression status must not imply pair/operator recovery",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_log_product_d8_n2048",
+      "task_family": "standard_compositional_pair",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "log(2.5 + x0*x1) + x2",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "dimension": 8,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1,
+        2
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_log_product_d8_n2048:support:top_m_contains_all:[0, 1, 2]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 3
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_log_product_d8_n2048:symbolic_operator_recall:operator_recall_ge:plus,log,multiply",
+            "claim_type": "symbolic_operator_recall",
+            "target": "plus,log,multiply",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_log_product_d8_n2048:symbolic_complexity:complexity_le:9",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 9.0
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_id": "std_log_product_d8_n2048:endpoints:top_m_contains_all:[0, 1]",
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 3
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "std_log_product_d8_n2048:pair:rank1:[0, 1]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "composition_pair_stress",
+        "log_product"
+      ],
+      "audit_purpose": "log product with positive offset; pair and operator claims are distinct",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_sqrt_product_d8_n2048",
+      "task_family": "standard_compositional_pair",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "sqrt(2.5 + x0*x1) + x2",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "dimension": 8,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1,
+        2
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_sqrt_product_d8_n2048:support:top_m_contains_all:[0, 1, 2]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 3
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_sqrt_product_d8_n2048:symbolic_operator_recall:operator_recall_ge:plus,sqrt,multiply",
+            "claim_type": "symbolic_operator_recall",
+            "target": "plus,sqrt,multiply",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_sqrt_product_d8_n2048:symbolic_complexity:complexity_le:9",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 9.0
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_id": "std_sqrt_product_d8_n2048:endpoints:top_m_contains_all:[0, 1]",
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 3
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "std_sqrt_product_d8_n2048:pair:rank1:[0, 1]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "composition_pair_stress",
+        "sqrt_product"
+      ],
+      "audit_purpose": "sqrt product with positive offset; pair evidence and symbolic operator evidence split",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_nested_pair_d8_n2048",
+      "task_family": "standard_compositional_pair",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "sin(x0 + x1*x2) + x3",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "dimension": 8,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_nested_pair_d8_n2048:support:top_m_contains_all:[0, 1, 2, 3]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 4
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_nested_pair_d8_n2048:symbolic_operator_recall:operator_recall_ge:plus,sin,multiply",
+            "claim_type": "symbolic_operator_recall",
+            "target": "plus,sin,multiply",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_nested_pair_d8_n2048:symbolic_complexity:complexity_le:10",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 10.0
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_id": "std_nested_pair_d8_n2048:endpoints:top_m_contains_all:[1, 2]",
+            "claim_type": "endpoints",
+            "target": [
+              1,
+              2
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 4
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "std_nested_pair_d8_n2048:pair:rank1:[1, 2]",
+            "claim_type": "pair",
+            "target": [
+              1,
+              2
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "nested_pair",
+        "grammar_stress"
+      ],
+      "audit_purpose": "nested pair inside a sinusoid; pair scorer is a declared evidence object, not formula truth",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_three_way_product_d8_n2048",
+      "task_family": "standard_higher_order",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "x0*x1*x2 + 0.5*x3",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "dimension": 8,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_three_way_product_d8_n2048:support:top_m_contains_all:[0, 1, 2, 3]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 4
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_three_way_product_d8_n2048:symbolic_operator_recall:operator_recall_ge:plus,multiply",
+            "claim_type": "symbolic_operator_recall",
+            "target": "plus,multiply",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_three_way_product_d8_n2048:symbolic_complexity:complexity_le:9",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 9.0
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_id": "std_three_way_product_d8_n2048:endpoints:top_m_contains_all:[0, 1]",
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 4
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "std_three_way_product_d8_n2048:pair:rank1:[0, 1]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "three_way_stress",
+        "pairwise_boundary"
+      ],
+      "audit_purpose": "three-way product stress card; pair claim is intentionally limited and scorer-indexed",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_highdim_sparse_product_d12_n2048",
+      "task_family": "standard_pair_product",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "x0*x1 + x2^2 + sin(x3)",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "dimension": 12,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_highdim_sparse_product_d12_n2048:support:top_m_contains_all:[0, 1, 2, 3]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 4
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_highdim_sparse_product_d12_n2048:symbolic_operator_recall:operator_recall_ge:plus,multiply,power,sin",
+            "claim_type": "symbolic_operator_recall",
+            "target": "plus,multiply,power,sin",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_highdim_sparse_product_d12_n2048:symbolic_complexity:complexity_le:10",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 10.0
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_id": "std_highdim_sparse_product_d12_n2048:endpoints:top_m_contains_all:[0, 1]",
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 4
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "std_highdim_sparse_product_d12_n2048:pair:rank1:[0, 1]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "sparse_highdim",
+        "pair_claim"
+      ],
+      "audit_purpose": "higher-dimensional sparse product; tests support budget and pair authorization",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_feynman_coulomb_d8_n2048",
+      "task_family": "standard_feynman_style",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "x0*x1/(x2^2 + 0.2)",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": 0.2,
+        "high": 2.0
+      },
+      "dimension": 8,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1,
+        2
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_feynman_coulomb_d8_n2048:support:top_m_contains_all:[0, 1, 2]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 3
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_feynman_coulomb_d8_n2048:symbolic_operator_recall:operator_recall_ge:multiply,divide,power,plus",
+            "claim_type": "symbolic_operator_recall",
+            "target": "multiply,divide,power,plus",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_feynman_coulomb_d8_n2048:symbolic_complexity:complexity_le:9",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 9.0
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_id": "std_feynman_coulomb_d8_n2048:endpoints:top_m_contains_all:[0, 1, 2]",
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 3
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "std_feynman_coulomb_d8_n2048:pair:rank1:[0, 1]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          },
+          {
+            "claim_id": "std_feynman_coulomb_d8_n2048:pair:rank1:[0, 2]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              2
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          },
+          {
+            "claim_id": "std_feynman_coulomb_d8_n2048:pair:rank1:[1, 2]",
+            "claim_type": "pair",
+            "target": [
+              1,
+              2
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "feynman_style",
+        "rational_pair_claims"
+      ],
+      "audit_purpose": "Coulomb-style rational product; multiple pair claims are scorer-indexed",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_feynman_ohm_d6_n2048",
+      "task_family": "standard_feynman_style",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "x0*x1",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": 0.2,
+        "high": 2.0
+      },
+      "dimension": 6,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_feynman_ohm_d6_n2048:support:top_m_contains_all:[0, 1]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 2
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_feynman_ohm_d6_n2048:symbolic_operator_recall:operator_recall_ge:multiply",
+            "claim_type": "symbolic_operator_recall",
+            "target": "multiply",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_feynman_ohm_d6_n2048:symbolic_complexity:complexity_le:5",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 5.0
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_id": "std_feynman_ohm_d6_n2048:endpoints:top_m_contains_all:[0, 1]",
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 2
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "std_feynman_ohm_d6_n2048:pair:rank1:[0, 1]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "feynman_style",
+        "simple_product_control"
+      ],
+      "audit_purpose": "Ohm/power-style product; simple positive-control pair card",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_feynman_lens_d6_n2048",
+      "task_family": "standard_feynman_style",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "1/(1/(x0 + 2) + 1/(x1 + 2))",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": 0.2,
+        "high": 2.0
+      },
+      "dimension": 6,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_feynman_lens_d6_n2048:support:top_m_contains_all:[0, 1]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 2
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_feynman_lens_d6_n2048:symbolic_operator_recall:operator_recall_ge:divide,plus",
+            "claim_type": "symbolic_operator_recall",
+            "target": "divide,plus",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_feynman_lens_d6_n2048:symbolic_complexity:complexity_le:11",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 11.0
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_id": "std_feynman_lens_d6_n2048:endpoints:top_m_contains_all:[0, 1]",
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 2
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "std_feynman_lens_d6_n2048:pair:rank1:[0, 1]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "feynman_style",
+        "harmonic_ratio"
+      ],
+      "audit_purpose": "thin-lens-style harmonic ratio; support/pair/operator claims can split",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_feynman_frequency_d6_n2048",
+      "task_family": "standard_feynman_style",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "sqrt((x0 + 1)*(x1 + 1))/(x2 + 2)",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": 0.2,
+        "high": 2.0
+      },
+      "dimension": 6,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1,
+        2
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_feynman_frequency_d6_n2048:support:top_m_contains_all:[0, 1, 2]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 3
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_feynman_frequency_d6_n2048:symbolic_operator_recall:operator_recall_ge:sqrt,multiply,divide,plus",
+            "claim_type": "symbolic_operator_recall",
+            "target": "sqrt,multiply,divide,plus",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_feynman_frequency_d6_n2048:symbolic_complexity:complexity_le:12",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 12.0
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_id": "std_feynman_frequency_d6_n2048:endpoints:top_m_contains_all:[0, 1, 2]",
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 3
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "std_feynman_frequency_d6_n2048:pair:rank1:[0, 1]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          },
+          {
+            "claim_id": "std_feynman_frequency_d6_n2048:pair:rank1:[0, 2]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              2
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          },
+          {
+            "claim_id": "std_feynman_frequency_d6_n2048:pair:rank1:[1, 2]",
+            "claim_type": "pair",
+            "target": [
+              1,
+              2
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "feynman_style",
+        "composition_pair_stress"
+      ],
+      "audit_purpose": "frequency-style sqrt ratio; expression quality and pair claims are distinct",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_nested_polynomial_pair_d8_n2048",
+      "task_family": "standard_srbench_polynomial",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "(x0*x1 + x2)^2 + x3",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "dimension": 8,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_nested_polynomial_pair_d8_n2048:support:top_m_contains_all:[0, 1, 2, 3]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 4
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_nested_polynomial_pair_d8_n2048:symbolic_operator_recall:operator_recall_ge:plus,multiply,power",
+            "claim_type": "symbolic_operator_recall",
+            "target": "plus,multiply,power",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_nested_polynomial_pair_d8_n2048:symbolic_complexity:complexity_le:11",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 11.0
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_id": "std_nested_polynomial_pair_d8_n2048:endpoints:top_m_contains_all:[0, 1]",
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 4
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "std_nested_polynomial_pair_d8_n2048:pair:rank1:[0, 1]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "nested_polynomial",
+        "pair_claim"
+      ],
+      "audit_purpose": "nested polynomial pair; tests expression complexity versus pair recovery",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_trig_mixed_two_pair_d8_n2048",
+      "task_family": "standard_compositional_pair",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "sin(x0*x1) + cos(x2*x3)",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "dimension": 8,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_trig_mixed_two_pair_d8_n2048:support:top_m_contains_all:[0, 1, 2, 3]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 4
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_trig_mixed_two_pair_d8_n2048:symbolic_operator_recall:operator_recall_ge:plus,sin,cos,multiply",
+            "claim_type": "symbolic_operator_recall",
+            "target": "plus,sin,cos,multiply",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_trig_mixed_two_pair_d8_n2048:symbolic_complexity:complexity_le:12",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 12.0
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_id": "std_trig_mixed_two_pair_d8_n2048:endpoints:top_m_contains_all:[0, 1, 2, 3]",
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 4
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "std_trig_mixed_two_pair_d8_n2048:pair:rank1:[0, 1]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          },
+          {
+            "claim_id": "std_trig_mixed_two_pair_d8_n2048:pair:rank1:[2, 3]",
+            "claim_type": "pair",
+            "target": [
+              2,
+              3
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "multi_pair",
+        "trig_composition"
+      ],
+      "audit_purpose": "two trigonometric products; all-pair claim is stricter than symbolic status",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_division_pair_d8_n2048",
+      "task_family": "standard_rational_pair",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "x0/(x1 + 2) + x2",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "dimension": 8,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1,
+        2
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_division_pair_d8_n2048:support:top_m_contains_all:[0, 1, 2]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1,
+              2
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 3
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_division_pair_d8_n2048:symbolic_operator_recall:operator_recall_ge:plus,divide",
+            "claim_type": "symbolic_operator_recall",
+            "target": "plus,divide",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_division_pair_d8_n2048:symbolic_complexity:complexity_le:8",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 8.0
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_id": "std_division_pair_d8_n2048:endpoints:top_m_contains_all:[0, 1]",
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 3
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "std_division_pair_d8_n2048:pair:rank1:[0, 1]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "division_pair",
+        "support_pair_split"
+      ],
+      "audit_purpose": "division pair with additive nuisance; pair evidence and support evidence can split",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_feynman_kepler_d6_n2048",
+      "task_family": "standard_feynman_style",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "sqrt((x0 + 0.2)^3/(x1 + 0.2))",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": 0.2,
+        "high": 2.0
+      },
+      "dimension": 6,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        1
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_feynman_kepler_d6_n2048:support:top_m_contains_all:[0, 1]",
+            "claim_type": "support",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 2
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_feynman_kepler_d6_n2048:symbolic_operator_recall:operator_recall_ge:sqrt,divide,power,plus",
+            "claim_type": "symbolic_operator_recall",
+            "target": "sqrt,divide,power,plus",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_feynman_kepler_d6_n2048:symbolic_complexity:complexity_le:11",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 11.0
+          }
+        ],
+        "endpoint_claims": [
+          {
+            "claim_id": "std_feynman_kepler_d6_n2048:endpoints:top_m_contains_all:[0, 1]",
+            "claim_type": "endpoints",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 2
+          }
+        ],
+        "pair_claims": [
+          {
+            "claim_id": "std_feynman_kepler_d6_n2048:pair:rank1:[0, 1]",
+            "claim_type": "pair",
+            "target": [
+              0,
+              1
+            ],
+            "official_scorer": "functional_anova",
+            "predicate": "rank1"
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "feynman_style",
+        "kepler_style"
+      ],
+      "audit_purpose": "Kepler-style period relation; symbolic operator recovery is separate from pair recovery",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
+    },
+    {
+      "task_id": "std_affine_no_pair_d12_n2048",
+      "task_family": "standard_negative_control",
+      "split": "public",
+      "registry_version": "claimtransfer_v1_standard_formula_public",
+      "formula": "0.5*x0 - 1.2*x4 + 0.3*x7",
+      "covariates": {
+        "type": "independent_uniform",
+        "low": -1.0,
+        "high": 1.0
+      },
+      "dimension": 12,
+      "samples": 2048,
+      "noise": 0.0,
+      "target_standardization": "train_mean_train_scale",
+      "support": [
+        0,
+        4,
+        7
+      ],
+      "claim_specification": {
+        "support_claims": [
+          {
+            "claim_id": "std_affine_no_pair_d12_n2048:support:top_m_contains_all:[0, 4, 7]",
+            "claim_type": "support",
+            "target": [
+              0,
+              4,
+              7
+            ],
+            "official_scorer": "ranked_support_or_endpoint_score",
+            "predicate": "top_m_contains_all",
+            "m": 3
+          }
+        ],
+        "symbolic_claims": [
+          {
+            "claim_id": "std_affine_no_pair_d12_n2048:symbolic_operator_recall:operator_recall_ge:plus,multiply",
+            "claim_type": "symbolic_operator_recall",
+            "target": "plus,multiply",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "operator_recall_ge",
+            "threshold": 0.95
+          },
+          {
+            "claim_id": "std_affine_no_pair_d12_n2048:symbolic_complexity:complexity_le:8",
+            "claim_type": "symbolic_complexity",
+            "target": "max_complexity",
+            "official_scorer": "symbolic_expression_quality",
+            "predicate": "complexity_le",
+            "threshold": 8.0
+          }
+        ]
+      },
+      "seed_policy": {
+        "train_test_seed_block": "declared_by_score_report",
+        "adapter_seed_block": "declared_by_adapter",
+        "hidden_seed_policy": "private_when_split_is_hidden"
+      },
+      "stress_tags": [
+        "additive_only",
+        "negative_pair_control",
+        "sparse_highdim"
+      ],
+      "audit_purpose": "sparse affine negative control; pair claims are illegal despite easy prediction",
+      "standard_source": "ClaimTransfer v1 curated SRBench/Feynman-style subset",
+      "official_outputs": [
+        "claim_records",
+        "score_report",
+        "coverage_table"
+      ]
     }
   ]
 }

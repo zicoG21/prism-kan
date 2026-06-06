@@ -91,6 +91,24 @@ def main() -> None:
             "Requires scikit-learn and gplearn."
         ),
     )
+    parser.add_argument(
+        "--include-mlp-hessian-standard",
+        action="store_true",
+        help=(
+            "Run the optional MLP + Hessian attribution baseline on the "
+            "standard-formula wrapper before rebuilding official reports. "
+            "Requires PyTorch."
+        ),
+    )
+    parser.add_argument(
+        "--include-pysr-standard",
+        action="store_true",
+        help=(
+            "Run the optional PySR symbolic-regression baseline on the "
+            "standard-formula wrapper before rebuilding official reports. "
+            "Requires pysr and a working Julia backend."
+        ),
+    )
     args = parser.parse_args()
     shortcut_modes = [
         mode_name
@@ -113,6 +131,14 @@ def main() -> None:
         run([py, "scripts/generate_standard_formula_task_cards.py"])
         run([py, "scripts/run_gplearn_standard_formula_baseline.py"])
         args.rebuild_adapter_outputs = True
+    if args.include_mlp_hessian_standard:
+        run([py, "scripts/generate_standard_formula_task_cards.py"])
+        run([py, "scripts/run_mlp_hessian_standard_formula_baseline.py"])
+        args.rebuild_adapter_outputs = True
+    if args.include_pysr_standard:
+        run([py, "scripts/generate_standard_formula_task_cards.py"])
+        run([py, "scripts/run_pysr_standard_formula_baseline.py"])
+        args.rebuild_adapter_outputs = True
     run([py, "scripts/validate_task_cards.py"])
     run([py, "scripts/validate_adapter_registry.py"])
     released_outputs = ROOT / "claim_records" / "released_adapter_outputs.csv"
@@ -130,6 +156,7 @@ def main() -> None:
     run([py, "scripts/summarize_coverage_gaps.py"])
     run([py, "scripts/build_coverage_gap_action_plan.py"])
     run([py, "scripts/build_overclaim_risk_report.py"])
+    run([py, "scripts/build_overclaim_signature.py"])
     run([py, "scripts/validate_score_reports.py"])
     run([py, "scripts/build_benchmark_manifest.py"])
     run([py, "scripts/build_full_benchmark_readiness_report.py"])
