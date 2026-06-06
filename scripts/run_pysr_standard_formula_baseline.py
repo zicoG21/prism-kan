@@ -132,7 +132,6 @@ def run_card(card: dict, seed: int, args: argparse.Namespace, rows: list[dict]) 
         model_selection="best",
         parsimony=args.parsimony,
         random_state=seed,
-        deterministic=True,
         progress=False,
         verbosity=0,
         temp_equation_file=True,
