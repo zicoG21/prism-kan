@@ -14,8 +14,11 @@ set -euo pipefail
 # Submit from Great Lakes after installing/validating PySR in the repo venv:
 #
 #   sbatch --account=jaabell0 --array=0-14 \
-#     --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python,SEEDS_PER_TASK=2,NITERATIONS=120,POPULATION_SIZE=80 \
+#     --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python,SEED_BASE=0,SEEDS_PER_TASK=2,NITERATIONS=120,POPULATION_SIZE=80 \
 #     scripts/greatlakes_pysr_standard_formula.sbatch
+#
+# Continue with fresh seeds by changing SEED_BASE, for example SEED_BASE=30
+# with --array=0-14 covers seeds 30-59.
 #
 # This is CPU-only.  If PySR/JL is not installed, the job fails early with a
 # clear import error and does not write partial adapter rows.
@@ -31,8 +34,9 @@ fi
 "$PYTHON_BIN" scripts/generate_standard_formula_task_cards.py
 
 TASK_ID="${SLURM_ARRAY_TASK_ID:-0}"
+SEED_BASE="${SEED_BASE:-0}"
 SEEDS_PER_TASK="${SEEDS_PER_TASK:-2}"
-SEED_START=$(( TASK_ID * SEEDS_PER_TASK ))
+SEED_START=$(( SEED_BASE + TASK_ID * SEEDS_PER_TASK ))
 SEED_STOP=$(( SEED_START + SEEDS_PER_TASK - 1 ))
 NITERATIONS="${NITERATIONS:-100}"
 POPULATIONS="${POPULATIONS:-12}"

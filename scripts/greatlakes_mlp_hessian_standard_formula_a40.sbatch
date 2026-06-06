@@ -17,8 +17,11 @@ set -euo pipefail
 # Submit from Great Lakes:
 #
 #   sbatch --account=jaabell0 --partition=spgpu --array=0-14 \
-#     --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python,SEEDS_PER_TASK=2,STEPS=1800 \
+#     --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python,SEED_BASE=0,SEEDS_PER_TASK=2,STEPS=1800 \
 #     scripts/greatlakes_mlp_hessian_standard_formula_a40.sbatch
+#
+# Continue with fresh seeds by changing SEED_BASE, for example SEED_BASE=30
+# with --array=0-14 covers seeds 30-59.
 #
 # No array throttle is set.  Override --partition=gpu for V100s if useful.
 
@@ -33,8 +36,9 @@ fi
 "$PYTHON_BIN" scripts/generate_standard_formula_task_cards.py
 
 TASK_ID="${SLURM_ARRAY_TASK_ID:-0}"
+SEED_BASE="${SEED_BASE:-0}"
 SEEDS_PER_TASK="${SEEDS_PER_TASK:-2}"
-SEED_START=$(( TASK_ID * SEEDS_PER_TASK ))
+SEED_START=$(( SEED_BASE + TASK_ID * SEEDS_PER_TASK ))
 SEED_STOP=$(( SEED_START + SEEDS_PER_TASK - 1 ))
 WIDTH="${WIDTH:-128}"
 DEPTH="${DEPTH:-3}"
