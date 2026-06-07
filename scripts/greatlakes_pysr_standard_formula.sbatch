@@ -22,9 +22,22 @@ set -euo pipefail
 #
 # This is CPU-only.  If PySR/JL is not installed, the job fails early with a
 # clear import error and does not write partial adapter rows.
+# Some Great Lakes standard nodes intermittently fail PySR import with
+# "No locks available" when Julia/Python caches lock on network filesystems.
+# Keep writable caches in node-local scratch; read installed Julia packages
+# from the user's depot as a fallback.
 
 cd "${SLURM_SUBMIT_DIR:-$PWD}"
 mkdir -p logs/greatlakes
+
+JOB_TMP="${SLURM_TMPDIR:-${TMPDIR:-/tmp}}/claimtransfer_pysr_${SLURM_JOB_ID:-manual}_${SLURM_ARRAY_TASK_ID:-0}"
+mkdir -p "$JOB_TMP"/{julia_depot,python_cache,compiled,mpl}
+export TMPDIR="$JOB_TMP"
+export PYTHONPYCACHEPREFIX="$JOB_TMP/python_cache"
+export MPLCONFIGDIR="$JOB_TMP/mpl"
+export JULIA_DEPOT_PATH="$JOB_TMP/julia_depot:${JULIA_DEPOT_PATH:-$HOME/.julia}"
+export JULIA_PKG_PRECOMPILE_AUTO="${JULIA_PKG_PRECOMPILE_AUTO:-0}"
+export JULIA_NUM_THREADS="${JULIA_NUM_THREADS:-${SLURM_CPUS_PER_TASK:-1}}"
 
 PYTHON_BIN="${PYTHON_BIN:-$PWD/.venv/bin/python}"
 if [[ ! -x "$PYTHON_BIN" ]]; then
