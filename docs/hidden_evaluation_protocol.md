@@ -1,8 +1,9 @@
 # Hidden Evaluation Protocol
 
-ClaimTransfer v0 currently ships as a public diagnostic suite.  A mature
-benchmark release should add a hidden/offline split without changing the scoring
-contract.
+ClaimTransfer-Bench 1.0 ships with both a public diagnostic suite and an
+offline hidden/private evaluation mode.  The hidden mode uses the same adapter
+submission format and official scorer as the public suite; only cards, seeds,
+or labels are withheld by the maintainer until evaluation closes.
 
 ## Public vs Hidden Roles
 
@@ -10,7 +11,7 @@ contract.
 | --- | --- | --- | --- |
 | Public diagnostic | debugging, paper figures, adapter development | task cards, formulas, seeds, labels, scorer predicates | nothing |
 | Hidden offline | benchmark-style evaluation without a server | schema, adapter format, scoring binary/interface | private seeds, covariate draws, formula parameters, support labels |
-| Private leaderboard | hosted or maintainer-run evaluation | submission contract and aggregate reports | task cards, labels, seeds, detailed row-level records until release |
+| Private report / leaderboard | maintainer-run evaluation | submission contract and aggregate reports | task cards, labels, seeds, detailed row-level records until release |
 
 ## Offline Hidden Workflow
 
@@ -52,16 +53,18 @@ python scripts/validate_hidden_bundle.py
 - If labels are revealed for debugging, those rows become public diagnostic
   rows and should not be used for leaderboard claims.
 
-## Current Repository State
+## ClaimTransfer-Bench 1.0 Repository State
 
 The repository contains:
 
 - public cards: `task_cards/claimtransfer_v0_public.json`;
 - hidden templates: `task_cards/claimtransfer_v0_hidden_template.json`;
+- standard-formula cards: `task_cards/claimtransfer_v1_standard_formula_public.json`;
 - hidden scoring path in `scripts/run_benchmark.py`;
 - hidden/private bundle generator: `scripts/build_hidden_private_bundle.py`;
 - leakage validator: `scripts/validate_hidden_bundle.py`;
 - hidden score output paths ignored by git.
 
-The next maturity step is to store a real private-card/seed bundle outside the
-public repository and run one end-to-end hidden offline evaluation.
+For a live benchmark event, the maintainer stores the real private-card or
+private-seed bundle outside the public repository, runs the same hidden scoring
+command, and releases only typed aggregate reports until the evaluation closes.

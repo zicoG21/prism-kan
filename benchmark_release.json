@@ -1,6 +1,6 @@
 {
-  "release_id": "claimtransfer_full_alpha_20260605",
-  "release_stage": "alpha",
+  "release_id": "claimtransfer_bench_1_0_20260607",
+  "release_stage": "release_1_0",
   "schema_version": "claimtransfer_benchmark_release_v1",
   "task_registries": [
     {
@@ -17,6 +17,11 @@
       "path": "task_cards/claimtransfer_v1_scientific_templates.json",
       "version": "claimtransfer_v1_scientific_templates",
       "split": "hidden_template"
+    },
+    {
+      "path": "task_cards/claimtransfer_v1_standard_formula_public.json",
+      "version": "claimtransfer_v1_standard_formula_public",
+      "split": "public"
     }
   ],
   "schemas": [

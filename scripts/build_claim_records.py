@@ -734,6 +734,7 @@ def main() -> None:
         ("**/gplearn_standard_formula_adapter_outputs.csv", convert_normalized_adapter_outputs),
         ("**/pysr_standard_formula_adapter_outputs.csv", convert_normalized_adapter_outputs),
         ("**/mlp_hessian_standard_formula_adapter_outputs.csv", convert_normalized_adapter_outputs),
+        ("**/eql_standard_formula_adapter_outputs.csv", convert_normalized_adapter_outputs),
     ]
     for pattern, converter in patterns:
         for path in sorted(root.glob(pattern)):

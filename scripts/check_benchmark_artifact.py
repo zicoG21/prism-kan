@@ -40,6 +40,8 @@ REQUIRED_FILES = [
     "scripts/score_submission.py",
     "scripts/run_gplearn_standard_formula_baseline.py",
     "scripts/greatlakes_gplearn_standard_formula.sbatch",
+    "scripts/run_eql_standard_formula_baseline.py",
+    "scripts/greatlakes_eql_standard_formula_a40.sbatch",
     "scripts/build_claimtransfer_release_bundle.sh",
     "scripts/build_hidden_private_bundle.py",
     "scripts/check_release_bundle.sh",

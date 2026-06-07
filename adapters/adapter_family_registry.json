@@ -136,6 +136,32 @@
       "stress_card_requirement": "At least one card where symbolic status and sparse support can disagree."
     },
     {
+      "adapter_family": "neural_symbolic",
+      "native_outputs": [
+        "prediction_mse",
+        "operator_bank",
+        "expression_variables",
+        "operators",
+        "gradient_support_scores",
+        "hessian_pair_scores",
+        "expression_complexity"
+      ],
+      "licensed_claim_types": [
+        "prediction",
+        "support",
+        "endpoints",
+        "pair",
+        "symbolic_status",
+        "symbolic_operator_recall",
+        "symbolic_complexity"
+      ],
+      "tuning_policy": "Operator bank, hidden-unit count, training steps, and sparsity penalty are fixed before scoring.",
+      "budget_policy": "Training steps, operator threshold, support budget, and Hessian sample count are recorded in protocol.",
+      "missing_field_policy": "Neural-symbolic expression status does not license support or pair claims unless support saliency or pair scores are exposed.",
+      "positive_control_requirement": "At least one product-like and one univariate expression card.",
+      "stress_card_requirement": "At least one card where neural-symbolic prediction, operator recovery, and pair recovery can disagree."
+    },
+    {
       "adapter_family": "epim_treegate",
       "native_outputs": [
         "prediction_mse",

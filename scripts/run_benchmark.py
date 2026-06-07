@@ -101,6 +101,15 @@ def main() -> None:
         ),
     )
     parser.add_argument(
+        "--include-eql-standard",
+        action="store_true",
+        help=(
+            "Run the optional EQL-style neural-symbolic baseline on the "
+            "standard-formula wrapper before rebuilding official reports. "
+            "Requires PyTorch."
+        ),
+    )
+    parser.add_argument(
         "--include-pysr-standard",
         action="store_true",
         help=(
@@ -134,6 +143,10 @@ def main() -> None:
     if args.include_mlp_hessian_standard:
         run([py, "scripts/generate_standard_formula_task_cards.py"])
         run([py, "scripts/run_mlp_hessian_standard_formula_baseline.py"])
+        args.rebuild_adapter_outputs = True
+    if args.include_eql_standard:
+        run([py, "scripts/generate_standard_formula_task_cards.py"])
+        run([py, "scripts/run_eql_standard_formula_baseline.py"])
         args.rebuild_adapter_outputs = True
     if args.include_pysr_standard:
         run([py, "scripts/generate_standard_formula_task_cards.py"])
