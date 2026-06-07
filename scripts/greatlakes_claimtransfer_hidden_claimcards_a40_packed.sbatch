@@ -23,18 +23,20 @@ set -euo pipefail
 # Submit from Great Lakes:
 #
 #   sbatch --account=jaabell0 --array=0-11 \
-#     --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python,SEED_BASE=3000,PACK_FACTOR=4,SEEDS_PER_LANE=4,LABEL_SUFFIX=s3000_pack4 \
+#     --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python,SEED_BASE=3000,PACK_FACTOR=1,SEEDS_PER_LANE=4,LABEL_SUFFIX=s3000_lane \
 #     scripts/greatlakes_claimtransfer_hidden_claimcards_a40_packed.sbatch
 #
-# If nvidia-smi still shows low utilization, try PACK_FACTOR=5.  If OOM or
-# instability appears, lower to PACK_FACTOR=3.  No array throttle is set here.
+# Great Lakes A40 nodes often run in Exclusive Process compute mode, which
+# rejects multiple independent CUDA processes on one GPU.  PACK_FACTOR defaults
+# to 1 for correctness.  Use PACK_FACTOR>1 only after confirming the allocated
+# node permits multi-process CUDA sharing or MPS.
 
 cd "${SLURM_SUBMIT_DIR:-$PWD}"
 mkdir -p logs/greatlakes
 
 PY="${PYTHON_BIN:-python}"
 
-pack_factor="${PACK_FACTOR:-4}"
+pack_factor="${PACK_FACTOR:-1}"
 seeds_per_lane="${SEEDS_PER_LANE:-4}"
 seed_base="${SEED_BASE:-3000}"
 label_suffix="${LABEL_SUFFIX:-s${seed_base}_pack${pack_factor}}"
@@ -52,6 +54,12 @@ echo "[$(date -Is)] node=${SLURM_JOB_NODELIST:-unknown-node}"
 echo "[$(date -Is)] packed A40 run: pack_factor=${pack_factor} seeds_per_lane=${seeds_per_lane} seed_base=${seed_base}"
 echo "[$(date -Is)] batch_size=${batch_size} pair_chunk_size=${pair_chunk_size} threads_per_lane=${threads_per_lane}"
 nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader || true
+compute_mode="$(nvidia-smi --query-gpu=compute_mode --format=csv,noheader 2>/dev/null | head -1 || true)"
+echo "[$(date -Is)] compute_mode=${compute_mode:-unknown}"
+if [[ "$pack_factor" -gt 1 && "$compute_mode" == *"Exclusive"* ]]; then
+  echo "[$(date -Is)] PACK_FACTOR=${pack_factor} is unsafe on compute_mode=${compute_mode}; use PACK_FACTOR=1 or a non-exclusive node." >&2
+  exit 2
+fi
 
 # label|function|samples|dimension|noise|update_grid|width|steps|anova_points|anova_background|prune_threshold
 ROWS=(
