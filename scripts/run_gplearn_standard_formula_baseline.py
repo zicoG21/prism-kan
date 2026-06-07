@@ -18,7 +18,15 @@ from time import perf_counter
 import numpy as np
 import pandas as pd
 
-from gplearn.genetic import SymbolicRegressor
+try:
+    from gplearn.genetic import SymbolicRegressor
+except Exception as exc:  # pragma: no cover - optional baseline dependency
+    raise SystemExit(
+        "run_gplearn_standard_formula_baseline.py requires gplearn. "
+        "Install it in the active environment with `pip install gplearn` "
+        f"or `pip install -r requirements.txt`. Import failed with: "
+        f"{type(exc).__name__}: {exc}"
+    )
 
 from run_standard_formula_adapter_sweep import (
     ROOT,
