@@ -1,0 +1,8 @@
+adapter_family,adapter,complexity_budget,endpoint_recall,operator_recall,pair_term_recall,prediction_pass,symbolic_status,variable_support_recall,complexity_budget_trials,endpoint_recall_trials,operator_recall_trials,pair_term_recall_trials,prediction_pass_trials,symbolic_status_trials,variable_support_recall_trials,method,expression_quality_min
+neural_blackbox,mlp_hessian,,1.0,,0.8640873015873016,0.9523809523809523,,1.0,,5040.0,,5040.0,6300.0,,6300.0,neural_blackbox / mlp_hessian,
+pair_screen,pair_corr_screen,,0.6,,0.475,,,0.2,,120.0,,120.0,,,150.0,pair_screen / pair_corr_screen,
+sparse_library,poly2_ridge,,0.85,,0.775,0.5333333333333333,,0.7933333333333333,,120.0,,120.0,150.0,,150.0,sparse_library / poly2_ridge,
+support_screen,main_effect_corr,,0.5,,,0.24,,0.4666666666666667,,120.0,,,150.0,,150.0,support_screen / main_effect_corr,
+symbolic_library,gplearn_symbolic_regressor,0.8464285714285714,0.2750373692077728,0.12738095238095237,0.6502242152466368,0.11785714285714285,1.0,0.2682038834951456,840.0,669.0,840.0,669.0,840.0,840.0,824.0,symbolic_library / gplearn_symbolic_regressor,0.12738095238095237
+symbolic_library,oracle_symbolic,1.0,1.0,1.0,1.0,1.0,1.0,1.0,150.0,120.0,150.0,120.0,150.0,150.0,150.0,symbolic_library / oracle_symbolic,1.0
+symbolic_library,pysr_symbolic_regressor,0.43333333333333335,0.9980732177263969,0.3416184971098266,0.789980732177264,0.9425818882466281,1.0,0.9978805394990367,5190.0,4152.0,5190.0,4152.0,5190.0,5190.0,5190.0,symbolic_library / pysr_symbolic_regressor,0.3416184971098266

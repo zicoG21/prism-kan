@@ -23,6 +23,13 @@ OFFICIAL_DOCS = {
     "docs/task_card_authoring_protocol.md",
 }
 
+ROOT_LEVEL_FILES = {
+    "BENCHMARK.md",
+    "BENCHMARK_CARD.md",
+    "README_WORKSHOP.md",
+    "benchmark_release.json",
+}
+
 EXCLUDED_PREFIXES = (
     "score_reports/example_",
     "score_reports/submission_score/",
@@ -66,8 +73,21 @@ def main() -> None:
     parser.add_argument("--out", default="score_reports/benchmark_manifest.csv")
     args = parser.parse_args()
 
-    roots = ["task_cards", "adapters", "scorers", "claim_records", "score_reports", "docs"]
     rows = []
+    for rel_str in sorted(ROOT_LEVEL_FILES):
+        path = ROOT / rel_str
+        if path.exists() and path.is_file():
+            rows.append(
+                {
+                    "path": rel_str,
+                    "artifact_group": "root",
+                    "bytes": path.stat().st_size,
+                    "rows_if_csv": count_rows(path),
+                    "sha256": sha256(path),
+                }
+            )
+
+    roots = ["task_cards", "adapters", "scorers", "claim_records", "score_reports", "docs"]
     for root_name in roots:
         root = ROOT / root_name
         if not root.exists():

@@ -1,0 +1,15 @@
+adapter_family,adapter,method,transfer_id,transfer,eligible_rows,source_passes,target_failures_given_source_pass,overclaim_risk
+neural_blackbox,mlp_hessian,neural_blackbox / mlp_hessian,prediction_to_pair,Prediction -> pair,5040,4800,625,0.13020833333333334
+neural_blackbox,mlp_hessian,neural_blackbox / mlp_hessian,support_to_prediction,Support -> prediction,6300,6300,300,0.047619047619047616
+sparse_library,poly2_ridge,sparse_library / poly2_ridge,prediction_to_pair,Prediction -> pair,120,75,8,0.10666666666666667
+sparse_library,poly2_ridge,sparse_library / poly2_ridge,support_to_prediction,Support -> prediction,150,119,43,0.36134453781512604
+support_screen,main_effect_corr,support_screen / main_effect_corr,support_to_prediction,Support -> prediction,150,70,48,0.6857142857142857
+symbolic_library,gplearn_symbolic_regressor,symbolic_library / gplearn_symbolic_regressor,prediction_to_pair,Prediction -> pair,669,91,24,0.26373626373626374
+symbolic_library,gplearn_symbolic_regressor,symbolic_library / gplearn_symbolic_regressor,support_to_prediction,Support -> prediction,824,221,200,0.9049773755656109
+symbolic_library,gplearn_symbolic_regressor,symbolic_library / gplearn_symbolic_regressor,symbolic_status_to_expression_quality,Symbolic status -> expression quality,840,840,759,0.9035714285714286
+symbolic_library,oracle_symbolic,symbolic_library / oracle_symbolic,prediction_to_pair,Prediction -> pair,120,120,0,0.0
+symbolic_library,oracle_symbolic,symbolic_library / oracle_symbolic,support_to_prediction,Support -> prediction,150,150,0,0.0
+symbolic_library,oracle_symbolic,symbolic_library / oracle_symbolic,symbolic_status_to_expression_quality,Symbolic status -> expression quality,150,150,0,0.0
+symbolic_library,pysr_symbolic_regressor,symbolic_library / pysr_symbolic_regressor,prediction_to_pair,Prediction -> pair,4128,3892,815,0.2094039054470709
+symbolic_library,pysr_symbolic_regressor,symbolic_library / pysr_symbolic_regressor,support_to_prediction,Support -> prediction,5160,5154,286,0.055490880869227786
+symbolic_library,pysr_symbolic_regressor,symbolic_library / pysr_symbolic_regressor,symbolic_status_to_expression_quality,Symbolic status -> expression quality,5160,5160,4452,0.8627906976744186

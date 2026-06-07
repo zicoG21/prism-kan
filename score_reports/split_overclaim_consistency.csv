@@ -1,0 +1,10 @@
+suite_split,transfer_id,transfer,eligible_rows,source_passes,target_failures_given_source_pass,overclaim_risk
+public diagnostic,candidate_to_pair,Candidate -> pair,5630,3919,1424,0.36335799948966574
+public diagnostic,fitted_pair_to_pruning,Fitted pair -> pruning,2884,2211,460,0.20805065581184984
+public diagnostic,fitted_pair_to_readout,Fitted pair -> readout,2884,2211,566,0.25599276345545
+public diagnostic,prediction_to_pair,Prediction -> pair,15893,9062,2471,0.27267711322003974
+public diagnostic,support_to_prediction,Support -> prediction,10129,5252,1479,0.2816070068545316
+public diagnostic,symbolic_status_to_expression_quality,Symbolic status -> expression quality,1982,1982,1742,0.8789101917255298
+standard formula,prediction_to_pair,Prediction -> pair,10077,8978,1472,0.163956337714413
+standard formula,support_to_prediction,Support -> prediction,12734,12014,877,0.07299816880306309
+standard formula,symbolic_status_to_expression_quality,Symbolic status -> expression quality,6150,6150,5211,0.8473170731707317

@@ -1,0 +1,7 @@
+source_node,target_node,transfer_id,transfer,source_passes,target_failures_given_source_pass,overclaim_risk,wilson_low,wilson_high,edge_label
+symbolic status,expression quality,symbolic_status_to_expression_quality,symbolic-status -> expression quality,8132,6953,0.8550172159370388,0.84719705911003,0.8625021071077585,symbolic-status -> expression quality (85.5%)
+candidate,pair,candidate_to_pair,candidate -> pair,3919,1424,0.3633579994896657,0.348440031919299,0.3785435913807087,candidate -> pair (36.3%)
+fitted pair,readout,fitted_pair_to_readout,fitted pair -> readout endpoints,2211,566,0.25599276345545,0.2382355292887213,0.2745964493051429,fitted pair -> readout endpoints (25.6%)
+prediction,pair,prediction_to_pair,prediction -> pair,18040,3943,0.2185698447893569,0.2125992638361253,0.224660260765332,prediction -> pair (21.9%)
+fitted pair,pruning,fitted_pair_to_pruning,fitted pair -> pruning endpoints,2211,460,0.2080506558118498,0.1916443446343014,0.2254697279928336,fitted pair -> pruning endpoints (20.8%)
+support,prediction,support_to_prediction,support -> prediction,17266,2356,0.1364531449090698,0.1314136507848711,0.14165437781824,support -> prediction (13.6%)

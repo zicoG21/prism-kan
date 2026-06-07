@@ -1,0 +1,7 @@
+adapter_family,adapter,method,prediction_to_pair,support_to_prediction,symbolic_status_to_expression_quality,prediction_to_pair_source_passes,support_to_prediction_source_passes,symbolic_status_to_expression_quality_source_passes,dominant_overclaim_edge,dominant_overclaim_risk
+symbolic_library,gplearn_symbolic_regressor,symbolic_library / gplearn_symbolic_regressor,0.26373626373626374,0.9049773755656109,0.9035714285714286,91.0,221.0,840.0,support_to_prediction,0.9049773755656109
+symbolic_library,pysr_symbolic_regressor,symbolic_library / pysr_symbolic_regressor,0.2094039054470709,0.055490880869227786,0.8627906976744186,3892.0,5154.0,5160.0,symbolic_status_to_expression_quality,0.8627906976744186
+support_screen,main_effect_corr,support_screen / main_effect_corr,,0.6857142857142857,,,70.0,,support_to_prediction,0.6857142857142857
+sparse_library,poly2_ridge,sparse_library / poly2_ridge,0.10666666666666667,0.36134453781512604,,75.0,119.0,,support_to_prediction,0.36134453781512604
+neural_blackbox,mlp_hessian,neural_blackbox / mlp_hessian,0.13020833333333334,0.047619047619047616,,4800.0,6300.0,,prediction_to_pair,0.13020833333333334
+symbolic_library,oracle_symbolic,symbolic_library / oracle_symbolic,0.0,0.0,0.0,120.0,150.0,150.0,prediction_to_pair,0.0

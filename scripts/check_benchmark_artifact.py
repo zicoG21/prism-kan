@@ -15,6 +15,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED_FILES = [
+    "BENCHMARK_CARD.md",
     "task_cards/task_card_schema.json",
     "benchmark_release.json",
     "task_cards/claimtransfer_v0_public.json",
@@ -36,6 +37,9 @@ REQUIRED_FILES = [
     "scripts/build_coverage_gap_report.py",
     "scripts/build_coverage_gap_action_plan.py",
     "scripts/build_benchmark_manifest.py",
+    "scripts/build_full_benchmark_analysis_reports.py",
+    "scripts/build_expression_equivalence_subset.py",
+    "scripts/plot_standard_formula_signature_heatmap.py",
     "scripts/run_benchmark.py",
     "scripts/score_submission.py",
     "scripts/run_gplearn_standard_formula_baseline.py",
@@ -57,6 +61,11 @@ REQUIRED_FILES = [
     "score_reports/coverage_gap_action_plan.csv",
     "score_reports/overclaim_risk_report.csv",
     "score_reports/overclaim_risk_by_adapter.csv",
+    "score_reports/standard_formula_overclaim_signature_by_method.csv",
+    "score_reports/standard_formula_expression_quality_breakdown.csv",
+    "score_reports/standard_formula_expression_equivalence_summary.csv",
+    "score_reports/split_overclaim_consistency.csv",
+    "score_reports/ordinary_reporting_interpretation_flip.csv",
     "score_reports/missingness_report.csv",
     "score_reports/full_benchmark_readiness.csv",
     "score_reports/benchmark_manifest.csv",
@@ -93,6 +102,19 @@ def main() -> None:
         "coverage_gap_action_plan": csv_rows(ROOT / "score_reports/coverage_gap_action_plan.csv"),
         "overclaim_risk_report": csv_rows(ROOT / "score_reports/overclaim_risk_report.csv"),
         "overclaim_risk_by_adapter": csv_rows(ROOT / "score_reports/overclaim_risk_by_adapter.csv"),
+        "standard_formula_signature": csv_rows(
+            ROOT / "score_reports/standard_formula_overclaim_signature_by_method.csv"
+        ),
+        "standard_expression_breakdown": csv_rows(
+            ROOT / "score_reports/standard_formula_expression_quality_breakdown.csv"
+        ),
+        "standard_expression_equivalence": csv_rows(
+            ROOT / "score_reports/standard_formula_expression_equivalence_summary.csv"
+        ),
+        "split_overclaim_consistency": csv_rows(ROOT / "score_reports/split_overclaim_consistency.csv"),
+        "ordinary_reporting_interpretation_flip": csv_rows(
+            ROOT / "score_reports/ordinary_reporting_interpretation_flip.csv"
+        ),
         "missingness_report": csv_rows(ROOT / "score_reports/missingness_report.csv"),
         "full_benchmark_readiness": csv_rows(ROOT / "score_reports/full_benchmark_readiness.csv"),
         "benchmark_manifest": csv_rows(ROOT / "score_reports/benchmark_manifest.csv"),

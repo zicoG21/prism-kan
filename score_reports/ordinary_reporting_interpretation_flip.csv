@@ -1,0 +1,5 @@
+ordinary_report_would_say,claimtransfer_correction,evidence
+"PySR recovered formulas because prediction, support, and symbolic status are high.",PySR has strong predictive/support evidence but a high symbolic-status -> expression-quality overclaim edge.,symbolic status 100.0%; expression-quality min 34.2%; symbolic overclaim risk 86.3%
+"gplearn returned symbolic expressions, so formula quality is recovered.",The current gplearn slice exposes a symbolic-status edge that fails operator/complexity checks much more often than status itself.,symbolic status 100.0%; expression-quality min 12.7%; symbolic overclaim risk 90.4%
+"MLP-Hessian recovered structure because prediction, support, and endpoints are high.",Prediction/support/endpoints are separate from verified pair recovery; the pair edge remains measurable.,prediction -> pair risk 13.0%; support -> prediction risk 4.8%
+"A sparse polynomial screen recovered the relevant variables, so it is a useful formula workflow.",Support recovery does not imply predictive adequacy or pair recovery.,support -> prediction risk 36.1%; prediction -> pair risk 10.7%

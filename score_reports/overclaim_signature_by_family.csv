@@ -1,0 +1,28 @@
+adapter_family_display,transfer_id,source_passes,target_failures_given_source_pass,overclaim_risk,adapter_family_label
+epim_pairverify,candidate_to_pair,1887,321,0.17011128775834658,EPIM verifier
+epim_pairverify,prediction_to_pair,1755,274,0.15612535612535614,EPIM verifier
+ga2m_spline,prediction_to_pair,567,101,0.1781305114638448,GA2M
+ga2m_spline,support_to_prediction,62,33,0.532258064516129,GA2M
+gbm_hstat,prediction_to_pair,621,267,0.42995169082125606,GBM-H
+gbm_hstat,support_to_prediction,11,7,0.6363636363636364,GBM-H
+neural_blackbox,prediction_to_pair,4800,625,0.13020833333333334,MLP-Hessian
+neural_blackbox,support_to_prediction,6300,300,0.047619047619047616,MLP-Hessian
+pyKAN,fitted_pair_to_pruning,2211,460,0.20805065581184984,pyKAN
+pyKAN,fitted_pair_to_readout,2211,566,0.25599276345545,pyKAN
+pyKAN,prediction_to_pair,2997,485,0.16182849516182848,pyKAN
+pyKAN,support_to_prediction,2489,241,0.09682603455202893,pyKAN
+sparse_lasso,prediction_to_pair,388,148,0.38144329896907214,Sparse Lasso
+sparse_lasso,support_to_prediction,1286,958,0.744945567651633,Sparse Lasso
+sparse_library,prediction_to_pair,75,8,0.10666666666666667,Sparse library
+sparse_library,support_to_prediction,119,43,0.36134453781512604,Sparse library
+sparse_spline_lasso,prediction_to_pair,1259,476,0.3780778395552025,Spline Lasso
+sparse_spline_lasso,support_to_prediction,656,177,0.2698170731707317,Spline Lasso
+support_screen,support_to_prediction,70,48,0.6857142857142857,Support screen
+symbolic_lasso,prediction_to_pair,882,325,0.36848072562358275,Symbolic Lasso
+symbolic_lasso,support_to_prediction,748,63,0.08422459893048129,Symbolic Lasso
+symbolic_lasso,symbolic_status_to_expression_quality,1022,1022,1.0,Symbolic Lasso
+symbolic_library,prediction_to_pair,4103,839,0.20448452351937607,Symbolic/PySR
+symbolic_library,support_to_prediction,5525,486,0.08796380090497738,Symbolic/PySR
+symbolic_library,symbolic_status_to_expression_quality,7110,5931,0.8341772151898734,Symbolic/PySR
+tree_gate,candidate_to_pair,2032,1103,0.5428149606299213,Tree gates
+tree_gate,prediction_to_pair,593,395,0.6661045531197302,Tree gates
