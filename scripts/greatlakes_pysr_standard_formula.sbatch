@@ -14,7 +14,7 @@ set -euo pipefail
 # Submit from Great Lakes after installing/validating PySR in the repo venv:
 #
 #   sbatch --account=jaabell0 --array=0-14 \
-#     --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python,SEED_BASE=0,SEEDS_PER_TASK=2,NITERATIONS=120,POPULATION_SIZE=80 \
+#     --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python,SEED_BASE=0,SEEDS_PER_TASK=2,NITERATIONS=120,POPULATION_SIZE=80,STANDARD_AUGMENT=full \
 #     scripts/greatlakes_pysr_standard_formula.sbatch
 #
 # Continue with fresh seeds by changing SEED_BASE, for example SEED_BASE=30
@@ -31,7 +31,8 @@ if [[ ! -x "$PYTHON_BIN" ]]; then
   PYTHON_BIN="$(command -v python)"
 fi
 
-"$PYTHON_BIN" scripts/generate_standard_formula_task_cards.py
+STANDARD_AUGMENT="${STANDARD_AUGMENT:-none}"
+"$PYTHON_BIN" scripts/generate_standard_formula_task_cards.py --augment "${STANDARD_AUGMENT}"
 
 TASK_ID="${SLURM_ARRAY_TASK_ID:-0}"
 SEED_BASE="${SEED_BASE:-0}"
@@ -47,7 +48,7 @@ PROCS="${PROCS:-${SLURM_CPUS_PER_TASK:-8}}"
 LABEL_SUFFIX="${LABEL_SUFFIX:-s${SEED_START}_${SEED_STOP}}"
 OUT_DIR="results/revision/pysr_standard_formula_baseline_${LABEL_SUFFIX}"
 
-echo "[$(date -Is)] host=$(hostname) task=${TASK_ID} seeds=${SEED_START}-${SEED_STOP} iter=${NITERATIONS} pop=${POPULATION_SIZE} procs=${PROCS}"
+echo "[$(date -Is)] host=$(hostname) task=${TASK_ID} seeds=${SEED_START}-${SEED_STOP} iter=${NITERATIONS} pop=${POPULATION_SIZE} procs=${PROCS} augment=${STANDARD_AUGMENT}"
 "$PYTHON_BIN" scripts/run_pysr_standard_formula_baseline.py \
   --seeds "${SEED_START}-${SEED_STOP}" \
   --niterations "${NITERATIONS}" \

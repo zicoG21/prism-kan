@@ -17,7 +17,7 @@ set -euo pipefail
 # Submit from Great Lakes:
 #
 #   sbatch --account=jaabell0 --partition=spgpu --array=0-14 \
-#     --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python,SEED_BASE=0,SEEDS_PER_TASK=2,STEPS=1800 \
+#     --export=ALL,PYTHON_BIN=$PWD/.venv/bin/python,SEED_BASE=0,SEEDS_PER_TASK=2,STEPS=1800,STANDARD_AUGMENT=full \
 #     scripts/greatlakes_mlp_hessian_standard_formula_a40.sbatch
 #
 # Continue with fresh seeds by changing SEED_BASE, for example SEED_BASE=30
@@ -33,7 +33,8 @@ if [[ ! -x "$PYTHON_BIN" ]]; then
   PYTHON_BIN="$(command -v python)"
 fi
 
-"$PYTHON_BIN" scripts/generate_standard_formula_task_cards.py
+STANDARD_AUGMENT="${STANDARD_AUGMENT:-none}"
+"$PYTHON_BIN" scripts/generate_standard_formula_task_cards.py --augment "${STANDARD_AUGMENT}"
 
 TASK_ID="${SLURM_ARRAY_TASK_ID:-0}"
 SEED_BASE="${SEED_BASE:-0}"
@@ -54,7 +55,7 @@ export MKL_NUM_THREADS="${MKL_NUM_THREADS:-4}"
 export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-4}"
 export NUMEXPR_NUM_THREADS="${NUMEXPR_NUM_THREADS:-4}"
 
-echo "[$(date -Is)] host=$(hostname) task=${TASK_ID} seeds=${SEED_START}-${SEED_STOP} width=${WIDTH} depth=${DEPTH} steps=${STEPS}"
+echo "[$(date -Is)] host=$(hostname) task=${TASK_ID} seeds=${SEED_START}-${SEED_STOP} width=${WIDTH} depth=${DEPTH} steps=${STEPS} augment=${STANDARD_AUGMENT}"
 nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader || true
 "$PYTHON_BIN" scripts/run_mlp_hessian_standard_formula_baseline.py \
   --seeds "${SEED_START}-${SEED_STOP}" \

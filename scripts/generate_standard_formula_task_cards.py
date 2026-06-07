@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any
 
@@ -419,6 +419,46 @@ FORMULAS: tuple[FormulaSpec, ...] = (
 )
 
 
+def with_suffix(task_id: str, suffix: str) -> str:
+    return f"{task_id}_{suffix}"
+
+
+def expanded_formulas(mode: str) -> list[FormulaSpec]:
+    """Return the base cards plus deterministic v1 expansion variants."""
+    specs = list(FORMULAS)
+    if mode not in {"none", "noise", "full"}:
+        raise ValueError(f"Unknown augment mode {mode!r}; expected none, noise, or full")
+
+    if mode in {"noise", "full"}:
+        specs.extend(
+            replace(
+                spec,
+                task_id=with_suffix(spec.task_id, "noise005"),
+                family=f"{spec.family}_noise005",
+                noise=0.05,
+                stress_tags=tuple((*spec.stress_tags, "noise005")),
+                audit_purpose=f"{spec.audit_purpose}; noise variant for robustness of claim-transfer edges",
+            )
+            for spec in FORMULAS
+        )
+
+    if mode == "full":
+        specs.extend(
+            replace(
+                spec,
+                task_id=with_suffix(spec.task_id, f"d{max(16, spec.dimension + 8)}_n4096"),
+                family=f"{spec.family}_highdim",
+                dimension=max(16, spec.dimension + 8),
+                samples=4096,
+                stress_tags=tuple((*spec.stress_tags, "highdim_sparse")),
+                audit_purpose=f"{spec.audit_purpose}; high-dimensional sparse variant for support/pair overclaim stress",
+            )
+            for spec in FORMULAS
+        )
+
+    return specs
+
+
 def claim_id(task_id: str, claim_type: str, predicate: str, target: Any) -> str:
     return f"{task_id}:{claim_type}:{predicate}:{target}"
 
@@ -533,9 +573,16 @@ def main() -> None:
     parser.add_argument("--doc", default="task_cards/standard_formula_task_card_map.md")
     parser.add_argument("--split", default="public")
     parser.add_argument("--registry-version", default="claimtransfer_v1_standard_formula_public")
+    parser.add_argument(
+        "--augment",
+        choices=["none", "noise", "full"],
+        default="none",
+        help="Add deterministic noise/high-dimensional variants for larger standard-card sweeps.",
+    )
     args = parser.parse_args()
 
-    cards = [make_card(spec, args.split, args.registry_version) for spec in FORMULAS]
+    formulas = expanded_formulas(args.augment)
+    cards = [make_card(spec, args.split, args.registry_version) for spec in formulas]
     registry = {
         "version": args.registry_version,
         "schema_version": "claimtransfer_task_card_schema_v1",
