@@ -222,6 +222,8 @@ def emit_common(
     complexity: float | None = None,
 ) -> None:
     common = {
+        "registry_version": card.get("registry_version", "claimtransfer_v1_standard_formula_public"),
+        "split": card.get("split", "public"),
         "task_id": card["task_id"],
         "task_family": card["task_family"],
         "adapter": adapter,

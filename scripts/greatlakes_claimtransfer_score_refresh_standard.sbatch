@@ -36,6 +36,15 @@ echo "[$(date -Is)] refreshing ClaimTransfer official reports"
 "$PY" scripts/validate_claim_records.py
 "$PY" scripts/build_coverage_gap_report.py
 "$PY" scripts/summarize_coverage_gaps.py
+"$PY" scripts/build_coverage_gap_action_plan.py
+"$PY" scripts/build_overclaim_risk_report.py
+"$PY" scripts/build_reporting_protocol_simulation.py
+"$PY" scripts/build_overclaim_signature.py
+"$PY" scripts/build_expression_equivalence_subset.py || true
+"$PY" scripts/build_full_benchmark_analysis_reports.py
+"$PY" scripts/build_expression_track_secondary_report.py || true
+"$PY" scripts/build_literature_reporting_pattern_audit.py || true
+"$PY" scripts/build_public_hidden_split_report.py
 "$PY" scripts/build_benchmark_manifest.py
 "$PY" scripts/build_full_benchmark_readiness_report.py
 "$PY" scripts/build_typed_dashboard.py
@@ -53,6 +62,9 @@ ls -lh \
   score_reports/score_report.csv \
   score_reports/coverage_table.csv \
   score_reports/coverage_gap_summary.csv \
+  score_reports/overclaim_risk_report.csv \
+  score_reports/split_overclaim_consistency.csv \
+  score_reports/public_hidden_split_readiness.csv \
   score_reports/full_benchmark_readiness.csv \
   score_reports/task_card_validation.csv
 echo "[$(date -Is)] done ClaimTransfer official report refresh"

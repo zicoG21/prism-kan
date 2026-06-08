@@ -757,6 +757,13 @@ def main() -> None:
                 df["registry_version"].isna() | registry_text.str.strip().eq(""),
                 "registry_version",
             ] = args.registry_version
+        source_text = df.get("source_file", pd.Series("", index=df.index)).astype(str)
+        protocol_text = df.get("protocol", pd.Series("", index=df.index)).astype(str)
+        hidden_mask = source_text.str.contains(r"[_/-]hidden_s\d+", regex=True, na=False) | protocol_text.str.contains(
+            r"[_/-]hidden_s\d+", regex=True, na=False
+        )
+        df.loc[hidden_mask, "split"] = "hidden"
+        df.loc[hidden_mask, "registry_version"] = "claimtransfer_v0_hidden_private"
     df.to_csv(out, index=False)
     print(f"Wrote {out} ({len(df)} raw evidence rows)")
     if not df.empty:
